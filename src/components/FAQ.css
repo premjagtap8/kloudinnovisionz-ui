@@ -1,0 +1,391 @@
+/* ==========================================================================
+   FAQ Component Styles
+   Table of Contents:
+   1. Design Tokens
+   2. Section & Panel (mobile-first base)
+   3. Left Intro
+   4. Accordion Columns & Items
+   5. Entrance Animation
+   6. Responsive (container queries on the section width)
+   7. Accessibility (Reduced Motion)
+
+   Note: Inter is already loaded by Navbar.css, so no @import is needed here.
+   Palette, eyebrow, heading and spacing match Hero.css / Testimonials.css:
+   navy #0f172a, blue #1f6feb, green #16a34a.
+
+   Mobile-first: the base rules are the phone layout, and the layout grows with
+   the section width (>= 600 / 992 / 1280px), exactly like Testimonials.css.
+   A browser without container-query support simply keeps the phone layout.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens
+   -------------------------------------------------------------------------- */
+.faq {
+  --faq-navy: #0f172a;
+  --faq-blue: #1f6feb;
+  --faq-blue-dark: #1558c7;
+  --faq-blue-soft: #eaf2ff;
+  --faq-green: #16a34a;
+  --faq-green-text: #15803d; /* darker green for small text (same as testimonials / navbar) */
+  --faq-text: #4b5563;
+  --faq-border: #e5edf7;
+  --faq-gutter: clamp(20px, 2.5vw, 48px);
+  --faq-pad-y: calc(var(--section-space, 80px) / 2); /* same rhythm as Testimonials */
+
+  --faq-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --faq-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  color: var(--faq-navy);
+  /* Starts on the exact colour the testimonials section ends on, so there is no seam */
+  background: linear-gradient(180deg, #f3f8ff 0%, #ffffff 70%);
+  width: 100%;
+  position: relative;
+  /* "#faq" links must not hide the heading under a sticky header.
+     Set --header-offset globally to your real header height. */
+  scroll-margin-top: var(--header-offset, 96px);
+  /* The section is a size container: the layout follows the section width */
+  container: faq / inline-size;
+}
+
+.faq *,
+.faq *::before,
+.faq *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   2. Section & Panel
+   The side padding lives on the inner wrapper (not on .faq), so the container
+   width is the full section width and the breakpoints stay round numbers.
+   -------------------------------------------------------------------------- */
+.faq__inner {
+  padding: 0 var(--faq-gutter) var(--faq-pad-y);
+}
+
+.faq__panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* phone / tablet: intro on top, questions below */
+  background: linear-gradient(90deg, #ffffff 0%, #f8fafe 100%);
+  border: 1px solid var(--faq-border);
+  border-radius: 16px;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.06);
+}
+
+/* --------------------------------------------------------------------------
+   3. Left Intro
+   -------------------------------------------------------------------------- */
+.faq__intro {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 22px 18px 14px;
+  border-bottom: 1px solid var(--faq-border);
+}
+
+/* Same eyebrow as Testimonials */
+.faq__eyebrow {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faq-green-text);
+}
+
+.faq__title {
+  max-width: 34ch;
+  margin: 0 0 14px;
+  font-size: clamp(1.4rem, 1.15rem + 1.2vw, 1.85rem); /* fallback */
+  font-size: clamp(1.4rem, 1.1rem + 0.7cqi, 1.85rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--faq-navy);
+  text-wrap: balance;
+}
+
+.faq__title-blue {
+  color: var(--faq-blue);
+}
+
+.faq__title-green {
+  color: var(--faq-green);
+}
+
+.faq__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--faq-blue);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.faq__link:focus-visible {
+  outline: 2px solid var(--faq-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.faq__link-icon {
+  transition: translate 0.25s var(--faq-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .faq__link:hover {
+    color: var(--faq-blue-dark);
+  }
+
+  .faq__link:hover .faq__link-icon {
+    translate: 4px 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Accordion Columns & Items
+   -------------------------------------------------------------------------- */
+.faq__columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* one column on phone and tablet */
+  align-items: start; /* columns keep their own height when one item opens */
+  gap: 12px;
+  min-width: 0;
+  padding: 18px 14px 20px;
+}
+
+.faq__column {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.faq__item {
+  background: #ffffff;
+  border: 1px solid var(--faq-border);
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.faq__item--open {
+  border-color: #bfd6fa;
+  box-shadow: 0 8px 22px rgba(31, 111, 235, 0.14);
+}
+
+.faq__heading {
+  margin: 0;
+  font-size: inherit;
+}
+
+.faq__question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-block-size: 56px;
+  padding: 14px 16px;
+  background: none;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  color: var(--faq-navy);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.faq__item--open .faq__question {
+  color: var(--faq-blue);
+}
+
+.faq__question:focus-visible {
+  outline: 2px solid var(--faq-blue);
+  outline-offset: -2px;
+}
+
+/* Hover only on devices that really hover, so a tap never leaves a card "stuck" highlighted */
+@media (hover: hover) and (pointer: fine) {
+  .faq__item:hover {
+    border-color: #d6e4fb;
+    box-shadow: 0 6px 18px rgba(31, 111, 235, 0.1);
+  }
+
+  .faq__item--open:hover {
+    border-color: #bfd6fa;
+    box-shadow: 0 8px 22px rgba(31, 111, 235, 0.14);
+  }
+
+  .faq__question:hover {
+    color: var(--faq-blue);
+  }
+}
+
+.faq__icon {
+  flex-shrink: 0;
+  color: var(--faq-blue);
+  transition: rotate 0.3s var(--faq-ease);
+}
+
+.faq__item--open .faq__icon {
+  rotate: 45deg; /* + becomes x */
+}
+
+/* Smooth height animation using grid rows.
+   Closed answers are also visibility:hidden (after the collapse finishes), so they
+   leave the accessibility tree and can never be reached with Tab or a screen reader. */
+.faq__answer-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows 0.3s var(--faq-ease), visibility 0s linear 0.3s;
+}
+
+.faq__item--open .faq__answer-wrap {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows 0.3s var(--faq-ease), visibility 0s;
+}
+
+.faq__answer-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.faq__answer {
+  margin: 0;
+  padding: 0 16px 18px;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--faq-text);
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+/* --------------------------------------------------------------------------
+   5. Entrance Animation
+   Uses `translate` + `opacity` (not `transform`), like the other sections.
+   -------------------------------------------------------------------------- */
+.faq__intro,
+.faq__item {
+  opacity: 0;
+  translate: 0 22px;
+}
+
+.faq--visible .faq__intro {
+  animation: faqFadeUp 0.65s var(--faq-ease-out) both;
+}
+
+.faq--visible .faq__item {
+  animation: faqFadeUp 0.6s var(--faq-ease-out) calc(var(--delay, 0ms) + 120ms) both;
+}
+
+@keyframes faqFadeUp {
+  from {
+    opacity: 0;
+    translate: 0 22px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Responsive (container queries on the section width, mobile-first)
+   >= 600px : roomier padding and rounder panel (tablet)
+   >= 992px : questions in 3 columns, intro still on top
+   >= 1280px: intro moves to the left, questions to the right
+   -------------------------------------------------------------------------- */
+@container faq (min-width: 600px) {
+  .faq__panel {
+    border-radius: 20px;
+  }
+
+  .faq__intro {
+    padding: 28px 28px 20px;
+  }
+
+  .faq__columns {
+    padding: 24px 28px 28px;
+  }
+
+  .faq__question {
+    padding: 16px 20px;
+  }
+
+  .faq__answer {
+    padding: 0 20px 20px;
+  }
+}
+
+@container faq (min-width: 992px) {
+  .faq__columns {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(12px, 1.2vw, 20px); /* fallback */
+    gap: clamp(12px, 1.2cqi, 20px);
+  }
+}
+
+@container faq (min-width: 1280px) {
+  .faq__panel {
+    grid-template-columns: minmax(250px, 22fr) minmax(0, 78fr);
+    align-items: stretch;
+  }
+
+  .faq__intro {
+    padding: 30px 28px 28px 32px;
+    border-bottom: none;
+    border-right: 1px solid var(--faq-border);
+  }
+
+  .faq__title {
+    max-width: none;
+    margin-bottom: 24px;
+  }
+
+  .faq__link {
+    margin-top: auto; /* pins the link to the bottom of the intro column */
+  }
+
+  .faq__columns {
+    padding: 24px clamp(16px, 1.6vw, 26px); /* fallback */
+    padding: 24px clamp(16px, 1.6cqi, 26px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Accessibility: Reduced Motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .faq *,
+  .faq *::before,
+  .faq *::after {
+    animation: none !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+  }
+
+  .faq__intro,
+  .faq__item {
+    opacity: 1;
+    translate: none;
+  }
+}

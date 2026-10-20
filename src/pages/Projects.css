@@ -1,0 +1,459 @@
+/* ==========================================================================
+   Projects Page Styles
+   Table of Contents:
+   1. Design Tokens
+   2. Header
+   3. Filters
+   4. Grid + Cards
+   5. View Live Button
+   6. Animations (motion is opt-in)
+   7. Responsive (container queries on the page width, mobile-first)
+   8. Accessibility (reduced motion, forced colors)
+
+   Theme: identical to the rest of the app (Hero / Contact Us / Careers):
+   Inter, navy #0f172a, blue #1f6feb, green #16a34a, soft blue tints,
+   two-tone headings, 10px buttons, 24px cards. No more lavender / near-black
+   button. Note: Inter is already loaded by Navbar.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens
+   -------------------------------------------------------------------------- */
+.projects {
+  --pr-navy: #0f172a;
+  --pr-text: #4b5563;
+  --pr-blue: #1f6feb;
+  --pr-blue-dark: #1558c7;
+  --pr-blue-soft: #eaf2ff;
+  --pr-blue-wash: #f3f8ff;
+  --pr-line: #e5edf7; /* card borders */
+  --pr-field-line: #8895a7; /* control borders (3:1 on white) */
+  --pr-gutter: clamp(20px, 2.5vw, 48px);
+  --pr-pad-y: var(--section-space, 80px);
+  --pr-max: 1240px;
+  --pr-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pr-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color: var(--pr-navy);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  /* same soft blue wash as the hero sections, fading to white */
+  background:
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(31, 111, 235, 0.14) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(180deg, var(--pr-blue-wash) 0%, #ffffff 560px);
+  padding: clamp(48px, 7vw, 96px) 0 var(--pr-pad-y);
+  overflow-x: clip;
+  /* The page is a size container: the layout follows its width */
+  container: projects / inline-size;
+}
+
+.projects *,
+.projects *::before,
+.projects *::after {
+  box-sizing: border-box;
+}
+
+.projects__container {
+  width: min(var(--pr-max), 100%);
+  margin-inline: auto;
+  padding-inline: var(--pr-gutter);
+}
+
+.projects__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   2. Header
+   -------------------------------------------------------------------------- */
+.projects__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: clamp(24px, 4vw, 40px);
+}
+
+.projects__eyebrow {
+  display: inline-block;
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--pr-blue-dark);
+  background: var(--pr-blue-soft);
+  border: 1px solid rgba(31, 111, 235, 0.18);
+  border-radius: 999px;
+}
+
+.projects__title {
+  margin: 18px 0 0;
+  font-size: clamp(2.25rem, 1.4rem + 3.4vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--pr-navy);
+  text-wrap: balance;
+}
+
+/* two-tone heading, solid colour like the rest of the app */
+.projects__accent {
+  color: var(--pr-blue);
+}
+
+/* --------------------------------------------------------------------------
+   3. Filters
+   -------------------------------------------------------------------------- */
+.projects__filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+
+.projects__filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
+  padding: 0 18px;
+  border: 1px solid var(--pr-field-line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--pr-navy);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.2s var(--pr-ease),
+    color 0.2s var(--pr-ease),
+    border-color 0.2s var(--pr-ease),
+    translate 0.2s var(--pr-ease),
+    box-shadow 0.2s var(--pr-ease);
+}
+
+.projects__filter[aria-pressed="true"] {
+  background: var(--pr-blue);
+  border-color: var(--pr-blue);
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(31, 111, 235, 0.32);
+}
+
+.projects__count {
+  min-width: 24px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--pr-blue-soft);
+  color: var(--pr-blue-dark);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.projects__filter[aria-pressed="true"] .projects__count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+.projects__filter:focus-visible,
+.projects-btn:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.45);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .projects__filter:hover:not([aria-pressed="true"]) {
+    border-color: var(--pr-blue);
+    color: var(--pr-blue);
+    translate: 0 -2px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Grid + Cards
+   -------------------------------------------------------------------------- */
+.projects__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* columns are set per width in section 7 */
+  gap: 20px;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid var(--pr-line);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition:
+    translate 0.35s var(--pr-ease),
+    box-shadow 0.35s var(--pr-ease),
+    border-color 0.35s var(--pr-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    translate: 0 -6px;
+    border-color: rgba(31, 111, 235, 0.25);
+    box-shadow: 0 20px 40px rgba(31, 111, 235, 0.16);
+  }
+
+  .project-card:hover .project-card__media img {
+    scale: 1.05;
+  }
+}
+
+.project-card__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--pr-blue-soft);
+}
+
+.project-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: scale 0.6s var(--pr-ease);
+}
+
+/* shown when a project has no screenshot yet (replaces the old external placeholder image) */
+.project-card__placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 0%, rgba(31, 111, 235, 0.18) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(180deg, var(--pr-blue-wash) 0%, var(--pr-blue-soft) 100%);
+  color: var(--pr-blue-dark);
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.project-card__tags {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  right: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.project-card__tag {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--pr-blue-dark);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.project-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 22px 24px;
+  text-align: center;
+}
+
+.project-card__title {
+  margin: 0;
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--pr-navy);
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   5. View Live Button: same solid blue 10px button as the rest of the app
+   -------------------------------------------------------------------------- */
+.projects-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-block-size: 52px;
+  padding: 0 28px;
+  border-radius: 10px;
+  background: var(--pr-blue);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(31, 111, 235, 0.32);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.2s ease,
+    translate 0.2s var(--pr-ease),
+    scale 0.15s var(--pr-ease),
+    box-shadow 0.2s ease;
+}
+
+.projects-btn__icon {
+  transition: translate 0.2s var(--pr-ease);
+}
+
+.projects-btn:active {
+  scale: 0.98;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .projects-btn:hover {
+    background: var(--pr-blue-dark);
+    translate: 0 -2px;
+    box-shadow: 0 14px 28px rgba(31, 111, 235, 0.38);
+  }
+
+  .projects-btn:hover .projects-btn__icon {
+    translate: 4px 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Animations
+   Cards fade up once when they appear (and again when a filter changes), with
+   a small stagger set from the JSX. Motion only runs when the visitor has not
+   asked for reduced motion. The fill is "backwards", not "forwards": the
+   animation never holds a transform, so the hover lift keeps working, and a
+   card is never left invisible if the animation does not run.
+   -------------------------------------------------------------------------- */
+@keyframes projectIn {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .projects__header {
+    animation: projectIn 0.7s var(--pr-ease-out) backwards;
+  }
+
+  .project-card {
+    animation: projectIn 0.6s var(--pr-ease-out) backwards;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive (container queries on the page width, mobile-first)
+   Phone (<640): one column, filters scroll sideways in one row.
+   >= 640: two columns, button hugs its text.
+   >= 960: three columns.
+   -------------------------------------------------------------------------- */
+@container projects (max-width: 639px) {
+  /* one swipeable row instead of a tall wrapped block; bleeds to the screen edges */
+  .projects__filters {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    margin-inline: calc(var(--pr-gutter) * -1);
+    /* extra room: overflow-x:auto also clips vertically, so focus rings and the
+       active chip's shadow need space inside the scroll box */
+    padding: 8px var(--pr-gutter) 20px;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--pr-gutter);
+    scrollbar-width: none;
+  }
+
+  .projects__filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .projects__filter {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  /* tighter shadow so it fits inside the scroll box without being cut off */
+  .projects__filter[aria-pressed="true"] {
+    box-shadow: 0 6px 14px rgba(31, 111, 235, 0.3);
+  }
+}
+
+@container projects (min-width: 640px) {
+  .projects__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .projects-btn {
+    width: auto;
+  }
+}
+
+@container projects (min-width: 960px) {
+  .projects__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Accessibility: Reduced Motion + Forced Colors
+   (Animations are already opt-in above; this only calms transitions.)
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .projects *,
+  .projects *::before,
+  .projects *::after {
+    transition-duration: 0.001ms !important;
+  }
+
+  .project-card:hover,
+  .projects-btn:hover,
+  .projects__filter:hover {
+    translate: none;
+  }
+
+  .project-card:hover .project-card__media img {
+    scale: none;
+  }
+}
+
+/* Windows High Contrast: keep controls, cards and the active filter visible */
+@media (forced-colors: active) {
+  .project-card,
+  .projects__filter,
+  .projects-btn {
+    border: 1px solid CanvasText;
+  }
+
+  .projects__filter[aria-pressed="true"] {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

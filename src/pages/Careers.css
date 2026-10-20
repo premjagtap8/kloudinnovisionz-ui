@@ -1,0 +1,628 @@
+/* ==========================================================================
+   Careers Page Styles
+   Table of Contents:
+   1. Design Tokens
+   2. Shared Text
+   3. Hero
+   4. Join Us
+   5. Application Form
+   6. Animations (motion is opt-in)
+   7. Responsive (container queries on the page width, mobile-first)
+   8. Accessibility (reduced motion, forced colors)
+
+   Theme: identical to the rest of the app (Hero / Testimonials / FAQ /
+   LetsBuild / ContactUs): Inter, navy #0f172a, blue #1f6feb, green #16a34a,
+   soft blue tints, two-tone headings, 10px buttons and fields, 24px cards.
+   Note: Inter is already loaded by Navbar.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens (scoped to the page instead of :root)
+   -------------------------------------------------------------------------- */
+.career-page {
+  --career-navy: #0f172a;
+  --career-text: #4b5563;
+  --career-blue: #1f6feb;
+  --career-blue-dark: #1558c7;
+  --career-blue-soft: #eaf2ff;
+  --career-blue-wash: #f3f8ff;
+  --career-green: #16a34a;
+  --career-green-text: #15803d;
+  --career-line: #e5edf7; /* card borders */
+  --career-field-line: #8895a7; /* input borders (3:1 on white) */
+  --career-error: #dc2626;
+  --career-error-text: #b91c1c;
+  --career-gutter: clamp(20px, 2.5vw, 48px);
+  --career-pad-y: var(--section-space, 80px); /* same vertical rhythm as the other pages */
+  --career-max: 1240px;
+  --career-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --career-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color: var(--career-navy);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  background: #ffffff;
+  overflow-x: clip; /* clip (not hidden) so nothing becomes a scroll container */
+  /* The page is a size container: the layout follows its width */
+  container: career / inline-size;
+}
+
+.career-page *,
+.career-page *::before,
+.career-page *::after {
+  box-sizing: border-box;
+}
+
+.career-container {
+  width: min(var(--career-max), 100%);
+  margin-inline: auto;
+  padding-inline: var(--career-gutter);
+}
+
+.career-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   2. Shared Text
+   -------------------------------------------------------------------------- */
+.career-eyebrow {
+  display: inline-block;
+  margin: 0 0 18px;
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--career-blue-dark);
+  background: var(--career-blue-soft);
+  border: 1px solid rgba(31, 111, 235, 0.18);
+  border-radius: 999px;
+}
+
+.career-title {
+  margin: 0;
+  font-size: clamp(1.9rem, 1.2rem + 2.4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: var(--career-navy);
+  text-wrap: balance;
+}
+
+.career-title--hero {
+  font-size: clamp(2.25rem, 1.4rem + 3.4vw, 3.75rem);
+  line-height: 1.08;
+}
+
+/* two-tone headings, same as the rest of the app (solid colour, no gradient text) */
+.career-accent {
+  color: var(--career-blue);
+}
+
+.career-accent--green {
+  color: var(--career-green);
+}
+
+/* --------------------------------------------------------------------------
+   3. Hero
+   -------------------------------------------------------------------------- */
+.career-hero {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(31, 111, 235, 0.14) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(180deg, var(--career-blue-wash) 0%, var(--career-blue-soft) 100%);
+  padding: clamp(48px, 7vw, 96px) 0 clamp(56px, 8vw, 104px);
+}
+
+.career-hero__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto clamp(32px, 5vw, 56px);
+}
+
+.career-hero__media {
+  display: grid;
+  gap: clamp(16px, 2.5vw, 28px);
+}
+
+.career-hero__video,
+.career-hero__img {
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid var(--career-line);
+  background: var(--career-blue-soft);
+  box-shadow: 0 12px 32px rgba(31, 111, 235, 0.14);
+}
+
+.career-hero__video {
+  aspect-ratio: 16 / 9;
+}
+
+.career-hero__video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.career-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: inherit;
+}
+
+.career-hero__img {
+  aspect-ratio: 16 / 9;
+}
+
+.career-hero__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: scale 0.5s var(--career-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .career-hero__img:hover img {
+    scale: 1.05;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Join Us
+   -------------------------------------------------------------------------- */
+.career-join {
+  padding: var(--career-pad-y) 0;
+}
+
+.career-join__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: clamp(28px, 4vw, 56px);
+}
+
+.career-join__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+.join-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(28px, 3.5vw, 40px) 24px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid var(--career-line);
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition: background-color 0.3s var(--career-ease), border-color 0.3s var(--career-ease), translate 0.3s var(--career-ease), box-shadow 0.3s var(--career-ease);
+}
+
+.join-card__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: var(--career-blue-soft);
+  color: var(--career-blue);
+  transition: background-color 0.3s var(--career-ease), color 0.3s var(--career-ease);
+}
+
+.join-card__icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.join-card__title {
+  margin: 0 0 10px;
+  font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--career-navy);
+  text-wrap: balance;
+}
+
+.join-card__text {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--career-text);
+  text-wrap: pretty;
+}
+
+/* Hover only on devices that really hover, so a tap never leaves a card "stuck" */
+@media (hover: hover) and (pointer: fine) {
+  .join-card:hover {
+    background: var(--career-blue-soft);
+    border-color: rgba(31, 111, 235, 0.14);
+    translate: 0 -6px;
+    box-shadow: 0 16px 36px rgba(31, 111, 235, 0.14);
+  }
+
+  .join-card:hover .join-card__icon {
+    background: var(--career-blue);
+    color: #ffffff;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Application Form
+   -------------------------------------------------------------------------- */
+.career-apply {
+  padding: 0 0 var(--career-pad-y);
+}
+
+.career-apply__wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: center;
+  padding: clamp(20px, 4vw, 48px);
+  background: #ffffff;
+  border: 1px solid var(--career-line);
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.career-apply__title {
+  margin: 0 0 10px;
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--career-navy);
+  text-wrap: balance;
+}
+
+.career-apply__sub {
+  margin: 0 0 24px;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--career-text);
+  text-wrap: pretty;
+}
+
+.career-apply__success,
+.career-apply__error {
+  margin-bottom: 18px;
+  padding: 12px 16px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.5;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+
+.career-apply__success {
+  color: var(--career-green-text);
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.career-apply__error {
+  color: var(--career-error-text);
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.career-field {
+  position: relative; /* anchors the visually-hidden file input */
+  margin-bottom: 14px;
+}
+
+.career-field input[type="text"],
+.career-field input[type="email"],
+.career-field input[type="tel"],
+.career-field select {
+  width: 100%;
+  height: 54px;
+  padding: 0 18px;
+  font: inherit;
+  font-size: 1rem; /* 16px+ prevents iOS zoom-on-focus */
+  color: var(--career-navy);
+  background-color: #ffffff;
+  border: 1px solid var(--career-field-line);
+  border-radius: 10px;
+  appearance: none;
+  transition: border-color 0.2s var(--career-ease), box-shadow 0.2s var(--career-ease);
+}
+
+.career-field input::placeholder {
+  color: #6b7280;
+}
+
+.career-field input:focus,
+.career-field select:focus {
+  outline: 2px solid transparent; /* stays visible in forced-colors mode */
+  outline-offset: 2px;
+  border-color: var(--career-blue);
+  box-shadow: 0 0 0 4px rgba(31, 111, 235, 0.16);
+}
+
+.career-field input:user-invalid,
+.career-field select:user-invalid {
+  border-color: var(--career-error);
+}
+
+.career-field input:user-invalid:focus,
+.career-field select:user-invalid:focus {
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.14);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .career-field input:hover:not(:focus),
+  .career-field select:hover:not(:focus) {
+    border-color: var(--career-navy);
+  }
+}
+
+/* custom chevron, since appearance: none removes the native one */
+.career-field select {
+  padding-right: 48px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234b5563' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 18px;
+}
+
+/* placeholder colour while "Select Job Role" is still chosen */
+.career-field select:invalid {
+  color: #6b7280;
+}
+
+.career-field select option {
+  color: var(--career-navy);
+}
+
+/* file upload: the real input is visually hidden but still keyboard-focusable */
+.career-file__input {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.career-file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-block-size: 58px;
+  padding: 8px;
+  background: var(--career-blue-wash);
+  border: 1.5px dashed rgba(31, 111, 235, 0.45);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s var(--career-ease), border-color 0.2s var(--career-ease);
+}
+
+.career-field:has(.career-file__input:focus-visible) .career-file {
+  outline: 3px solid rgba(31, 111, 235, 0.4);
+  outline-offset: 2px;
+  border-color: var(--career-blue);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .career-file:hover {
+    background: var(--career-blue-soft);
+    border-color: var(--career-blue);
+  }
+}
+
+.career-file__btn {
+  flex-shrink: 0;
+  padding: 10px 16px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--career-blue-dark);
+  background: #ffffff;
+  border: 1px solid rgba(31, 111, 235, 0.25);
+  border-radius: 8px;
+}
+
+.career-file__name {
+  min-width: 0;
+  font-size: 0.9375rem;
+  color: var(--career-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Submit: same solid blue button as the rest of the app */
+.career-submit {
+  width: 100%;
+  min-block-size: 56px;
+  margin-top: 10px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--career-blue);
+  color: #ffffff;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(31, 111, 235, 0.32);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s ease, translate 0.2s var(--career-ease), scale 0.15s var(--career-ease), box-shadow 0.2s ease;
+}
+
+.career-submit:active:not(:disabled) {
+  scale: 0.98;
+}
+
+.career-submit:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.45);
+  outline-offset: 3px;
+}
+
+.career-submit:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .career-submit:hover:not(:disabled) {
+    background: var(--career-blue-dark);
+    translate: 0 -2px;
+    box-shadow: 0 14px 28px rgba(31, 111, 235, 0.38);
+  }
+}
+
+.career-apply__image {
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--career-blue-soft);
+}
+
+.career-apply__image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: cover;
+}
+
+/* --------------------------------------------------------------------------
+   6. Animations
+   Motion only runs when the visitor has not asked for reduced motion.
+   The hero fades up once on load; the cards reveal as they scroll into view.
+   Each element has its own small view timeline, and the fill is "backwards"
+   so hover effects keep working after the reveal. Browsers without
+   scroll-driven animations simply show everything.
+   -------------------------------------------------------------------------- */
+@keyframes careerFadeUp {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .career-hero__text {
+    animation: careerFadeUp 0.7s var(--career-ease-out) backwards;
+  }
+
+  .career-hero__media {
+    animation: careerFadeUp 0.8s 0.15s var(--career-ease-out) backwards;
+  }
+
+  @supports (animation-timeline: view()) {
+    .career-join__head,
+    .join-card {
+      animation: careerFadeUp linear backwards;
+      animation-timeline: view();
+      animation-range: entry 0% entry 50%;
+    }
+
+    .career-apply__wrap {
+      animation: careerFadeUp linear backwards;
+      animation-timeline: view();
+      animation-range: entry 0% entry 20%; /* tall block, so a shorter range */
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive (container queries on the page width, mobile-first)
+   Base = phone. >= 600: side-by-side hero images. >= 640: 2-column join
+   cards, wider video. >= 960: 3-column join cards, form next to the image.
+   -------------------------------------------------------------------------- */
+@container career (min-width: 600px) {
+  .career-hero__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .career-field input[type="text"],
+  .career-field input[type="email"],
+  .career-field input[type="tel"],
+  .career-field select {
+    height: 58px;
+  }
+
+  .career-submit {
+    min-block-size: 60px;
+  }
+}
+
+@container career (min-width: 640px) {
+  .career-hero__video {
+    aspect-ratio: 16 / 7;
+  }
+
+  .career-join__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+@container career (min-width: 960px) {
+  .career-join__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .career-apply__wrap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .career-apply__image img {
+    max-height: 520px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Accessibility: Reduced Motion + Forced Colors
+   (Animations are already opt-in above; this only calms transitions.)
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .career-page *,
+  .career-page *::before,
+  .career-page *::after {
+    transition-duration: 0.001ms !important;
+  }
+
+  .join-card:hover,
+  .career-submit:hover,
+  .career-hero__img:hover img {
+    translate: none;
+    scale: none;
+  }
+}
+
+/* Windows High Contrast: keep card edges, upload box and button visible */
+@media (forced-colors: active) {
+  .join-card,
+  .career-apply__wrap,
+  .career-file,
+  .career-submit,
+  .career-hero__video,
+  .career-hero__img {
+    border: 1px solid CanvasText;
+  }
+}

@@ -1,0 +1,837 @@
+/* ==========================================================================
+   ContactUs Page Styles
+   Table of Contents:
+   1. Design Tokens
+   2. Hero + Form
+   3. CTA Strip
+   4. Contact Cards
+   5. Offices + Maps
+   6. Animations (motion is opt-in)
+   7. Responsive (container queries on the page width, mobile-first)
+   8. Accessibility (reduced motion, forced colors)
+
+   Theme: Inter, navy #0f172a, blue #1f6feb, green #16a34a, soft blue tints.
+   Note: Inter is already loaded by Navbar.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens
+   -------------------------------------------------------------------------- */
+.ct {
+  --ct-navy: #0f172a;
+  --ct-text: #4b5563;
+  --ct-blue: #1f6feb;
+  --ct-blue-dark: #1558c7;
+  --ct-blue-light: #3b8bff;
+  --ct-blue-soft: #eaf2ff;
+  --ct-blue-wash: #f3f8ff;
+  --ct-green: #16a34a;
+  --ct-green-text: #15803d;
+  --ct-line: #e5edf7;
+  --ct-field-line: #8895a7;
+  --ct-error: #dc2626;
+  --ct-error-text: #b91c1c; /* darker red for text contrast on a tinted background */
+  --ct-gutter: clamp(20px, 2.5vw, 48px);
+  --ct-pad-y: var(--section-space, 80px);
+  --ct-max: 1240px;
+  --ct-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ct-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color: var(--ct-navy);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%; /* stop iOS inflating text in landscape */
+  background: #ffffff;
+  container: ct / inline-size;
+}
+
+.ct *,
+.ct *::before,
+.ct *::after {
+  box-sizing: border-box;
+}
+
+.ct-accent-blue {
+  color: var(--ct-blue);
+}
+
+.ct-accent-green {
+  color: var(--ct-green);
+}
+
+.ct-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   2. Hero + Form
+   -------------------------------------------------------------------------- */
+.ct-hero {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(31, 111, 235, 0.14) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(180deg, var(--ct-blue-wash) 0%, var(--ct-blue-soft) 100%);
+  padding: clamp(48px, 7vw, 96px) var(--ct-gutter) clamp(56px, 8vw, 104px);
+}
+
+.ct-hero__inner {
+  width: min(680px, 100%);
+  margin-inline: auto;
+  text-align: center;
+  /* entrance animation lives in section 6 (only runs when motion is allowed) */
+}
+
+.ct-hero__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--ct-blue);
+  border: 1px solid rgba(31, 111, 235, 0.14);
+  box-shadow: 0 12px 28px rgba(31, 111, 235, 0.22);
+}
+
+.ct-hero__title {
+  margin: 22px 0 0;
+  font-size: clamp(2.25rem, 1.4rem + 3.4vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--ct-navy);
+  text-wrap: balance;
+}
+
+.ct-hero__subtitle {
+  margin: 14px auto clamp(28px, 4vw, 44px);
+  max-width: 44ch; /* comfortable measure */
+  font-size: clamp(1rem, 0.9rem + 0.6vw, 1.3rem);
+  line-height: 1.6;
+  color: var(--ct-text);
+  text-wrap: balance;
+}
+
+.ct-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* explicit track so long content can't blow it out */
+  gap: 14px;
+  text-align: left;
+}
+
+.ct-field input {
+  width: 100%;
+  height: 54px;
+  padding: 0 18px;
+  border: 1px solid var(--ct-field-line);
+  border-radius: 10px;
+  background: #ffffff;
+  font: inherit;
+  font-size: 1rem; /* 16px+ prevents iOS zoom-on-focus */
+  color: var(--ct-navy);
+  appearance: none; /* removes iOS inner shadow / default radius */
+  transition: border-color 0.2s var(--ct-ease), box-shadow 0.2s var(--ct-ease);
+}
+
+.ct-field input::placeholder {
+  color: #6b7280;
+}
+
+.ct-field input:focus {
+  outline: 2px solid transparent; /* stays visible in forced-colors mode */
+  outline-offset: 2px;
+  border-color: var(--ct-blue);
+  box-shadow: 0 0 0 4px rgba(31, 111, 235, 0.16);
+}
+
+.ct-field input:user-invalid {
+  border-color: var(--ct-error);
+}
+
+.ct-field input:user-invalid:focus {
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.14); /* red ring when focused and invalid */
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ct-field input:hover:not(:focus) {
+    border-color: var(--ct-navy);
+  }
+}
+
+/* honeypot: off-screen, not display:none, so bots still fill it */
+.ct-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Services checkboxes */
+.ct-services {
+  display: grid;
+  gap: 2px;
+  min-inline-size: 0; /* fieldsets default to min-content width, which can cause overflow */
+  margin: 8px 0 6px;
+  padding: 0;
+  border: 0;
+}
+
+.ct-check {
+  position: relative; /* anchors the visually-hidden input so focus never scrolls the page */
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
+  cursor: pointer;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--ct-navy);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ct-check input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.ct-check__box {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--ct-field-line);
+  border-radius: 6px;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  transition: background-color 0.15s var(--ct-ease), border-color 0.15s var(--ct-ease);
+}
+
+.ct-check__box::after {
+  content: "";
+  width: 5px;
+  height: 10px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  rotate: 45deg;
+  scale: 0;
+  margin-top: -2px;
+  transition: scale 0.15s var(--ct-ease);
+}
+
+.ct-check input:checked + .ct-check__box {
+  background: var(--ct-blue);
+  border-color: var(--ct-blue);
+}
+
+.ct-check input:checked + .ct-check__box::after {
+  scale: 1;
+}
+
+.ct-check input:focus-visible + .ct-check__box {
+  outline: 3px solid rgba(31, 111, 235, 0.4);
+  outline-offset: 2px;
+}
+
+/* selected service gets a blue label (colour only, so nothing shifts) */
+.ct-check:has(input:checked) .ct-check__label {
+  color: var(--ct-blue-dark);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ct-check:hover .ct-check__box {
+    border-color: var(--ct-blue);
+  }
+}
+
+/* Submit: same solid blue button as the hero's primary action */
+.ct-submit {
+  width: 100%;
+  min-block-size: 56px;
+  margin-top: 10px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--ct-blue);
+  color: #ffffff;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(31, 111, 235, 0.32);
+  touch-action: manipulation; /* removes the double-tap-zoom delay */
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s ease, translate 0.2s var(--ct-ease), scale 0.15s var(--ct-ease), box-shadow 0.2s ease;
+}
+
+.ct-submit:active:not(:disabled) {
+  scale: 0.98;
+}
+
+.ct-submit:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.45);
+  outline-offset: 3px;
+}
+
+.ct-submit:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ct-submit:hover:not(:disabled) {
+    background: var(--ct-blue-dark);
+    translate: 0 -2px;
+    box-shadow: 0 14px 28px rgba(31, 111, 235, 0.38);
+  }
+}
+
+/* status is a soft tinted banner, only drawn when it has text */
+.ct-status {
+  min-height: 1.4em;
+  margin: 4px 0 0;
+  text-align: center;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
+.ct-status:not(:empty) {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+}
+
+.ct-status--success:not(:empty) {
+  color: var(--ct-green-text);
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.ct-status--error:not(:empty) {
+  color: var(--ct-error-text);
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+/* --------------------------------------------------------------------------
+   3. CTA Strip
+   -------------------------------------------------------------------------- */
+.ct-cta {
+  padding: var(--ct-pad-y) var(--ct-gutter) calc(var(--ct-pad-y) / 2);
+}
+
+.ct-cta__inner {
+  width: min(var(--ct-max), 100%);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(20px, 4vw, 64px);
+  align-items: center;
+}
+
+.ct-cta__title {
+  margin: 0;
+  font-size: clamp(1.9rem, 1.2rem + 2.4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--ct-navy);
+  text-wrap: balance;
+}
+
+.ct-cta__side p {
+  margin: 0 0 18px;
+  max-width: 52ch;
+  font-size: clamp(1rem, 0.92rem + 0.35vw, 1.125rem);
+  line-height: 1.75;
+  color: var(--ct-text);
+  text-wrap: pretty;
+}
+
+.ct-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-block-size: 44px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ct-blue);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.ct-link__icon {
+  transition: translate 0.2s var(--ct-ease);
+}
+
+.ct-link:focus-visible {
+  outline: 2px solid var(--ct-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ct-link:hover {
+    color: var(--ct-blue-dark);
+  }
+
+  .ct-link:hover .ct-link__icon {
+    translate: 4px 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Contact Cards
+   -------------------------------------------------------------------------- */
+.ct-cards {
+  padding: 0 var(--ct-gutter) var(--ct-pad-y);
+}
+
+.ct-cards__inner {
+  width: min(var(--ct-max), 100%);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+.ct-card {
+  padding: clamp(28px, 3.5vw, 44px) 24px;
+  border-radius: 24px;
+  border: 1px solid transparent;
+  text-align: center;
+  background: transparent;
+  transition: background-color 0.3s var(--ct-ease), border-color 0.3s var(--ct-ease), translate 0.3s var(--ct-ease), box-shadow 0.3s var(--ct-ease);
+}
+
+/* The middle card is always tinted, like the other two are on hover */
+.ct-card--featured {
+  background: var(--ct-blue-soft);
+  border-color: rgba(31, 111, 235, 0.14);
+}
+
+.ct-card__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--ct-blue-soft);
+  color: var(--ct-blue);
+  transition: background-color 0.3s var(--ct-ease), color 0.3s var(--ct-ease);
+}
+
+.ct-card--featured .ct-card__icon {
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.2);
+}
+
+.ct-card__icon svg {
+  width: 34px;
+  height: 34px;
+}
+
+.ct-card__title {
+  margin: 18px 0 20px;
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ct-navy);
+  text-wrap: balance;
+}
+
+.ct-card__list {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ct-card__list a {
+  display: inline-block;
+  padding-block: 4px; /* taller tap area */
+  color: var(--ct-navy);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums; /* phone digits line up */
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.ct-card__list a:focus-visible {
+  outline: 2px solid var(--ct-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.ct-card__list small {
+  color: var(--ct-text);
+  font-size: 0.82em;
+}
+
+/* Social icons */
+.ct-card__list--socials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.ct-card__list .ct-social {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid rgba(31, 111, 235, 0.25);
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--ct-blue);
+  font-size: 1.15rem;
+  text-decoration: none;
+  transition: background-color 0.2s var(--ct-ease), border-color 0.2s var(--ct-ease), color 0.2s var(--ct-ease), translate 0.2s var(--ct-ease), box-shadow 0.2s var(--ct-ease);
+}
+
+.ct-card__list .ct-social:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.45);
+  outline-offset: 3px;
+}
+
+.ct-social svg {
+  display: block;
+  width: 1em;
+  height: 1em;
+}
+
+/* Hover only on devices that really hover, so a tap never leaves a card "stuck" */
+@media (hover: hover) and (pointer: fine) {
+  .ct-card:hover {
+    background: var(--ct-blue-soft);
+    border-color: rgba(31, 111, 235, 0.14);
+    translate: 0 -6px;
+    box-shadow: 0 16px 36px rgba(31, 111, 235, 0.14);
+  }
+
+  .ct-card:hover .ct-card__icon {
+    background: var(--ct-blue);
+    color: #ffffff;
+  }
+
+  .ct-card__list a:hover {
+    color: var(--ct-blue);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .ct-card__list .ct-social:hover {
+    background: var(--ct-blue);
+    border-color: var(--ct-blue);
+    color: #ffffff;
+    text-decoration: none;
+    translate: 0 -4px;
+    box-shadow: 0 10px 22px rgba(31, 111, 235, 0.35);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Offices + Maps
+   -------------------------------------------------------------------------- */
+.ct-offices {
+  padding: 0 var(--ct-gutter) var(--ct-pad-y);
+}
+
+.ct-offices__inner {
+  width: min(var(--ct-max), 100%);
+  margin-inline: auto;
+}
+
+.ct-offices__title {
+  margin: 0 0 clamp(24px, 3vw, 40px);
+  text-align: center;
+  font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--ct-navy);
+  text-wrap: balance;
+}
+
+/* explicit columns (set in section 7) instead of auto-fit, which left an orphan card on tablets */
+.ct-offices__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+}
+
+.ct-office {
+  border-radius: 24px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--ct-line);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition: translate 0.35s var(--ct-ease), box-shadow 0.35s var(--ct-ease), border-color 0.35s var(--ct-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ct-office:hover {
+    translate: 0 -6px;
+    border-color: rgba(31, 111, 235, 0.25);
+    box-shadow: 0 20px 40px rgba(31, 111, 235, 0.16);
+  }
+}
+
+.ct-office__map {
+  aspect-ratio: 16 / 10;
+  background: var(--ct-blue-soft);
+}
+
+.ct-office__map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* On touch screens the iframe would swallow swipes and trap page scroll;
+   "Open in Maps" below each map gives the interactive version instead */
+@media (pointer: coarse) {
+  .ct-office__map iframe {
+    pointer-events: none;
+  }
+}
+
+.ct-office__body {
+  padding: 20px 22px 24px;
+}
+
+.ct-office__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.ct-office__head h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ct-navy);
+}
+
+.ct-office__tag {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--ct-blue-soft);
+  color: var(--ct-blue-dark);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ct-office address {
+  display: grid;
+  gap: 2px;
+  margin: 0 0 12px;
+  font-style: normal;
+  color: var(--ct-text);
+  line-height: 1.6;
+}
+
+.ct-office__dir {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-block-size: 44px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--ct-blue);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.ct-office__dir:focus-visible {
+  outline: 2px solid var(--ct-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ct-office__dir:hover {
+    color: var(--ct-blue-dark);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Animations
+   Motion only runs when the visitor has not asked for reduced motion.
+   Each card/heading reveals on its own small view timeline, instead of one
+   tall wrapper (which stayed invisible for hundreds of pixels on phones).
+   Fill is "backwards", not "both": once the reveal ends the element returns
+   to its normal styles, so the hover translate/transition keeps working.
+   Browsers without scroll-driven animations just show everything.
+   -------------------------------------------------------------------------- */
+@keyframes ctFadeUp {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ct-hero__inner {
+    animation: ctFadeUp 0.7s var(--ct-ease-out) backwards;
+  }
+
+  @supports (animation-timeline: view()) {
+    .ct-cta__title,
+    .ct-cta__side,
+    .ct-card,
+    .ct-offices__title,
+    .ct-office {
+      animation: ctFadeUp linear backwards;
+      animation-timeline: view();
+      animation-range: entry 0% entry 50%;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive (container queries on the page width, mobile-first)
+   Phone (<600): one column.
+   >= 600: two-column form, two-column services.
+   640-959 (tablet): cards 2-up, last card full width.
+   >= 960: two-column CTA, three cards.
+   Offices: 1 col -> 2 cols (third card goes wide, map beside text) -> 3 cols at 1080.
+   -------------------------------------------------------------------------- */
+@container ct (min-width: 600px) {
+  .ct-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* name/email and phone/business side by side */
+    gap: 16px;
+  }
+
+  .ct-services,
+  .ct-submit,
+  .ct-status {
+    grid-column: 1 / -1;
+  }
+
+  .ct-services {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+  }
+
+  .ct-field input {
+    height: 58px;
+  }
+
+  .ct-submit {
+    min-block-size: 60px;
+  }
+}
+
+@container ct (min-width: 640px) and (max-width: 959px) {
+  .ct-cards__inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* replaces the old 560px single-column cap */
+  }
+
+  .ct-card:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@container ct (min-width: 640px) {
+  .ct-offices__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Tablet: the third office spans both columns, map beside the details */
+@container ct (min-width: 640px) and (max-width: 1079px) {
+  .ct-office:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ct-office:last-child:nth-child(odd) .ct-office__map {
+    aspect-ratio: auto;
+    min-block-size: 260px;
+  }
+
+  .ct-office:last-child:nth-child(odd) .ct-office__body {
+    align-self: center;
+  }
+}
+
+@container ct (min-width: 960px) {
+  .ct-cta__inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ct-cards__inner {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+@container ct (min-width: 1080px) {
+  .ct-offices__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Accessibility: Reduced Motion + Forced Colors
+   (Animations are already opt-in above; this only calms transitions.)
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ct *,
+  .ct *::before,
+  .ct *::after {
+    transition-duration: 0.001ms !important;
+  }
+
+  .ct-card:hover,
+  .ct-office:hover,
+  .ct-submit:hover {
+    translate: none;
+  }
+}
+
+/* Windows High Contrast: keep edges, checkbox and button visible */
+@media (forced-colors: active) {
+  .ct-card,
+  .ct-office,
+  .ct-check__box,
+  .ct-submit,
+  .ct-status:not(:empty) {
+    border: 1px solid CanvasText;
+  }
+
+  .ct-check input:checked + .ct-check__box {
+    background: Highlight;
+  }
+}

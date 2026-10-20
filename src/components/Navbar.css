@@ -1,0 +1,691 @@
+/* ==========================================================================
+   Navbar Component Styles
+   Table of Contents:
+   1. Design Tokens & Google Font
+   2. Bar & Container
+   3. Brand (Logo + Text)
+   4. Desktop Navigation Links
+   5. Dropdown Menus
+   6. CTA Button
+   7. Mobile Toggle
+   8. Responsive: laptop fit (1200px - 1360px)
+   9. Responsive: tablet & mobile hamburger panel (<= 1199px)
+   10. Responsive: small phones
+   11. Accessibility (Reduced Motion)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens & Google Font
+   -------------------------------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* Anchor links (#about, #contact...) stop below the sticky bar, not behind it */
+html {
+  scroll-padding-top: 96px;
+}
+
+.navbar {
+  --nb-navy: #0f172a;
+  --nb-blue: #1f6feb;
+  --nb-blue-dark: #1558c7;
+  --nb-blue-soft: #eaf2ff;
+  --nb-green: #15803d;
+  --nb-text: #1f2937;
+  --nb-border: #e5e7eb;
+  --nb-height: 84px;
+  --nb-gutter: clamp(16px, 2.5vw, 48px);
+  --nb-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  /* Frosted-glass bar: content blurs softly underneath while scrolling */
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+/* Browsers without backdrop-filter get a solid white bar */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .navbar {
+    background: #ffffff;
+  }
+}
+
+.navbar *,
+.navbar *::before,
+.navbar *::after {
+  box-sizing: border-box;
+}
+
+.navbar--scrolled {
+  border-bottom-color: var(--nb-border);
+  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.07);
+}
+
+/* --------------------------------------------------------------------------
+   2. Bar & Container
+   -------------------------------------------------------------------------- */
+.navbar__container {
+  width: 100%;
+  height: var(--nb-height);
+  /* env() keeps content clear of phone notches in landscape */
+  padding-inline: max(var(--nb-gutter), env(safe-area-inset-left))
+                  max(var(--nb-gutter), env(safe-area-inset-right));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Brand (Logo + Text)
+   -------------------------------------------------------------------------- */
+.navbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  text-decoration: none;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.navbar__logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.3s var(--nb-ease);
+}
+
+.navbar__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.navbar__brand-name {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--nb-navy);
+  white-space: nowrap;
+}
+
+.navbar__brand-tagline {
+  margin-top: 3px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--nb-green);
+  white-space: nowrap;
+}
+
+.navbar__brand:focus-visible {
+  outline: 2px solid var(--nb-blue);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Desktop Navigation Links
+   The nav fills the space between the logo and the CTA button and centers
+   the links inside it, so they sit evenly between the two.
+   -------------------------------------------------------------------------- */
+.navbar__nav {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex: 1 1 auto;
+  height: 100%;
+  min-width: 0;
+}
+
+.navbar__list {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(24px, 2.6vw, 44px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar__item {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.navbar__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--nb-text);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.navbar__link:focus-visible {
+  outline: 2px solid var(--nb-blue);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Active link: blue text + underline */
+.navbar__link--active {
+  color: var(--nb-blue);
+  font-weight: 600;
+}
+
+/* Underline indicator. Positioned from the bottom of the bar so it stays
+   consistent if --nb-height changes. */
+.navbar__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--nb-blue);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s var(--nb-ease);
+}
+
+.navbar__link--active::after {
+  transform: scaleX(1);
+}
+
+/* Hover effects only on devices that really hover: no "sticky hover" after a tap */
+@media (hover: hover) and (pointer: fine) {
+  .navbar__link:hover,
+  .navbar__item:hover > .navbar__link {
+    color: var(--nb-blue);
+  }
+
+  .navbar__link:hover::after,
+  .navbar__item:hover > .navbar__link::after {
+    transform: scaleX(1);
+  }
+
+  .navbar__brand:hover .navbar__logo {
+    transform: scale(1.04);
+  }
+}
+
+.navbar__chevron {
+  flex-shrink: 0;
+  transition: transform 0.25s var(--nb-ease);
+}
+
+.navbar__chevron--open {
+  transform: rotate(180deg);
+}
+
+/* --------------------------------------------------------------------------
+   5. Dropdown Menus
+   -------------------------------------------------------------------------- */
+.navbar__dropdown {
+  position: absolute;
+  /* starts 8px above the bar's bottom edge: this overlap is the hover "bridge"
+     so the menu doesn't close while the cursor travels down to it */
+  top: calc(100% - 8px);
+  left: -16px;
+  min-width: 260px;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  background: #ffffff;
+  border: 1px solid var(--nb-border);
+  border-radius: 16px;
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.14), 0 2px 6px rgba(15, 23, 42, 0.04);
+  opacity: 0;
+  visibility: hidden; /* also removes hidden links from the Tab order */
+  transform: translateY(8px) scale(0.98);
+  transform-origin: top left;
+  transition: opacity 0.2s ease, transform 0.2s var(--nb-ease), visibility 0.2s;
+  z-index: 20;
+}
+
+.navbar__dropdown--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.navbar__dropdown-link {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--nb-text);
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
+}
+
+.navbar__dropdown-link[aria-current="page"] {
+  color: var(--nb-blue);
+  background: var(--nb-blue-soft);
+  font-weight: 600;
+}
+
+.navbar__dropdown-link:focus-visible {
+  background: var(--nb-blue-soft);
+  color: var(--nb-blue);
+  padding-left: 18px;
+  outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar__dropdown-link:hover {
+    background: var(--nb-blue-soft);
+    color: var(--nb-blue);
+    padding-left: 18px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. CTA Button
+   -------------------------------------------------------------------------- */
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.navbar__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: var(--nb-blue);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.navbar__cta:active {
+  transform: scale(0.98);
+}
+
+.navbar__cta:focus-visible {
+  outline: 2px solid var(--nb-blue);
+  outline-offset: 3px;
+}
+
+.navbar__cta-icon {
+  transition: transform 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar__cta:hover {
+    background: var(--nb-blue-dark);
+    box-shadow: 0 8px 20px rgba(31, 111, 235, 0.42);
+    transform: translateY(-2px);
+  }
+
+  .navbar__cta:hover .navbar__cta-icon {
+    transform: translateX(4px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Mobile Toggle (hidden on desktop)
+   -------------------------------------------------------------------------- */
+.navbar__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px; /* 44px = comfortable touch target */
+  background: var(--nb-blue-soft);
+  color: var(--nb-blue);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.navbar__toggle:active {
+  transform: scale(0.94);
+}
+
+.navbar__toggle:focus-visible {
+  outline: 2px solid var(--nb-blue);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar__toggle:hover {
+    background: #d9e8ff;
+  }
+}
+
+/* Hidden on desktop; shown only inside the <= 1199px block below */
+.navbar__mobile,
+.navbar__scrim {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   8. Responsive: laptop fit (1200px - 1360px)
+   The full menu needs about 1200px, so it is tightened here and the
+   hamburger takes over below it.
+   -------------------------------------------------------------------------- */
+@media (min-width: 1200px) and (max-width: 1360px) {
+  .navbar__container {
+    gap: 16px;
+  }
+
+  .navbar__list {
+    gap: 22px;
+  }
+
+  .navbar__brand-name {
+    font-size: 19px;
+  }
+
+  .navbar__logo {
+    width: 56px;
+    height: 56px;
+  }
+
+  .navbar__link {
+    font-size: 14px;
+  }
+
+  .navbar__cta {
+    padding: 11px 18px;
+    font-size: 14px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. Responsive: tablet & mobile hamburger panel (<= 1199px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1199px) {
+  .navbar {
+    --nb-height: 72px;
+  }
+
+  html {
+    scroll-padding-top: 84px;
+  }
+
+  .navbar__nav,
+  .navbar__actions .navbar__cta {
+    display: none;
+  }
+
+  .navbar__toggle {
+    display: inline-flex;
+  }
+
+  .navbar__logo {
+    width: 52px;
+    height: 52px;
+  }
+
+  .navbar__brand-name {
+    font-size: 18px;
+  }
+
+  .navbar__brand-tagline {
+    font-size: 10.5px;
+  }
+
+  /* Dim layer under the panel. Absolute (not fixed) on purpose: backdrop-filter
+     on .navbar would make a fixed child size itself to the bar, not the screen. */
+  .navbar__scrim {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    height: 100dvh;
+    background: rgba(15, 23, 42, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s;
+  }
+
+  .navbar__scrim--open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Slide-down panel. Closed = zero height AND hidden, so its links can't be
+     tabbed to and no shadow leaks out below the bar. */
+  .navbar__mobile {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    background: #ffffff;
+    border-radius: 0 0 20px 20px;
+    transition: max-height 0.35s var(--nb-ease), visibility 0.35s;
+  }
+
+  .navbar__mobile--open {
+    max-height: calc(100vh - var(--nb-height));
+    max-height: calc(100dvh - var(--nb-height)); /* accounts for mobile browser toolbars */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    visibility: visible;
+    border-top: 1px solid var(--nb-border);
+    box-shadow: 0 24px 40px rgba(15, 23, 42, 0.14);
+  }
+
+  .navbar__mobile-list {
+    list-style: none;
+    margin: 0;
+    padding: 8px var(--nb-gutter) 0;
+  }
+
+  .navbar__mobile-item {
+    border-bottom: 1px solid var(--nb-border);
+  }
+
+  /* Staggered entrance when the panel opens */
+  .navbar__mobile--open .navbar__mobile-item {
+    animation: nb-rise 0.4s var(--nb-ease) both;
+    animation-delay: calc(var(--i, 0) * 40ms + 60ms);
+  }
+
+  .navbar__mobile--open .navbar__cta--mobile {
+    animation: nb-rise 0.4s var(--nb-ease) both;
+    animation-delay: 400ms;
+  }
+
+  .navbar__mobile-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 52px;
+    padding: 14px 0;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--nb-text);
+    text-decoration: none;
+    text-align: left;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.2s ease;
+  }
+
+  .navbar__mobile-link--active {
+    color: var(--nb-blue);
+    font-weight: 600;
+  }
+
+  .navbar__mobile-link:focus-visible,
+  .navbar__mobile-sub-link:focus-visible {
+    outline: 2px solid var(--nb-blue);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .navbar__mobile-sub {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 14px;
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: max-height 0.3s ease, visibility 0.3s;
+  }
+
+  .navbar__mobile-sub--open {
+    max-height: 480px;
+    visibility: visible;
+    padding-bottom: 10px;
+  }
+
+  .navbar__mobile-sub-link {
+    display: block;
+    padding: 11px 0;
+    font-size: 15px;
+    color: var(--nb-text);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .navbar__mobile-sub-link--active {
+    color: var(--nb-blue);
+    font-weight: 600;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .navbar__mobile-link:hover,
+    .navbar__mobile-sub-link:hover {
+      color: var(--nb-blue);
+    }
+  }
+
+  .navbar__cta--mobile {
+    display: flex;
+    margin: 20px var(--nb-gutter) calc(24px + env(safe-area-inset-bottom));
+    width: calc(100% - (var(--nb-gutter) * 2));
+    padding: 14px 22px;
+  }
+}
+
+/* Tablet: keep the panel content from stretching edge to edge */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .navbar__mobile-list,
+  .navbar__cta--mobile {
+    max-width: 640px;
+    margin-inline: auto;
+  }
+
+  .navbar__mobile-list {
+    padding-inline: var(--nb-gutter);
+  }
+
+  .navbar__cta--mobile {
+    width: calc(100% - (var(--nb-gutter) * 2));
+    margin-block: 20px calc(24px + env(safe-area-inset-bottom));
+  }
+}
+
+@keyframes nb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10. Responsive: small phones
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .navbar__container {
+    gap: 12px;
+  }
+
+  .navbar__brand {
+    gap: 8px;
+  }
+
+  .navbar__logo {
+    width: 44px;
+    height: 44px;
+  }
+
+  .navbar__brand-name {
+    font-size: 15.5px;
+  }
+
+  .navbar__brand-tagline {
+    font-size: 9.5px;
+  }
+}
+
+/* Very narrow screens (320px): never let the text push the toggle off-screen */
+@media (max-width: 360px) {
+  .navbar__brand-name {
+    font-size: 14px;
+  }
+
+  .navbar__brand-tagline {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. Accessibility: Reduced Motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .navbar *,
+  .navbar *::before,
+  .navbar *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+  }
+}

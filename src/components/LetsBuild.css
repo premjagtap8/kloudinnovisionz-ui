@@ -1,0 +1,281 @@
+/* ==========================================================================
+   LetsBuild Component Styles (closing CTA banner, sits on top of the Footer)
+   Table of Contents:
+   1. Design Tokens
+   2. Section & Banner (mobile-first base)
+   3. Left Lead Text
+   4. Center Headline
+   5. Action Button
+   6. Entrance Animation
+   7. Responsive (container queries on the section width)
+   8. Accessibility (Reduced Motion)
+
+   Note: Inter is already loaded by Navbar.css, so no @import is needed here.
+
+   Look: the banner is INSET from the Footer's side edges, has rounded top
+   corners and a square bottom, so it rests on the Footer like a tab and the
+   Footer's top edge shows as a small step on each side.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens
+   -------------------------------------------------------------------------- */
+.lb {
+  --lb-eyebrow: #4ade80;
+  --lb-radius: 20px;
+  --lb-inset: clamp(12px, 1.5vw, 28px); /* how far the banner is inset from the Footer edges */
+  --lb-pad: clamp(20px, 3vw, 40px); /* minimum padding inside the banner */
+  --lb-content-max: 1240px; /* same content width as the Footer */
+  --lb-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  color: #ffffff;
+  background: #ffffff;
+  width: 100%;
+  margin: 0;
+  padding: 0; /* the FAQ above already has bottom spacing */
+  position: relative;
+  /* The section is a size container: the layout follows the section width */
+  container: lb / inline-size;
+}
+
+.lb *,
+.lb *::before,
+.lb *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   2. Section & Banner
+   Base = phone: one stacked column.
+   -------------------------------------------------------------------------- */
+.lb__banner {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+  align-items: center;
+  gap: 18px;
+  margin: 0 var(--lb-inset); /* the inset: narrower than the Footer on both sides */
+  padding: 26px var(--lb-pad) 28px;
+  border-radius: 16px 16px 0 0; /* rounded top, square bottom = flush on the Footer */
+  background:
+    radial-gradient(ellipse 40% 140% at 12% 0%, rgba(31, 111, 235, 0.35) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(90deg, #071b4d 0%, #0a2f7a 38%, #0b6e8a 72%, #18a865 100%);
+}
+
+/* --------------------------------------------------------------------------
+   3. Left Lead Text
+   -------------------------------------------------------------------------- */
+.lb__lead {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lb__eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lb-eyebrow);
+}
+
+.lb__lead-text {
+  margin: 8px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   4. Center Headline
+   -------------------------------------------------------------------------- */
+.lb__title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-align: left;
+  color: #ffffff;
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   5. Action Button
+   -------------------------------------------------------------------------- */
+.lb__action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+}
+
+.lb__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-block-size: 48px; /* comfortable touch target (WCAG 2.5.8) */
+  padding: 13px 24px;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #1f6feb 0%, #1aa2a0 60%, #22c55e 100%);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+  -webkit-tap-highlight-color: transparent;
+  transition: filter 0.25s ease, translate 0.25s ease, scale 0.15s ease, box-shadow 0.25s ease;
+}
+
+.lb__btn:active {
+  scale: 0.98;
+}
+
+.lb__btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.lb__btn-icon {
+  flex-shrink: 0;
+  transition: translate 0.25s ease;
+}
+
+/* Hover only on devices that really hover, so a tap never leaves it "stuck" */
+@media (hover: hover) and (pointer: fine) {
+  .lb__btn:hover {
+    filter: brightness(1.12);
+    translate: 0 -2px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
+  }
+
+  .lb__btn:hover .lb__btn-icon {
+    translate: 5px 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Entrance Animation
+   Uses `translate` + `opacity` (not `transform`), like the other sections.
+   -------------------------------------------------------------------------- */
+.lb__lead,
+.lb__title,
+.lb__action {
+  opacity: 0;
+  translate: 0 20px;
+}
+
+.lb--visible .lb__lead {
+  animation: lbFadeUp 0.65s var(--lb-ease-out) both;
+}
+
+.lb--visible .lb__title {
+  animation: lbFadeUp 0.65s var(--lb-ease-out) 0.12s both;
+}
+
+.lb--visible .lb__action {
+  animation: lbFadeUp 0.65s var(--lb-ease-out) 0.24s both;
+}
+
+@keyframes lbFadeUp {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive (container queries on the section width, mobile-first)
+   >= 600px : roomier banner, button no longer full width (tablet)
+   >= 992px : three columns: lead | headline | button, with a divider
+   -------------------------------------------------------------------------- */
+@container lb (min-width: 600px) {
+  .lb__banner {
+    padding-block: 30px 32px;
+    border-radius: var(--lb-radius) var(--lb-radius) 0 0;
+  }
+
+  .lb__title {
+    font-size: 1.5rem;
+  }
+
+  .lb__action {
+    width: auto;
+  }
+
+  .lb__btn {
+    width: auto;
+    white-space: nowrap; /* only once there is room for the label on one line */
+  }
+}
+
+@container lb (min-width: 992px) {
+  .lb__banner {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    justify-items: stretch;
+    gap: clamp(20px, 3vw, 56px); /* fallback */
+    gap: clamp(20px, 3cqi, 56px);
+    padding-block: 30px;
+    /* The content lines up with the Footer content: the banner is inset by
+       --lb-inset, so that amount is taken off the centring padding */
+    padding-inline: max(var(--lb-pad), calc((100% - var(--lb-content-max)) / 2 - var(--lb-inset)));
+  }
+
+  .lb__lead-text {
+    font-size: clamp(13px, 1vw, 15px); /* fallback */
+    font-size: clamp(13px, 1cqi, 15px);
+  }
+
+  .lb__title {
+    text-align: center;
+    font-size: clamp(1.15rem, 1.7vw, 1.9rem); /* fallback */
+    font-size: clamp(1.15rem, 1.7cqi, 1.9rem);
+  }
+
+  .lb__action {
+    padding-left: clamp(20px, 3vw, 48px); /* fallback */
+    padding-left: clamp(20px, 3cqi, 48px);
+    border-left: 1px solid rgba(255, 255, 255, 0.22);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Accessibility: Reduced Motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .lb *,
+  .lb *::before,
+  .lb *::after {
+    animation: none !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .lb__lead,
+  .lb__title,
+  .lb__action {
+    opacity: 1;
+    translate: none;
+  }
+
+  .lb__btn:hover {
+    translate: none;
+  }
+}

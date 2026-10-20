@@ -1,0 +1,346 @@
+/* ==========================================================================
+   PracticeAreas Component Styles
+   Table of Contents:
+   1. Design Tokens
+   2. Section & Container
+   3. Header (Eyebrow + Title)
+   4. Cards Grid
+   5. Practice Area Card
+   6. Entrance Animation
+   7. Responsive Media Queries
+   8. Accessibility (Reduced Motion)
+
+   Note: Inter is already loaded by Navbar.css, so no @import is needed here.
+   Palette matches Hero.css / Navbar.css: navy, blue, green (no extra colours).
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens
+   -------------------------------------------------------------------------- */
+.pa {
+  --pa-navy: #0f172a;
+  --pa-blue: #1f6feb;
+  --pa-blue-dark: #1558c7;
+  --pa-blue-soft: #eaf2ff;
+  --pa-green: #16a34a;
+  --pa-green-soft: #e6f6ec;
+  --pa-text: #4b5563;
+  --pa-border: #e5e7eb;
+  --pa-gutter: clamp(20px, 2.5vw, 48px);
+  --pa-pad-y: calc(var(--section-space, 80px) / 2); /* falls back if --section-space is not defined globally */
+
+  --pa-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --pa-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  color: var(--pa-navy);
+  background: linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
+  width: 100%;
+  position: relative;
+  /* The section is a size container: columns follow the width of the section itself */
+  container: pa / inline-size;
+}
+
+.pa *,
+.pa *::before,
+.pa *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   2. Section & Container
+   -------------------------------------------------------------------------- */
+.pa__container {
+  width: 100%;
+  padding: var(--pa-pad-y) var(--pa-gutter);
+}
+
+/* --------------------------------------------------------------------------
+   3. Header (Eyebrow + Title)
+   -------------------------------------------------------------------------- */
+.pa__header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.pa__eyebrow {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pa-green);
+}
+
+.pa__title {
+  margin: 10px 0 0;
+  font-size: clamp(1.5rem, 2.2vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--pa-navy);
+  text-wrap: balance;
+}
+
+.pa__title-blue {
+  color: var(--pa-blue);
+}
+
+.pa__title-green {
+  color: var(--pa-green);
+}
+
+/* --------------------------------------------------------------------------
+   4. Cards Grid
+   -------------------------------------------------------------------------- */
+.pa__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+.pa__item {
+  display: flex;
+  min-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   5. Practice Area Card
+   Icon sits on top, title and text get the full card width
+   (side-by-side left only ~150px for the text and wrapped it to 5 lines).
+   -------------------------------------------------------------------------- */
+.pa__card {
+  --accent: var(--pa-blue);
+  --accent-soft: var(--pa-blue-soft);
+
+  position: relative; /* anchor for the stretched link below */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  padding: 24px 22px 20px;
+  background: #ffffff;
+  border: 1px solid var(--pa-border);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.28s var(--pa-ease),
+    box-shadow 0.28s var(--pa-ease),
+    border-color 0.28s ease;
+}
+
+.pa__card--blue  { --accent: var(--pa-blue);  --accent-soft: var(--pa-blue-soft); }
+.pa__card--green { --accent: var(--pa-green); --accent-soft: var(--pa-green-soft); }
+
+@media (hover: hover) and (pointer: fine) {
+  .pa__card:hover {
+    transform: translateY(-6px);
+    border-color: color-mix(in srgb, var(--accent) 30%, #ffffff);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+  }
+
+  .pa__card:hover .pa__card-icon {
+    transform: scale(1.08);
+  }
+}
+
+/* Icon badge + title/text */
+.pa__card-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.pa__card-icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  background-color: var(--accent-soft);
+  transition: transform 0.28s var(--pa-ease);
+}
+
+.pa__card-body {
+  min-width: 0;
+}
+
+.pa__card-title {
+  margin: 0;
+  font-size: clamp(1rem, 0.9rem + 0.25cqi, 1.125rem); /* 16px > 18px */
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--pa-navy);
+}
+
+.pa__card-text {
+  margin: 8px 0 0;
+  font-size: clamp(0.8125rem, 0.75rem + 0.15cqi, 0.875rem); /* 13px > 14px */
+  line-height: 1.6;
+  color: var(--pa-text);
+  text-wrap: pretty;
+}
+
+/* Explore link pinned to the bottom-left of the card */
+.pa__card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
+  margin-top: auto;
+  margin-bottom: -8px; /* the 44px target would otherwise add height to the card */
+  font-size: clamp(0.8125rem, 0.75rem + 0.15cqi, 0.875rem);
+  font-weight: 600;
+  color: var(--pa-blue);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.pa__card-link:focus-visible {
+  outline: 2px solid var(--pa-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Stretched link: the whole card is clickable, but there is still one real link
+   for keyboards and screen readers. The link must stay position: static. */
+.pa__card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+}
+
+/* Keyboard focus also rings the whole card */
+.pa__card:has(.pa__card-link:focus-visible) {
+  outline: 2px solid var(--pa-blue);
+  outline-offset: 3px;
+  border-color: color-mix(in srgb, var(--pa-blue) 30%, #ffffff);
+}
+
+.pa__card-link-icon {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pa__card-link:hover {
+    color: var(--pa-blue-dark);
+  }
+
+  .pa__card-link:hover .pa__card-link-icon {
+    transform: translateX(4px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Entrance Animation
+   Items animate `translate` + `opacity` (not `transform`), so the animation never
+   overrides the card's hover transform.
+   -------------------------------------------------------------------------- */
+.pa__header,
+.pa__item {
+  opacity: 0;
+  translate: 0 26px;
+}
+
+.pa--visible .pa__header {
+  animation: paFadeUp 0.6s var(--pa-ease-out) both;
+}
+
+.pa--visible .pa__item {
+  animation: paFadeUp 0.65s var(--pa-ease-out) var(--delay, 0ms) both;
+}
+
+@keyframes paFadeUp {
+  from {
+    opacity: 0;
+    translate: 0 26px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive (container queries, mobile-first)
+   Based on the width of the section itself:
+   < 520px: 1 column (phone)    520-839px: 2 (large phone / tablet)
+   840-1359px: 3 (laptop)       >= 1360px: 6 in a row (wide desktop)
+   Fixed column counts (not auto-fit) so six cards never leave a lone orphan card.
+   -------------------------------------------------------------------------- */
+@container pa (min-width: 520px) {
+  .pa__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .pa__header {
+    margin-bottom: 36px;
+  }
+}
+
+@container pa (min-width: 840px) {
+  .pa__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@container pa (min-width: 1360px) {
+  .pa__grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: clamp(16px, 1.4cqi, 24px);
+  }
+}
+
+/* Phone: tighter spacing */
+@container pa (max-width: 599px) {
+  .pa__container {
+    padding: var(--pa-pad-y) 16px;
+  }
+
+  .pa__header {
+    margin-bottom: 26px;
+  }
+
+  .pa__card {
+    padding: 20px 18px 16px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Accessibility: Reduced Motion
+   Animations are removed, so everything simply shows in its final state.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .pa *,
+  .pa *::before,
+  .pa *::after {
+    animation: none !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .pa__header,
+  .pa__item {
+    opacity: 1;
+    translate: none;
+  }
+
+  .pa__card:hover {
+    transform: none;
+  }
+}

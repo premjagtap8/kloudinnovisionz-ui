@@ -1,0 +1,546 @@
+/* ==========================================================================
+   Insights Component Styles (Insights & Resources)
+   Table of Contents:
+   1. Design Tokens
+   2. Section & Dark Panel
+   3. Left Intro
+   4. Article Cards
+   5. Free Resources Panel
+   6. Entrance Animation
+   7. Responsive (container queries)
+   8. Accessibility (Reduced Motion)
+
+   Note: Inter is already loaded by Navbar.css, so no @import is needed here.
+   Palette matches KloudWay.css (the other dark section): navy #0f172a / #0a1224,
+   brand blue #1f6feb, light blue #3b8bff, green #22c55e. No teal.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens
+   -------------------------------------------------------------------------- */
+.ins {
+  --ins-navy: #0f172a; /* brand navy */
+  --ins-navy-deep: #0a1224; /* a shade darker, same as KloudWay */
+  --ins-blue: #1f6feb; /* brand blue */
+  --ins-blue-dark: #1558c7;
+  --ins-blue-light: #3b8bff; /* hero gradient end: links and accents on dark */
+  --ins-blue-hover: #8dbaff;
+  --ins-green: #22c55e; /* brand green #16a34a, lightened for the dark background */
+  --ins-muted: rgba(255, 255, 255, 0.76);
+  --ins-line: rgba(255, 255, 255, 0.12);
+  --ins-gutter: clamp(20px, 2.5vw, 48px);
+  --ins-pad-y: calc(var(--section-space, 80px) / 2); /* fallback if --section-space is not defined globally */
+
+  --ins-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ins-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  color: #ffffff;
+  background: #ffffff;
+  width: 100%;
+  position: relative;
+  /* The section is a size container: the layout follows the width of the section */
+  container: ins / inline-size;
+}
+
+.ins *,
+.ins *::before,
+.ins *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   2. Section & Dark Panel
+   Mobile-first: everything in one column. Columns are added in section 7.
+   -------------------------------------------------------------------------- */
+.ins {
+  padding: var(--ins-pad-y) var(--ins-gutter);
+}
+
+.ins__panel {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: 24px;
+  padding: 24px 16px;
+  border-radius: 16px;
+  background:
+    radial-gradient(ellipse 60% 120% at 78% 50%, rgba(31, 111, 235, 0.22) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(90deg, var(--ins-navy-deep) 0%, var(--ins-navy) 55%, var(--ins-navy-deep) 100%);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+}
+
+/* --------------------------------------------------------------------------
+   3. Left Intro
+   -------------------------------------------------------------------------- */
+.ins__intro {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ins__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ins-green); /* green eyebrow, like KloudWay and PracticeAreas */
+}
+
+.ins__title {
+  margin: 12px 0 0;
+  max-width: 28ch;
+  font-size: clamp(1.5rem, 1.2rem + 0.4cqi, 1.875rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-wrap: balance;
+}
+
+.ins__desc {
+  margin: 16px 0 12px;
+  max-width: 52ch;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ins-muted);
+  text-wrap: pretty;
+}
+
+.ins__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
+  margin-top: auto;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ins-blue-light); /* blue links, like KloudWay */
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.ins__link:focus-visible,
+.ins__card-link:focus-visible,
+.ins__resource:focus-visible,
+.ins__resources-btn:focus-visible {
+  outline: 2px solid var(--ins-blue-light);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.ins__link-icon {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ins__link:hover,
+  .ins__card-link:hover {
+    color: var(--ins-blue-hover);
+  }
+
+  .ins__link:hover .ins__link-icon,
+  .ins__card-link:hover .ins__link-icon,
+  .ins__resources-btn:hover .ins__link-icon {
+    transform: translateX(4px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Article Cards
+   -------------------------------------------------------------------------- */
+.ins__cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  min-width: 0;
+}
+
+.ins__cards-item {
+  display: flex;
+  min-width: 0;
+}
+
+.ins__card {
+  position: relative; /* anchor for the stretched link */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--ins-line);
+  border-radius: 12px;
+  transition:
+    transform 0.28s var(--ins-ease),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+/* Keyboard focus rings the whole card */
+.ins__card:has(.ins__card-link:focus-visible) {
+  outline: 2px solid var(--ins-blue-light);
+  outline-offset: 3px;
+}
+
+.ins__card-media {
+  position: relative;
+  aspect-ratio: 2.2 / 1;
+  overflow: hidden;
+  background: var(--ins-navy-deep);
+}
+
+.ins__card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(1.12) contrast(1.05);
+  transition: transform 0.5s var(--ins-ease);
+}
+
+/* Soft fade at the bottom of the image so the date stays readable */
+.ins__card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 18, 36, 0) 45%, rgba(10, 18, 36, 0.78) 100%);
+  pointer-events: none;
+}
+
+.ins__card-date {
+  position: absolute;
+  right: 12px;
+  bottom: 8px;
+  z-index: 2;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+
+.ins__card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  padding: 14px 16px 6px;
+}
+
+.ins__tag {
+  display: inline-block;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+
+.ins__tag--blue {
+  color: var(--ins-blue-hover);
+  background: rgba(31, 111, 235, 0.2);
+  border-color: rgba(59, 139, 255, 0.35);
+}
+
+.ins__tag--green {
+  color: var(--ins-green);
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+.ins__card-title {
+  margin: 12px 0 14px;
+  font-size: clamp(0.9375rem, 0.8rem + 0.35cqi, 1.0625rem); /* 15px > 17px */
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  text-wrap: balance;
+}
+
+.ins__card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-block-size: 44px;
+  margin-top: auto;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ins-blue-light);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+/* Stretched link: the whole card is clickable, but there is still one real link
+   for keyboards and screen readers. The link must stay position: static. */
+.ins__card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ins__card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(59, 139, 255, 0.5);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .ins__card:hover .ins__card-img {
+    transform: scale(1.06);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Free Resources Panel
+   The panel is its own size container: the download graphic only shows when the
+   panel is wide enough (>= 400px), and the list grows to several columns when the
+   panel runs full width.
+   -------------------------------------------------------------------------- */
+.ins__resources {
+  container: insr / inline-size;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 20px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--ins-line);
+  border-radius: 14px;
+}
+
+.ins__resources-title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.ins__resources-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 12px 0 16px;
+}
+
+.ins__resources-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 2px 20px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ins__resource {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-block-size: 40px;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.ins__resource-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  color: var(--ins-blue-light);
+  background: rgba(31, 111, 235, 0.25);
+  border-radius: 50%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ins__resource:hover {
+    color: var(--ins-blue-hover);
+    transform: translateX(3px);
+  }
+}
+
+/* Decorative download graphic (hidden in narrow panels, see section 7) */
+.ins__resources-art {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 108px;
+  color: var(--ins-blue-light);
+  border: 1px solid rgba(59, 139, 255, 0.35);
+  border-radius: 22px;
+  background: radial-gradient(circle at 50% 50%, rgba(31, 111, 235, 0.2) 0%, rgba(31, 111, 235, 0) 70%);
+  box-shadow: 0 0 24px rgba(31, 111, 235, 0.18);
+}
+
+/* Primary button: solid brand blue, same as the Hero and Navbar CTAs */
+.ins__resources-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-block-size: 48px;
+  margin-top: auto;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: 10px;
+  background: var(--ins-blue);
+  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.35);
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.25s var(--ins-ease), box-shadow 0.25s var(--ins-ease), transform 0.25s var(--ins-ease);
+}
+
+.ins__resources-btn:active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ins__resources-btn:hover {
+    background: var(--ins-blue-dark);
+    box-shadow: 0 8px 20px rgba(31, 111, 235, 0.45);
+    transform: translateY(-2px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Entrance Animation
+   Uses `translate` + `opacity` (not `transform`) so it never overrides hover transforms.
+   -------------------------------------------------------------------------- */
+.ins__intro,
+.ins__cards-item,
+.ins__resources {
+  opacity: 0;
+  translate: 0 24px;
+}
+
+.ins--visible .ins__intro {
+  animation: insFadeUp 0.65s var(--ins-ease-out) both;
+}
+
+.ins--visible .ins__cards-item {
+  animation: insFadeUp 0.65s var(--ins-ease-out) calc(var(--delay, 0ms) + 120ms) both;
+}
+
+.ins--visible .ins__resources {
+  animation: insFadeUp 0.65s var(--ins-ease-out) 0.4s both;
+}
+
+@keyframes insFadeUp {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive (container queries, mobile-first)
+   Widths are those of the section's content box (the window minus the side gutters).
+   < 780px      one column: intro, cards, resources          (phone, small tablet)
+   780-1359px   intro on top, 3 cards in a row, resources below at full width
+   >= 1360px    3 columns: intro | 3 cards | resources        (desktop)
+   Resources panel (insr): the download graphic needs a panel of at least 400px.
+   -------------------------------------------------------------------------- */
+@container ins (min-width: 560px) {
+  .ins__panel {
+    padding: 28px clamp(20px, 2vw, 36px);
+    border-radius: 18px;
+  }
+
+  .ins__resources {
+    padding: 22px;
+  }
+}
+
+@container ins (min-width: 780px) {
+  .ins__cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(12px, 1.2cqi, 18px);
+  }
+}
+
+@container ins (min-width: 1360px) {
+  .ins__panel {
+    grid-template-columns: minmax(220px, 19fr) minmax(0, 54fr) minmax(290px, 27fr);
+    gap: clamp(18px, 1.8cqi, 32px);
+  }
+
+  .ins__link {
+    margin-top: auto;
+  }
+}
+
+/* Stacked layouts: the intro link sits right under the text */
+@container ins (max-width: 1359px) {
+  .ins__link {
+    margin-top: 0;
+  }
+}
+
+/* Narrow resources panel: hide the decorative graphic so the labels get the space */
+@container insr (max-width: 399px) {
+  .ins__resources-art {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Accessibility: Reduced Motion
+   Animations are removed, so everything simply shows in its final state.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ins *,
+  .ins *::before,
+  .ins *::after {
+    animation: none !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .ins__intro,
+  .ins__cards-item,
+  .ins__resources {
+    opacity: 1;
+    translate: none;
+  }
+
+  .ins__card:hover,
+  .ins__card:hover .ins__card-img,
+  .ins__resources-btn:hover,
+  .ins__resource:hover {
+    transform: none;
+  }
+}

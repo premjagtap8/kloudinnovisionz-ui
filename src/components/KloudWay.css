@@ -1,0 +1,460 @@
+/* ==========================================================================
+   KloudWay Component Styles
+   Table of Contents:
+   1. Design Tokens
+   2. Section Background & Container
+   3. Left Intro (Eyebrow, Title, Link)
+   4. Steps (Icon Badges, Connectors, Text)
+   5. Entrance Animation
+   6. Responsive (laptop / tablet / mobile)
+   7. Accessibility (Reduced Motion)
+
+   Note: Inter is already loaded by Navbar.css, so no @import is needed here.
+   Palette is aligned with Hero.css / Navbar.css:
+   brand navy #0f172a, brand blue #1f6feb, blue gradient end #3b8bff,
+   brand green #16a34a (lightened to #22c55e for use on the dark background).
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens
+   -------------------------------------------------------------------------- */
+.kw {
+  --kw-navy: #0f172a; /* brand navy (same as --navy / --nb-navy) */
+  --kw-navy-deep: #0a1224; /* a shade darker, for the edges and icon centres */
+
+  /* Brand colours */
+  --kw-brand-blue: #1f6feb; /* --blue */
+  --kw-brand-blue-light: #3b8bff; /* hero gradient end */
+  --kw-brand-green: #22c55e; /* lighter tint of brand green #16a34a, readable on navy */
+  --kw-brand-green-deep: #16a34a; /* --green */
+
+  /* The five step accents: blue > sky > blue-green > green > deep green.
+     Every colour comes from the brand palette (the middle one is a mix of two). */
+  --kw-blue: var(--kw-brand-blue);
+  --kw-sky: #62a2ff; /* lighter tint of #3b8bff, so Lead reads apart from Know */
+  --kw-aqua: #2fa8af; /* blue/green midpoint (fallback; see @supports below) */
+  --kw-green: var(--kw-brand-green);
+  --kw-forest: var(--kw-brand-green-deep);
+
+  --kw-eyebrow: var(--kw-brand-green); /* echoes the green logo tagline */
+  --kw-link: var(--kw-brand-blue-light); /* same blue family as the site CTAs */
+  --kw-link-hover: #8dbaff;
+
+  --kw-gutter: clamp(20px, 2.5vw, 48px);
+  --kw-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --kw-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  color: #ffffff;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  /* The section is a size container: the layout reacts to the width of the section
+     itself (same idea as the hero orbit), not only to the browser window. */
+  container: kw / inline-size;
+  background:
+    radial-gradient(ellipse 60% 120% at 78% 50%, rgba(31, 111, 235, 0.22) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(90deg, var(--kw-navy-deep) 0%, var(--kw-navy) 55%, var(--kw-navy-deep) 100%);
+}
+
+.kw *,
+.kw *::before,
+.kw *::after {
+  box-sizing: border-box;
+}
+
+/* Derive the two in-between accents from the brand tokens where color-mix() exists */
+@supports (color: color-mix(in srgb, red, blue)) {
+  .kw {
+    --kw-sky: color-mix(in srgb, var(--kw-brand-blue-light) 80%, #ffffff);
+    --kw-aqua: color-mix(in srgb, var(--kw-brand-blue-light) 50%, var(--kw-brand-green));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Section Background & Container
+   -------------------------------------------------------------------------- */
+.kw__container {
+  width: 100%;
+  padding: 44px var(--kw-gutter);
+  display: grid;
+  grid-template-columns: minmax(240px, 23fr) minmax(0, 77fr);
+  align-items: center;
+  gap: clamp(24px, 3vw, 64px);
+}
+
+/* --------------------------------------------------------------------------
+   3. Left Intro
+   -------------------------------------------------------------------------- */
+.kw__intro {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.kw__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--kw-eyebrow);
+}
+
+.kw__title {
+  margin: 14px 0 0;
+  font-size: clamp(1.4rem, 1.75vw, 2rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-wrap: balance;
+}
+
+.kw__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
+  margin-top: 22px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--kw-link);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+/* Wraps the label into two lines: "Learn More About / Our Approach".
+   FIX: `text-wrap: balance` balances the lines but never shrinks the box, so the old
+   12em max-width left ~40px of empty space and pushed the arrow away from the text.
+   9.5em is just wider than "Learn More About" and narrower than "...About Our",
+   so the box hugs the text and the arrow sits right next to it. */
+.kw__link-text {
+  max-width: 9.5em;
+  text-wrap: balance;
+}
+
+.kw__link:focus-visible {
+  outline: 2px solid var(--kw-link);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.kw__link-icon {
+  flex-shrink: 0;
+  transition: transform 0.25s var(--kw-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .kw__link:hover {
+    color: var(--kw-link-hover);
+  }
+
+  .kw__link:hover .kw__link-icon {
+    transform: translateX(5px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Steps
+   -------------------------------------------------------------------------- */
+.kw__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  min-width: 0;
+}
+
+.kw__step {
+  --accent: var(--kw-blue);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.kw__step--blue   { --accent: var(--kw-blue); }
+.kw__step--sky    { --accent: var(--kw-sky); }
+.kw__step--aqua   { --accent: var(--kw-aqua); }
+.kw__step--green  { --accent: var(--kw-green); }
+.kw__step--forest { --accent: var(--kw-forest); }
+
+/* Row holding the icon badge and the dotted connector */
+.kw__step-top {
+  display: flex;
+  align-items: center;
+}
+
+/* Circular icon badge with a soft glow (same soft-glow language as the hero orbit) */
+.kw__icon {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  background: var(--kw-navy-deep); /* fallback */
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--accent) 18%, var(--kw-navy-deep)) 0%,
+    var(--kw-navy-deep) 78%
+  );
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.12); /* fallback */
+  box-shadow:
+    0 0 12px color-mix(in srgb, var(--accent) 30%, transparent),
+    inset 0 0 12px color-mix(in srgb, var(--accent) 20%, transparent);
+  transition: transform 0.3s var(--kw-ease), box-shadow 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .kw__step:hover .kw__icon {
+    transform: scale(1.08);
+    box-shadow:
+      0 0 22px color-mix(in srgb, var(--accent) 52%, transparent),
+      inset 0 0 16px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+}
+
+/* Dotted line with a glowing dot at the end */
+.kw__connector {
+  position: relative;
+  flex: 1;
+  height: 0;
+  margin: 0 16px 0 18px;
+  border-top: 1.5px dotted rgba(255, 255, 255, 0.5);
+}
+
+.kw__connector::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: -4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+/* Step text */
+.kw__step-body {
+  margin-top: 16px;
+  padding-right: 12px;
+}
+
+.kw__step-title {
+  margin: 0;
+  font-size: clamp(0.875rem, 0.55rem + 0.55cqi, 1rem); /* 14px > 16px with the section width */
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.kw__step-text {
+  margin: 8px 0 0;
+  max-width: 14em;
+  font-size: clamp(0.8125rem, 0.7rem + 0.25cqi, 0.875rem); /* 13px > 14px */
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.76);
+  text-wrap: pretty;
+}
+
+/* --------------------------------------------------------------------------
+   5. Entrance Animation
+   Steps animate `translate` + `opacity` (not `transform`), so the animation never
+   overrides other transforms. The connectors grow with `transform: scale`.
+   -------------------------------------------------------------------------- */
+.kw__intro,
+.kw__step {
+  opacity: 0;
+  translate: 0 22px;
+}
+
+.kw__connector {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.kw--visible .kw__intro {
+  animation: kwFadeUp 0.65s var(--kw-ease-out) both;
+}
+
+.kw--visible .kw__step {
+  animation: kwFadeUp 0.65s var(--kw-ease-out) calc(var(--delay, 0ms) + 150ms) both;
+}
+
+.kw--visible .kw__connector {
+  animation: kwGrowX 0.7s ease calc(var(--delay, 0ms) + 450ms) both;
+}
+
+@keyframes kwFadeUp {
+  from {
+    opacity: 0;
+    translate: 0 22px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes kwGrowX {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes kwGrowY {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* --------------------------------------------------------------------------
+   6. Responsive
+   Uses container queries (@container kw), so widths are those of the section.
+   Desktop (>= 1280px): intro left, 5 steps in a row
+   Laptop (992-1279px): intro on top, 5 steps in a row
+   Tablet & mobile (<= 991px): vertical timeline
+   -------------------------------------------------------------------------- */
+@container kw (max-width: 1279px) {
+  .kw__container {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 44px var(--kw-gutter) 48px;
+  }
+
+  .kw__title {
+    max-width: 520px;
+  }
+
+  /* Full-width intro: one line, arrow right beside the text */
+  .kw__link-text {
+    max-width: none;
+  }
+
+  .kw__icon {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+/* Vertical timeline */
+@container kw (max-width: 991px) {
+  .kw__steps {
+    grid-template-columns: 1fr;
+    max-width: 640px;
+  }
+
+  .kw__step {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 18px;
+    align-items: stretch;
+  }
+
+  .kw__step-top {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .kw__icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .kw__icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* Vertical dotted connector */
+  .kw__connector {
+    flex: 1;
+    width: 0;
+    height: auto;
+    min-height: 36px;
+    margin: 8px 0;
+    border-top: none;
+    border-left: 1.5px dotted rgba(255, 255, 255, 0.5);
+    transform: scaleY(0);
+    transform-origin: top center;
+  }
+
+  .kw__connector::after {
+    right: auto;
+    left: -4px;
+    top: auto;
+    bottom: -3px;
+  }
+
+  .kw--visible .kw__connector {
+    animation: kwGrowY 0.6s ease calc(var(--delay, 0ms) + 350ms) both;
+  }
+
+  .kw__step-body {
+    margin-top: 0;
+    padding: 12px 0 26px;
+  }
+
+  .kw__step:last-child .kw__step-body {
+    padding-bottom: 0;
+  }
+
+  .kw__step-text {
+    max-width: 420px;
+    font-size: 14px;
+  }
+}
+
+@container kw (max-width: 599px) {
+  .kw__container {
+    padding: 36px 16px 40px;
+  }
+
+  .kw__icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .kw__icon svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .kw__step-title {
+    font-size: 14.5px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Accessibility: Reduced Motion
+   Animations are removed, so everything simply shows in its final state.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .kw *,
+  .kw *::before,
+  .kw *::after {
+    animation: none !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .kw__intro,
+  .kw__step {
+    opacity: 1;
+    translate: none;
+  }
+
+  .kw__connector {
+    transform: none;
+  }
+}

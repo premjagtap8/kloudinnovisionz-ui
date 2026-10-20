@@ -1,0 +1,237 @@
+/* ==========================================================================
+   Organizations (client logo marquee)
+   Table of Contents:
+   1. Design Tokens (card size is set once per breakpoint)
+   2. Section & Layout
+   3. Label & Divider
+   4. Logo Marquee (full-colour logos in white cards)
+   5. Responsive (tablet / mobile)
+   6. Accessibility (Reduced Motion)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens (same palette as Hero / Navbar / PracticeAreas)
+   -------------------------------------------------------------------------- */
+.organizations {
+  --org-navy: #0f172a;
+  --org-blue: #1f6feb;
+  --org-border: #e5e7eb;
+  --org-card-border: #eef2f7;
+
+  /* Card size: every width in this file is derived from these, so the
+     breakpoints below only have to change them. */
+  --org-card-w: 211px;
+  --org-card-h: 116px;
+  --org-space: 20px; /* empty space on each side of a card */
+  --org-pad-y: 12px;
+  --org-pad-x: 16px;
+  --org-radius: 14px;
+
+  --org-gutter: clamp(16px, 2.5vw, 48px);
+
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 28px var(--org-gutter);
+  /* Same white -> pale blue fade as the sections around it (no hard border line) */
+  background: linear-gradient(180deg, #ffffff 0%, #f6f9fe 100%);
+}
+
+.organizations *,
+.organizations *::before,
+.organizations *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   2. Section & Layout
+   -------------------------------------------------------------------------- */
+.organizations__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Label & Divider
+   -------------------------------------------------------------------------- */
+.organizations__label {
+  margin: 0;
+  flex-shrink: 0;
+  padding-left: 14px;
+  border-left: 3px solid var(--org-blue); /* blue accent */
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  color: var(--org-navy);
+}
+
+.organizations__divider {
+  flex-shrink: 0;
+  width: 1px;
+  height: 60px;
+  background: var(--org-border);
+}
+
+/* --------------------------------------------------------------------------
+   4. Logo Marquee
+   -------------------------------------------------------------------------- */
+/* Scrolling area with soft faded edges.
+   The extra top/bottom padding (cancelled by the negative margin, so the layout
+   height is unchanged) gives the lifted card and its shadow room: overflow:hidden
+   would otherwise cut the shadow off on hover. */
+.organizations__viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding-block: 24px;
+  margin-block: -14px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+
+/* Endless loop: the logo set is rendered twice, so moving by -50% restarts seamlessly.
+   All items have the same width, which keeps the -50% jump invisible.
+   --org-duration is set from the JSX (logo count x seconds per logo). */
+.organizations__track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: organizations-scroll var(--org-duration, 90s) linear infinite;
+  will-change: transform;
+}
+
+/* Pause while the pointer is over it or a keyboard user is inside it */
+.organizations__viewport:hover .organizations__track,
+.organizations__viewport:focus-within .organizations__track {
+  animation-play-state: paused;
+}
+
+.organizations__item {
+  flex: 0 0 auto;
+  width: calc(var(--org-card-w) + var(--org-space) * 2);
+  padding: 0 var(--org-space);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Each logo sits in the same white card: mismatched logo backgrounds (white boxes,
+   Tikona's solid colour) don't show against the pale page background. Full colour. */
+.organizations__item img {
+  display: block;
+  width: var(--org-card-w);
+  height: var(--org-card-h);
+  object-fit: contain; /* the logo is fitted inside the card padding, never stretched */
+  padding: var(--org-pad-y) var(--org-pad-x);
+  background: #ffffff;
+  border: 1px solid var(--org-card-border);
+  border-radius: var(--org-radius);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+/* Hover only on devices that really hover (no sticky hover after a tap) */
+@media (hover: hover) and (pointer: fine) {
+  .organizations__item img:hover {
+    transform: translateY(-3px);
+    border-color: #d6e4fb; /* fallback for browsers without color-mix() */
+    border-color: color-mix(in srgb, var(--org-blue) 25%, #ffffff);
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+  }
+}
+
+@keyframes organizations-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Responsive
+   -------------------------------------------------------------------------- */
+
+/* Tablet: slightly smaller cards, tighter gap */
+@media (max-width: 1023px) {
+  .organizations {
+    --org-card-w: 192px;
+    --org-card-h: 104px;
+    --org-space: 14px;
+  }
+
+  .organizations__inner {
+    gap: 20px;
+  }
+}
+
+/* Mobile: label on top, logos below */
+@media (max-width: 768px) {
+  .organizations {
+    --org-card-w: 152px;
+    --org-card-h: 84px;
+    --org-space: 10px;
+    --org-pad-y: 10px;
+    --org-pad-x: 12px;
+    --org-radius: 12px;
+
+    padding-block: 22px;
+  }
+
+  .organizations__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .organizations__divider {
+    display: none;
+  }
+
+  .organizations__label {
+    font-size: 14.5px;
+  }
+
+  .organizations__label br {
+    display: none; /* one line when there is room */
+  }
+
+  .organizations__viewport {
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Accessibility: Reduced Motion
+   No auto-scroll: the row can be scrolled by hand, and the duplicate set
+   (which only exists for the loop) is hidden.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .organizations__viewport {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .organizations__track {
+    animation: none;
+  }
+
+  .organizations__item[aria-hidden="true"] {
+    display: none;
+  }
+
+  .organizations__item img {
+    transition: none;
+  }
+}

@@ -1,0 +1,158 @@
+/* ==========================================================================
+   Top announcement bar
+   Table of Contents:
+   1. Tokens & Bar
+   2. Message text
+   3. Link (pill CTA)
+   4. Responsive: tablet
+   5. Responsive: mobile
+   6. Accessibility (Reduced Motion)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens & Bar
+   -------------------------------------------------------------------------- */
+.topbar {
+  --tb-navy: #071b4d;
+  --tb-navy-mid: #0a2f7a;
+  --tb-blue: #1F6FEB;      /* same blue as the navbar */
+  --tb-hover: #BFD7FF;
+  --tb-pad-x: clamp(16px, 3vw, 40px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  width: 100%;
+  padding-block: 10px;
+  /* env() keeps text clear of phone notches in landscape */
+  padding-inline: max(var(--tb-pad-x), env(safe-area-inset-left))
+                  max(var(--tb-pad-x), env(safe-area-inset-right));
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  /* Solid fallback colour in case the gradient layers fail to paint */
+  background-color: var(--tb-navy-mid);
+  background-image:
+    repeating-linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 46px
+    ),
+    linear-gradient(90deg, var(--tb-navy) 0%, var(--tb-navy-mid) 45%, var(--tb-blue) 100%);
+}
+
+.topbar *,
+.topbar *::before,
+.topbar *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   2. Message text
+   -------------------------------------------------------------------------- */
+.topbar__text {
+  margin: 0;
+  /* Fluid size: ~14px on tablets, 16px on large desktops */
+  font-size: clamp(0.8125rem, 0.75rem + 0.3vw, 1rem);
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  text-align: center;
+  text-wrap: balance; /* even line breaks if the message wraps */
+}
+
+/* --------------------------------------------------------------------------
+   3. Link (pill CTA)
+   -------------------------------------------------------------------------- */
+.topbar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 32px;
+  padding: 4px 8px 4px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: clamp(0.8125rem, 0.75rem + 0.3vw, 1rem);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap; /* "Learn More" never splits across two lines */
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Animate the arrow with transform (GPU, no layout shift) instead of `gap` */
+.topbar__icon {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+/* Hover styles only for real pointers, so touch screens don't get a stuck hover */
+@media (hover: hover) {
+  .topbar__link:hover {
+    background: rgba(255, 255, 255, 0.24);
+    color: var(--tb-hover);
+  }
+
+  .topbar__link:hover .topbar__icon {
+    transform: translateX(3px);
+  }
+}
+
+.topbar__link:active {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.topbar__link:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Responsive: tablet (<= 1023px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1023px) {
+  .topbar {
+    gap: 6px 12px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Responsive: mobile (<= 600px)
+   Text on its own centered line, CTA pill centered beneath it.
+   -------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .topbar {
+    flex-direction: column;
+    gap: 8px;
+    padding-block: 10px 12px;
+  }
+
+  .topbar__text {
+    max-width: 34ch;
+  }
+
+  /* Bigger touch target on touch devices */
+  .topbar__link {
+    min-height: 36px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Accessibility: Reduced Motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .topbar__link,
+  .topbar__icon {
+    transition: none;
+  }
+
+  .topbar__link:hover .topbar__icon {
+    transform: none;
+  }
+}

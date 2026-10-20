@@ -1,0 +1,281 @@
+/* ==========================================================================
+   Footter: dark navy footer (K logo, Inter) with its own "ftr" class names so it
+   never clashes with Footer.css.
+
+   Table of Contents:
+   1. Design Tokens & Base
+   2. Brand
+   3. Columns & Links
+   4. Bottom Bar
+   5. Responsive (container queries on the footer width, mobile-first)
+   6. Accessibility (reduced motion)
+
+   Note: Inter is already loaded by Navbar.css.
+   Mobile-first: base = phone, then
+     >= 480px : the two sub-lists of each column sit side by side
+     >= 600px : tablet, two columns under a brand row
+     >= 1040px: desktop, brand | Services | Work Portfolio with thin dividers
+     >= 1200px: roomy desktop sizes
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens & Base
+   -------------------------------------------------------------------------- */
+.ftr {
+  --ftr-edge: 20px; /* side padding; the content is centred up to --ftr-max */
+  --ftr-max: 1240px;
+  --ftr-line: rgba(255, 255, 255, 0.14);
+  --ftr-text: #d3dae6;
+  --ftr-muted: #aab4c4;
+  --ftr-link-hover: #4da3ff;
+
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  background: #040a16;
+  color: var(--ftr-text);
+  padding-top: 32px;
+  /* keeps the bottom bar clear of the home indicator on iPhones */
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+  /* The footer is a size container: the layout follows its own width */
+  container: ftr / inline-size;
+}
+
+.ftr *,
+.ftr *::before,
+.ftr *::after {
+  box-sizing: border-box;
+}
+
+/* Side padding lives here instead of on .ftr, so the container width is the full
+   footer width and the breakpoints above stay round numbers. The content edge is
+   identical to before (min of footer width minus the padding, and 1240px), so it
+   still lines up with the LetsBuild banner. */
+.ftr__inner,
+.ftr__bottom {
+  width: min(calc(100% - var(--ftr-edge) * 2), var(--ftr-max));
+  margin-inline: auto;
+}
+
+.ftr__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 28px;
+  align-items: stretch;
+}
+
+/* --------------------------------------------------------------------------
+   2. Brand
+   -------------------------------------------------------------------------- */
+.ftr__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start; /* copyright sits right under the logo, no big gap */
+  gap: 18px;
+  min-width: 0;
+}
+
+.ftr__brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  align-self: flex-start;
+  text-decoration: none;
+}
+
+.ftr__logo {
+  display: block;
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+}
+
+.ftr__brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ftr__brand-name {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.ftr__brand-tag {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #2fbf4b;
+  white-space: nowrap;
+}
+
+/* May wrap on narrower screens (it used to be nowrap and spilled into the next column) */
+.ftr__copy {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ftr-muted);
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   3. Columns & Links
+   -------------------------------------------------------------------------- */
+.ftr__col {
+  min-width: 0;
+}
+
+.ftr__title {
+  margin: 0 0 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Phone: the two sub-lists stack. From 480px they sit side by side (section 5). */
+.ftr__lists {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 4px;
+  align-items: start;
+}
+
+.ftr__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* 4px gap + 3px padding on each link = the same 10px rhythm as before */
+}
+
+.ftr__list a,
+.ftr__terms {
+  display: inline-block;
+  padding-block: 3px; /* taller tap area, same look */
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--ftr-text);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.ftr a:focus-visible {
+  outline: 2px solid var(--ftr-link-hover);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Hover only on devices that really hover, so a tap never leaves a link "stuck" blue */
+@media (hover: hover) and (pointer: fine) {
+  .ftr__list a:hover,
+  .ftr__terms:hover {
+    color: var(--ftr-link-hover);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Bottom Bar
+   -------------------------------------------------------------------------- */
+.ftr__bottom {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ftr-line);
+  display: flex;
+  justify-content: flex-start; /* left, so the floating Help button (bottom-right) never covers the link. Use flex-end for the old position. */
+}
+
+/* --------------------------------------------------------------------------
+   5. Responsive (container queries on the footer width, mobile-first)
+   -------------------------------------------------------------------------- */
+@container ftr (min-width: 480px) {
+  .ftr__lists {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 28px;
+  }
+}
+
+/* Tablet: brand row on top, Services and Work Portfolio side by side below */
+@container ftr (min-width: 600px) {
+  .ftr {
+    --ftr-edge: 24px;
+    padding-top: 34px;
+  }
+
+  .ftr__inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 32px;
+    column-gap: 28px;
+  }
+
+  .ftr__brand {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .ftr__bottom {
+    margin-top: 20px;
+  }
+}
+
+/* Desktop: brand | Services | Work Portfolio, with thin vertical dividers */
+@container ftr (min-width: 1040px) {
+  .ftr__inner {
+    /* The brand column is never narrower than its own content (logo + name),
+       which is what used to make the copyright overlap the Services column. */
+    grid-template-columns:
+      minmax(min-content, 1.1fr)
+      minmax(0, 1.45fr)
+      minmax(0, 1.45fr);
+    row-gap: 0;
+    column-gap: 0;
+  }
+
+  .ftr__brand {
+    grid-column: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    padding-right: 28px;
+  }
+
+  .ftr__col {
+    padding: 0 16px 0 20px;
+    border-left: 1px solid var(--ftr-line);
+  }
+}
+
+/* Roomy desktop: the original larger sizes */
+@container ftr (min-width: 1200px) {
+  .ftr__brand-name {
+    font-size: 20px;
+  }
+
+  .ftr__col {
+    padding: 0 24px 0 28px;
+  }
+
+  .ftr__list a,
+  .ftr__terms {
+    font-size: 13.5px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Accessibility: Reduced Motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ftr *,
+  .ftr *::before,
+  .ftr *::after {
+    transition-duration: 0.001ms !important;
+  }
+}

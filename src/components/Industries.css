@@ -1,0 +1,615 @@
+/* ==========================================================================
+   Industries Component Styles (Industries We Serve + Success Stories)
+   Table of Contents:
+   1. Design Tokens
+   2. Section & Container
+   3. Panels & Text Block
+   4. Industries Icon Grid
+   5. Success Stories Carousel
+   6. Entrance Animation
+   7. Responsive (container queries)
+   8. Accessibility (Reduced Motion)
+
+   Note: Inter is already loaded by Navbar.css, so no @import is needed here.
+   Palette matches Hero.css / Navbar.css: navy, blue, green (no extra colours).
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens
+   -------------------------------------------------------------------------- */
+.ind {
+  --ind-navy: #0f172a;
+  --ind-blue: #1f6feb;
+  --ind-blue-dark: #1558c7;
+  --ind-blue-light: #3b8bff; /* hero gradient end, used on the dark slide */
+  --ind-blue-soft: #eaf2ff;
+  --ind-green-text: #15803d; /* same green as the navbar tagline (passes AA on white) */
+  --ind-text: #4b5563;
+  --ind-border: #e5e7eb;
+  --ind-gutter: clamp(20px, 2.5vw, 48px);
+  --ind-pad-y: calc(var(--section-space, 80px) / 2); /* fallback if --section-space is not defined globally */
+
+  --ind-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --ind-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ind-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  color: var(--ind-navy);
+  background: linear-gradient(180deg, #f3f8ff 0%, #ffffff 100%);
+  width: 100%;
+  position: relative;
+  /* The section is a size container: it decides one or two panels per row */
+  container: ind / inline-size;
+}
+
+.ind *,
+.ind *::before,
+.ind *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   2. Section & Container
+   Mobile-first: one panel per row. Two side by side from 1280px (section width).
+   -------------------------------------------------------------------------- */
+.ind__container {
+  width: 100%;
+  padding: var(--ind-pad-y) var(--ind-gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* --------------------------------------------------------------------------
+   3. Panels & Text Block
+   Each panel is its own size container, so the layout inside it (text beside the
+   content, or text on top) depends on the panel width, not on the window.
+   -------------------------------------------------------------------------- */
+.ind__panel {
+  container: indp / inline-size;
+  min-width: 0;
+  background: #ffffff;
+  border: 1px solid var(--ind-border);
+  border-radius: 16px;
+  box-shadow: var(--ind-shadow);
+  overflow: hidden;
+}
+
+.ind__panel-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  height: 100%;
+}
+
+.ind__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 26px 24px 20px;
+}
+
+.ind__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ind-green-text);
+}
+
+.ind__title {
+  margin: 10px 0 0;
+  font-size: clamp(1.375rem, 1rem + 0.9cqi, 1.75rem);
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -0.025em;
+  color: var(--ind-navy);
+  text-wrap: balance;
+}
+
+.ind__desc {
+  margin: 14px 0 12px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ind-text);
+  text-wrap: pretty;
+}
+
+.ind__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
+  margin-top: auto;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ind-blue);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.ind__link:focus-visible {
+  outline: 2px solid var(--ind-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.ind__link-icon {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ind__link:hover {
+    color: var(--ind-blue-dark);
+  }
+
+  .ind__link:hover .ind__link-icon {
+    transform: translateX(4px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Industries Icon Grid
+   Icons sit in soft tinted circles, the same treatment as the Hero and
+   PracticeAreas cards.
+   -------------------------------------------------------------------------- */
+.ind__grid {
+  list-style: none;
+  margin: 0;
+  padding: 24px 20px 28px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 24px 8px;
+  align-content: center;
+  border-top: 1px solid var(--ind-border);
+}
+
+.ind__grid-item {
+  min-width: 0;
+}
+
+.ind__industry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--ind-navy);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.25s var(--ind-ease), color 0.2s ease;
+}
+
+.ind__industry:focus-visible {
+  outline: 2px solid var(--ind-blue);
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+
+.ind__industry-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  color: var(--ind-blue);
+  background-color: var(--ind-blue-soft);
+  transition: transform 0.25s var(--ind-ease), color 0.2s ease, background-color 0.2s ease;
+}
+
+/* "And More": outlined instead of filled, so it reads as the open-ended item */
+.ind__industry-icon--circle {
+  background-color: #ffffff;
+  border: 1.5px dashed var(--ind-blue);
+}
+
+.ind__industry-label {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ind__industry:hover {
+    transform: translateY(-4px);
+    color: var(--ind-blue);
+  }
+
+  .ind__industry:hover .ind__industry-icon {
+    color: #ffffff;
+    background-color: var(--ind-blue);
+  }
+
+  .ind__industry:hover .ind__industry-icon--circle {
+    border-color: var(--ind-blue);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Success Stories Carousel
+   The wrapper is a size container (indc), so the slide layout follows the width of
+   the carousel itself and the stat numbers scale with it (cqi).
+   -------------------------------------------------------------------------- */
+.ind__carousel-wrap {
+  container: indc / inline-size;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 4px 20px 20px;
+}
+
+.ind__carousel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  min-height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ind-navy);
+  touch-action: pan-y; /* vertical scroll stays native; horizontal swipe changes the slide */
+}
+
+.ind__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+
+.ind__slide--active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.ind__slide-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+  display: block;
+}
+
+.ind__slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0) 25%,
+    rgba(15, 23, 42, 0.58) 55%,
+    rgba(15, 23, 42, 0.86) 100%
+  );
+}
+
+.ind__slide-content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 34%;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  color: #ffffff;
+}
+
+.ind__slide-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: clamp(0.9375rem, 3cqi, 1.125rem); /* 15px > 18px with the carousel width */
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  text-wrap: balance;
+}
+
+.ind__stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: clamp(12px, 3cqi, 28px);
+}
+
+.ind__stat {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ind__stat-value {
+  font-size: clamp(1.375rem, 4.4cqi, 1.875rem); /* 22px > 30px */
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ind-blue-light);
+  font-variant-numeric: tabular-nums;
+}
+
+.ind__stat-label {
+  margin-top: 4px;
+  font-size: clamp(0.6875rem, 2cqi, 0.75rem); /* 11px > 12px: never smaller than 11px */
+  font-weight: 500;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.ind__slide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  min-block-size: 40px;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(59, 139, 255, 0.6);
+  border-radius: 10px;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.25s var(--ind-ease), border-color 0.25s var(--ind-ease), transform 0.25s var(--ind-ease);
+}
+
+.ind__slide-btn:active {
+  transform: scale(0.98);
+}
+
+.ind__slide-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ind__slide-btn:hover {
+    background: var(--ind-blue);
+    border-color: var(--ind-blue);
+    transform: translateY(-2px);
+  }
+}
+
+/* Arrows (44px touch targets) */
+.ind__arrow {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: #ffffff;
+  background: rgba(15, 23, 42, 0.4);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.ind__arrow:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.ind__arrow--prev { left: 8px; }
+.ind__arrow--next { right: 8px; }
+
+@media (hover: hover) and (pointer: fine) {
+  .ind__arrow:hover {
+    background: rgba(15, 23, 42, 0.75);
+  }
+}
+
+/* Dots: a 24px hit area around a 6px dot */
+.ind__dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-top: 8px;
+}
+
+.ind__dot {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ind__dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  translate: -50% -50%;
+  background: #c3ccdb;
+  border-radius: 999px;
+  transition: width 0.25s ease, background-color 0.25s ease;
+}
+
+.ind__dot--active::before {
+  width: 18px;
+  background: var(--ind-blue);
+}
+
+.ind__dot:focus-visible {
+  outline: 2px solid var(--ind-blue);
+  outline-offset: 0;
+  border-radius: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   6. Entrance Animation
+   Uses `translate` + `opacity` (not `transform`) so it never overrides hover transforms.
+   -------------------------------------------------------------------------- */
+.ind__panel,
+.ind__grid-item {
+  opacity: 0;
+  translate: 0 26px;
+}
+
+.ind--visible .ind__panel {
+  animation: indFadeUp 0.65s var(--ind-ease-out) both;
+}
+
+.ind--visible .ind__panel--stories {
+  animation-delay: 0.12s;
+}
+
+.ind--visible .ind__grid-item {
+  animation: indFadeUp 0.6s var(--ind-ease-out) calc(var(--delay, 0ms) + 250ms) both;
+}
+
+@keyframes indFadeUp {
+  from {
+    opacity: 0;
+    translate: 0 26px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive (container queries)
+   Section (.ind):   >= 1280px  two panels per row; below that, one per row.
+   Panel (.ind__panel):  >= 800px  text beside the content; below that, text on top.
+                         < 480px   2 icons per row (phones).
+   Carousel wrapper (indc): < 480px  taller card, text across the whole slide.
+   Example: on a 1440px screen each panel is ~675px wide, so the text sits on top of
+   the content instead of being squeezed into a 130px column beside it.
+   -------------------------------------------------------------------------- */
+@container ind (min-width: 1280px) {
+  .ind__container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(16px, 1.2cqi, 24px);
+  }
+}
+
+/* Wide panel: text on the left, content on the right */
+@container indp (min-width: 800px) {
+  .ind__panel-body {
+    grid-template-rows: none;
+  }
+
+  .ind__panel--industries .ind__panel-body {
+    grid-template-columns: minmax(230px, 37fr) minmax(0, 63fr);
+  }
+
+  .ind__panel--stories .ind__panel-body {
+    grid-template-columns: minmax(230px, 39fr) minmax(0, 61fr);
+  }
+
+  .ind__text {
+    padding: 28px 22px 26px 30px;
+  }
+
+  .ind__desc {
+    margin: 18px 0 22px;
+  }
+
+  .ind__grid {
+    padding: 26px 22px;
+    border-top: none;
+    border-left: 1px solid var(--ind-border);
+  }
+
+  .ind__carousel-wrap {
+    padding: 18px 18px 14px 4px;
+  }
+}
+
+/* Phone-width panel */
+@container indp (max-width: 479px) {
+  .ind__text {
+    padding: 22px 18px 16px;
+  }
+
+  .ind__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 22px 14px 26px;
+    gap: 22px 10px;
+  }
+
+  .ind__carousel-wrap {
+    padding: 4px 14px 14px;
+  }
+}
+
+/* Narrow carousel: a taller card, with the text across the whole slide */
+@container indc (max-width: 479px) {
+  .ind__carousel {
+    aspect-ratio: auto;
+    min-height: 320px;
+  }
+
+  .ind__slide-overlay {
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.55) 0%, rgba(15, 23, 42, 0.88) 100%);
+  }
+
+  .ind__slide-content {
+    left: 20px;
+    right: 20px;
+  }
+
+  /* With several slides, the arrows move to the bottom corners so they never cover the text */
+  .ind__carousel--multi .ind__slide-content {
+    padding-bottom: 52px;
+  }
+
+  .ind__carousel--multi .ind__arrow {
+    top: auto;
+    bottom: 8px;
+    translate: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Accessibility: Reduced Motion
+   Animations are removed, so everything simply shows in its final state.
+   Autoplay is also switched off in Industries.jsx.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ind *,
+  .ind *::before,
+  .ind *::after {
+    animation: none !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .ind__panel,
+  .ind__grid-item {
+    opacity: 1;
+    translate: none;
+  }
+
+  .ind__industry:hover,
+  .ind__slide-btn:hover {
+    transform: none;
+  }
+}

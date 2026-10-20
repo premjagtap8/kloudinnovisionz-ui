@@ -1,0 +1,296 @@
+/* ==========================================================================
+   WhatWeDo Component Styles
+   Table of Contents:
+   1. Design Tokens & Google Font
+   2. Section & Container
+   3. Header (Eyebrow + Title)
+   4. Cards Grid
+   5. Service Card
+   6. Entrance Animation
+   7. Responsive Media Queries
+   8. Accessibility (Reduced Motion)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens & Google Font
+   -------------------------------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+.wwd {
+  --wwd-navy: #0F172A;
+  --wwd-blue: #1F6FEB;
+  --wwd-blue-dark: #1558C7;
+  --wwd-teal: #0E8F8F;
+  --wwd-green: #16A34A;
+  --wwd-text: #4B5563;
+  --wwd-border: #EEF2F7;
+  --wwd-gutter: clamp(20px, 2.5vw, 48px);
+
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--wwd-navy);
+  background: #FFFFFF;
+  width: 100%;
+  position: relative;
+}
+
+.wwd *,
+.wwd *::before,
+.wwd *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   2. Section & Container
+   -------------------------------------------------------------------------- */
+.wwd__container {
+  width: 100%;
+  /* top padding leaves room for the hero stats bar that overlaps downwards */
+  padding: 84px var(--wwd-gutter) 72px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Header (Eyebrow + Title)
+   -------------------------------------------------------------------------- */
+.wwd__header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.wwd__eyebrow {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--wwd-green);
+}
+
+.wwd__title {
+  margin: 8px 0 0;
+  font-size: clamp(1.5rem, 2.2vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--wwd-navy);
+}
+
+/* --------------------------------------------------------------------------
+   4. Cards Grid
+   -------------------------------------------------------------------------- */
+.wwd__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(14px, 1.4vw, 24px);
+}
+
+.wwd__item {
+  display: flex;
+  min-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   5. Service Card
+   -------------------------------------------------------------------------- */
+.wwd__card {
+  --accent: var(--wwd-blue);
+
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  padding: 24px 20px 22px;
+  background: #FFFFFF;
+  border: 1px solid var(--wwd-border);
+  border-radius: 14px;
+  box-shadow: 0 6px 22px rgba(15, 23, 42, 0.07);
+  transition:
+    transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.28s ease;
+}
+
+.wwd__card--blue  { --accent: var(--wwd-blue); }
+.wwd__card--teal  { --accent: var(--wwd-teal); }
+.wwd__card--green { --accent: var(--wwd-green); }
+
+.wwd__card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--accent) 30%, #FFFFFF);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.13);
+}
+
+.wwd__card-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wwd__card:hover .wwd__card-icon {
+  transform: scale(1.1);
+}
+
+.wwd__card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  align-self: stretch;
+}
+
+.wwd__card-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--accent);
+}
+
+.wwd__card-text {
+  margin: 10px 0 16px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--wwd-text);
+}
+
+.wwd__card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--wwd-blue);
+  text-decoration: none;
+  align-self: flex-start;
+  transition: color 0.2s ease;
+}
+
+.wwd__card-link:hover {
+  color: var(--wwd-blue-dark);
+}
+
+.wwd__card-link:focus-visible {
+  outline: 2px solid var(--wwd-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.wwd__card-link-icon {
+  transition: transform 0.25s ease;
+}
+
+.wwd__card-link:hover .wwd__card-link-icon {
+  transform: translateX(4px);
+}
+
+/* --------------------------------------------------------------------------
+   6. Entrance Animation
+   -------------------------------------------------------------------------- */
+.wwd__header,
+.wwd__item {
+  opacity: 0;
+  transform: translateY(26px);
+}
+
+.wwd--visible .wwd__header {
+  animation: wwdFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.wwd--visible .wwd__item {
+  animation: wwdFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0ms) both;
+}
+
+@keyframes wwdFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive Media Queries
+   -------------------------------------------------------------------------- */
+
+/* Smaller laptops: 3 cards per row so text stays comfortable */
+@media (max-width: 1279px) {
+  .wwd__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .wwd__card-text {
+    font-size: 13.5px;
+  }
+
+  .wwd__card-link {
+    font-size: 13.5px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 991px) {
+  .wwd__container {
+    padding: 72px var(--wwd-gutter) 56px;
+  }
+
+  .wwd__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+@media (max-width: 599px) {
+  .wwd__container {
+    padding: 56px 16px 44px;
+  }
+
+  .wwd__header {
+    margin-bottom: 26px;
+  }
+
+  .wwd__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .wwd__card {
+    padding: 20px 18px;
+  }
+
+  .wwd__card:hover {
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Accessibility: Reduced Motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .wwd *,
+  .wwd *::before,
+  .wwd *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .wwd__header,
+  .wwd__item {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .wwd__card:hover {
+    transform: none;
+  }
+}

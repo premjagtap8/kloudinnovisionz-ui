@@ -1,0 +1,100 @@
+/* ==========================================================================
+   404 Not Found page
+   ========================================================================== */
+
+.nf {
+  --nf-navy: #0b1b3a;
+  --nf-blue: #1f5fe0;
+  --nf-green: #1a9a3c;
+  --nf-text: #4a5873;
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(460px, 70vh, 720px);
+  padding: clamp(40px, 6vw, 80px) clamp(16px, 3vw, 40px);
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f8ff 100%);
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.nf *,
+.nf *::before,
+.nf *::after {
+  box-sizing: border-box;
+}
+
+/* Big faded "404" behind the content */
+.nf__bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(11rem, 36vw, 32rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: transparent;
+  background: linear-gradient(180deg, rgba(31, 95, 224, 0.16) 0%, rgba(31, 95, 224, 0.04) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  user-select: none;
+  pointer-events: none;
+}
+
+.nf__content {
+  position: relative;
+  z-index: 1;
+  max-width: 560px;
+  text-align: center;
+}
+
+.nf__title {
+  margin: 0 0 16px;
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--nf-navy);
+}
+
+.nf__text {
+  margin: 0 auto 32px;
+  font-size: clamp(16px, 1.6vw, 20px);
+  line-height: 1.7;
+  color: var(--nf-text);
+}
+
+.nf__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  border-radius: 999px;
+  background: var(--nf-blue);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(31, 95, 224, 0.3);
+  transition: background 0.2s ease, transform 0.2s ease, gap 0.2s ease;
+}
+
+.nf__btn:hover {
+  background: #1558c7;
+  gap: 14px;
+  transform: translateY(-2px);
+}
+
+.nf__btn:focus-visible {
+  outline: 2px solid var(--nf-blue);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nf__btn {
+    transition: none;
+  }
+}
