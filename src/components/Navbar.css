@@ -44,19 +44,10 @@ html {
   top: 0;
   z-index: 100;
   width: 100%;
-  /* Frosted-glass bar: content blurs softly underneath while scrolling */
-  background: rgba(255, 255, 255, 0.82);
-  -webkit-backdrop-filter: saturate(180%) blur(14px);
-  backdrop-filter: saturate(180%) blur(14px);
+  /* Solid white bar: page content never shows through while scrolling */
+  background: #ffffff;
   border-bottom: 1px solid transparent;
   transition: box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-/* Browsers without backdrop-filter get a solid white bar */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .navbar {
-    background: #ffffff;
-  }
 }
 
 .navbar *,
@@ -185,10 +176,15 @@ html {
   transition: color 0.2s ease;
 }
 
+/* Keyboard focus: no tall outline box (the link is as tall as the whole bar).
+   The underline indicator is shown instead, so focus is still visible. */
 .navbar__link:focus-visible {
-  outline: 2px solid var(--nb-blue);
-  outline-offset: 4px;
-  border-radius: 4px;
+  outline: none;
+  color: var(--nb-blue);
+}
+
+.navbar__link:focus-visible::after {
+  transform: scaleX(1);
 }
 
 /* Active link: blue text + underline */
@@ -466,8 +462,7 @@ html {
     font-size: 10.5px;
   }
 
-  /* Dim layer under the panel. Absolute (not fixed) on purpose: backdrop-filter
-     on .navbar would make a fixed child size itself to the bar, not the screen. */
+  /* Dim layer under the panel, positioned from the bottom edge of the bar. */
   .navbar__scrim {
     display: block;
     position: absolute;

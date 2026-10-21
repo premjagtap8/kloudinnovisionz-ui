@@ -33,6 +33,10 @@ const NAV_LINKS = [
 // Must match the CSS breakpoint: hamburger menu is used at <= 1199px
 const DESKTOP_QUERY = "(min-width: 1200px)";
 
+// Any button on the site can open the Services menu with:
+//   window.dispatchEvent(new CustomEvent("open-services-menu"))
+const OPEN_SERVICES_EVENT = "open-services-menu";
+
 // -----------------------------------------------------------------------------
 // Navbar Component (Default Export)
 // -----------------------------------------------------------------------------
@@ -120,6 +124,21 @@ export default function Navbar() {
   useEffect(() => {
     closeAll();
   }, [pathname, closeAll]);
+
+  // Let other buttons (e.g. "Explore Our Capabilities" on Home) open the Services menu:
+  // the dropdown on desktop, the expanded Services section in the hamburger panel on mobile.
+  useEffect(() => {
+    const openServices = () => {
+      if (window.matchMedia(DESKTOP_QUERY).matches) {
+        setOpenMenu("services");
+      } else {
+        setMobileOpen(true);
+        setMobileSub("services");
+      }
+    };
+    window.addEventListener(OPEN_SERVICES_EVENT, openServices);
+    return () => window.removeEventListener(OPEN_SERVICES_EVENT, openServices);
+  }, []);
 
   // Opening the mobile menu pre-expands the section you are currently in
   const toggleMobile = () => {

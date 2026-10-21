@@ -102,6 +102,11 @@ const STATS = [
   { id: "support", icon: Headphones, color: "blue", isStatic: true, staticValue: "24/7", label: "Support & Monitoring" },
 ];
 
+// Tells the Navbar to open its Services menu (see the listener in Navbar.jsx)
+const openServicesMenu = () => {
+  window.dispatchEvent(new CustomEvent("open-services-menu"));
+};
+
 // -----------------------------------------------------------------------------
 // Count-Up Hook (requestAnimationFrame: in sync with the screen refresh)
 // -----------------------------------------------------------------------------
@@ -221,10 +226,15 @@ export default function Hero() {
                 <ArrowRight size={15} className="hero__btn-icon" aria-hidden="true" />
               </Link>
 
-              <Link to="/services" className="hero__btn hero__btn--secondary">
+              {/* Opens the Services menu in the navbar (no separate /services page) */}
+              <button
+                type="button"
+                className="hero__btn hero__btn--secondary"
+                onClick={openServicesMenu}
+              >
                 <span>Explore Our Capabilities</span>
                 <ArrowRight size={15} className="hero__btn-icon" aria-hidden="true" />
-              </Link>
+              </button>
             </div>
 
             <div className="hero__social-proof">
