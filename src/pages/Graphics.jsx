@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Graphics.css'
- import GraphicOne from '../assets/graphicOne.webp'
+ import GraphicOne from '../assets/GraphicOne.webp'
  import logoDesign from '../assets/logo-design.jpg'
  import poster from '../assets/poster.jpg'
  import socialMedia from '../assets/social-media.jpg'
@@ -23,7 +23,7 @@ import './Graphics.css'
    import packaging from '../assets/packaging.webp'
    import uiDesign from '../assets/ui-design.webp'
    -------------------------------------------------------------------------- */
-const INTRO_IMAGE = graphicOne
+const INTRO_IMAGE = GraphicOne
 
 const CONTACT_ROUTE = '/contact-us'
 
