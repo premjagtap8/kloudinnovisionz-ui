@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Graphics.css'
- import graphicOne from '../assets/graphicOne.webp'
+ import GraphicOne from '../assets/graphicOne.webp'
  import logoDesign from '../assets/logo-design.jpg'
  import poster from '../assets/poster.jpg'
  import socialMedia from '../assets/social-media.jpg'
