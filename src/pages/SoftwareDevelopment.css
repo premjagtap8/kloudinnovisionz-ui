@@ -1,0 +1,681 @@
+/* ==========================================================================
+   Software Development Page Styles
+   Same theme as Projects / Web / App Development: Inter, navy #0f172a,
+   blue #1f6feb, soft blue tints, two-tone headings, 10px buttons, 24px cards.
+   Responsive via container queries: phone < 640, tablet >= 640, desktop >= 960.
+   ========================================================================== */
+
+.softdev {
+  --sd-navy: #0f172a;
+  --sd-navy-deep: #0b2a6b;
+  --sd-text: #4b5563;
+  --sd-blue: #1f6feb;
+  --sd-blue-dark: #1558c7;
+  --sd-blue-soft: #eaf2ff;
+  --sd-blue-wash: #f3f8ff;
+  --sd-line: #e5edf7;
+  --sd-green: #16a34a;
+  --sd-gutter: clamp(20px, 2.5vw, 48px);
+  --sd-max: 1240px;
+  --sd-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* fluid section rhythm; a global --section-space still wins if the site defines one */
+  --sd-section: clamp(56px, 8vw, 96px);
+
+  color: var(--sd-navy);
+  color-scheme: light;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  background: #ffffff;
+  /* inline-size containment makes the intrinsic width 0, so always fill the parent */
+  display: block;
+  width: 100%;
+  container: softdev / inline-size;
+}
+
+.softdev *,
+.softdev *::before,
+.softdev *::after {
+  box-sizing: border-box;
+}
+
+.sd-container {
+  width: min(var(--sd-max), 100%);
+  margin-inline: auto;
+  padding-inline: var(--sd-gutter);
+}
+
+.sd-accent {
+  color: var(--sd-blue);
+}
+
+.sd-h2 {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.2rem + 2.2cqi, 2.75rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.sd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-block-size: 52px;
+  padding: 0 28px;
+  border-radius: 10px;
+  background: var(--sd-blue);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(31, 111, 235, 0.32);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.2s ease,
+    translate 0.2s var(--sd-ease),
+    scale 0.15s var(--sd-ease),
+    box-shadow 0.2s ease;
+}
+
+.sd-btn--light {
+  background: #ffffff;
+  color: var(--sd-blue-dark);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.25);
+}
+
+.sd-btn__icon {
+  transition: translate 0.2s var(--sd-ease);
+}
+
+.sd-btn:active {
+  scale: 0.98;
+}
+
+.sd-btn:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.45);
+  outline-offset: 3px;
+}
+
+/* blue ring is invisible on the blue CTA band, so use white there */
+.sd-btn--light:focus-visible {
+  outline-color: #ffffff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-btn:hover {
+    background: var(--sd-blue-dark);
+    translate: 0 -2px;
+    box-shadow: 0 14px 28px rgba(31, 111, 235, 0.38);
+  }
+
+  .sd-btn--light:hover {
+    background: var(--sd-blue-soft);
+  }
+
+  .sd-btn:hover .sd-btn__icon {
+    translate: 4px 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+.sd-hero {
+  padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 6vw, 72px);
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(31, 111, 235, 0.16) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(180deg, var(--sd-blue-wash) 0%, #ffffff 100%);
+}
+
+.sd-hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.sd-eyebrow {
+  display: inline-block;
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--sd-blue-dark);
+  background: var(--sd-blue-soft);
+  border: 1px solid rgba(31, 111, 235, 0.18);
+  border-radius: 999px;
+}
+
+.sd-hero__title {
+  margin: 18px 0 0;
+  /* "Development" is a long word: keep the minimum small enough for 320px screens */
+  font-size: clamp(2rem, 1.1rem + 5cqi, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.sd-hero__lead {
+  max-width: 34ch;
+  margin: 18px 0 0;
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
+  line-height: 1.6;
+  color: var(--sd-text);
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Intro
+   -------------------------------------------------------------------------- */
+.sd-intro {
+  padding: clamp(32px, 5vw, 64px) 0 var(--section-space, var(--sd-section));
+}
+
+.sd-intro__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+}
+
+.sd-intro__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.sd-intro__text p {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--sd-text);
+  text-wrap: pretty;
+}
+
+.sd-checks {
+  display: grid;
+  gap: 12px;
+  margin: 6px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sd-checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--sd-navy);
+}
+
+.sd-check__icon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--sd-green);
+}
+
+.sd-intro__text .sd-btn {
+  margin-top: 8px;
+}
+
+/* Software development image */
+.sd-media {
+  margin: 0; /* reset default <figure> margins */
+  display: grid;
+  place-items: center;
+  padding: clamp(20px, 3.5vw, 40px);
+  border: 1px solid var(--sd-line);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(31, 111, 235, 0.18) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(180deg, var(--sd-blue-wash) 0%, var(--sd-blue-soft) 100%);
+}
+
+.sd-media__img {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* --------------------------------------------------------------------------
+   Details: bespoke software copy + accordion
+   -------------------------------------------------------------------------- */
+.sd-details {
+  padding: var(--section-space, var(--sd-section)) 0;
+  background: var(--sd-blue-wash);
+  border-block: 1px solid var(--sd-line);
+}
+
+.sd-details__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+}
+
+.sd-details__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.sd-details__text p {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--sd-text);
+  text-wrap: pretty;
+}
+
+.sd-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sd-tags li {
+  padding: 8px 16px;
+  border: 1px solid var(--sd-line);
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--sd-navy);
+}
+
+/* Accordion */
+.sd-acc {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.sd-acc__item {
+  border: 1px solid var(--sd-line);
+  border-radius: 24px;
+  background: #ffffff;
+  overflow: hidden;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.sd-acc__item.is-open {
+  border-color: rgba(31, 111, 235, 0.35);
+  box-shadow: 0 12px 32px rgba(31, 111, 235, 0.12);
+}
+
+.sd-acc__heading {
+  margin: 0;
+  font-size: inherit;
+}
+
+.sd-acc__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-block-size: 68px;
+  padding: 16px 24px;
+  border: 0;
+  background: transparent;
+  color: var(--sd-navy);
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: start;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sd-acc__trigger:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.45);
+  outline-offset: -3px;
+  border-radius: 24px;
+}
+
+.sd-acc__chev {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--sd-blue-soft);
+  color: var(--sd-blue-dark);
+  transition:
+    rotate 0.3s var(--sd-ease),
+    scale 0.15s var(--sd-ease),
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* press feedback: answers the tap/click directly */
+.sd-acc__trigger:active .sd-acc__chev {
+  scale: 0.9;
+}
+
+.sd-acc__item.is-open .sd-acc__chev {
+  rotate: 180deg;
+  background: var(--sd-blue);
+  color: #ffffff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sd-acc__item:not(.is-open):hover {
+    border-color: rgba(31, 111, 235, 0.3);
+  }
+
+  .sd-acc__trigger:hover .sd-acc__chev {
+    background: var(--sd-blue);
+    color: #ffffff;
+  }
+}
+
+/* smooth height animation: 0fr -> 1fr; hidden panels are removed from tab order */
+.sd-acc__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows 0.3s var(--sd-ease),
+    visibility 0s linear 0.3s;
+}
+
+.sd-acc__item.is-open > .sd-acc__panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows 0.3s var(--sd-ease),
+    visibility 0s;
+}
+
+.sd-acc__panel-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sd-acc__body {
+  padding: 4px 24px 24px;
+}
+
+/* Methodology: a real sequence, so numbered */
+.sd-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 14px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: sd-step;
+}
+
+.sd-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  counter-increment: sd-step;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--sd-navy);
+}
+
+.sd-steps li::before {
+  content: counter(sd-step);
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--sd-blue-soft);
+  color: var(--sd-blue-dark);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+/* Industries */
+.sd-industries {
+  display: grid;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sd-industries li {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.sd-industries li + li {
+  padding-top: 20px;
+  border-top: 1px solid var(--sd-line);
+}
+
+.sd-industry__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--sd-blue-soft);
+  color: var(--sd-blue-dark);
+}
+
+.sd-industry__title {
+  margin: 0 0 4px;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--sd-navy);
+}
+
+.sd-industry__text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--sd-text);
+  text-wrap: pretty;
+}
+
+/* --------------------------------------------------------------------------
+   FAQ (reuses the .sd-acc accordion styles above)
+   -------------------------------------------------------------------------- */
+.sd-faq {
+  padding: var(--section-space, var(--sd-section)) 0;
+  background: #ffffff;
+}
+
+.sd-faq__inner {
+  max-width: 920px; /* narrower reading column; still padded by .sd-container */
+}
+
+.sd-faq__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+  text-align: center;
+}
+
+.sd-faq__header p {
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--sd-text);
+  text-wrap: balance;
+}
+
+.sd-faq__answer {
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--sd-line);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--sd-text);
+  text-wrap: pretty;
+}
+
+/* --------------------------------------------------------------------------
+   CTA
+   -------------------------------------------------------------------------- */
+.sd-cta {
+  padding: 0 0 var(--section-space, var(--sd-section));
+}
+
+/* the details band sits right above, so the CTA needs its own top space */
+.sd-details + .sd-cta {
+  padding-top: var(--section-space, var(--sd-section));
+}
+
+.sd-cta__box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: clamp(28px, 5vw, 56px);
+  border-radius: 24px;
+  color: #ffffff;
+  background: linear-gradient(120deg, var(--sd-navy-deep) 0%, var(--sd-blue) 100%);
+  box-shadow: 0 20px 48px rgba(31, 111, 235, 0.28);
+}
+
+.sd-cta__title {
+  max-width: 24ch;
+  margin: 0;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Motion: one hero entrance, only when the visitor allows motion
+   -------------------------------------------------------------------------- */
+@keyframes sdIn {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sd-hero__inner > * {
+    animation: sdIn 0.7s var(--sd-ease) backwards;
+  }
+
+  .sd-hero__inner > :nth-child(2) {
+    animation-delay: 80ms;
+  }
+
+  .sd-hero__inner > :nth-child(3) {
+    animation-delay: 160ms;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive (container queries, mobile-first)
+   -------------------------------------------------------------------------- */
+@container softdev (max-width: 639px) {
+  /* thumb-friendly full-width buttons on phones */
+  .sd-intro__text .sd-btn,
+  .sd-cta__box .sd-btn {
+    align-self: stretch;
+    width: 100%;
+  }
+
+  /* tighter accordion padding on phones */
+  .sd-acc__trigger {
+    padding: 14px 18px;
+    font-size: 1rem;
+  }
+
+  .sd-acc__body {
+    padding: 2px 18px 20px;
+  }
+
+  .sd-industries li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+}
+
+@container softdev (min-width: 640px) {
+  .sd-cta__box {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@container softdev (min-width: 960px) {
+  .sd-intro__grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  }
+
+  .sd-details__grid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .softdev *,
+  .softdev *::before,
+  .softdev *::after {
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+  }
+
+  .sd-btn:hover {
+    translate: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .sd-btn,
+  .sd-media,
+  .sd-acc__item,
+  .sd-tags li,
+  .sd-acc__chev,
+  .sd-industry__icon,
+  .sd-steps li::before {
+    border: 1px solid CanvasText;
+  }
+}

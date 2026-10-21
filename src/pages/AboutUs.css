@@ -1,4 +1,480 @@
-function AboutUs() {
-  return <div className="p-10">About Us</div>
+/* ==========================================================================
+   About Us Page Styles
+   Same theme as Web Development / Digital Marketing: Inter, navy #0f172a,
+   blue #1f6feb, soft blue tints, two-tone headings, 10px buttons, 24px cards.
+   ========================================================================== */
+
+.about-us {
+  --au-navy: #0f172a;
+  --au-text: #4b5563;
+  --au-blue: #1f6feb;
+  --au-blue-dark: #1558c7;
+  --au-blue-soft: #eaf2ff;
+  --au-blue-wash: #f3f8ff;
+  --au-line: #e5edf7;
+  --au-navy-deep: #0b2a6b;
+  --au-gutter: clamp(20px, 2.5vw, 48px);
+  --au-max: 1240px;
+  --au-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color: var(--au-navy);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  background: #ffffff;
+  display: block;
+  width: 100%;
+  container: aboutus / inline-size;
 }
-export default AboutUs
+
+.about-us *,
+.about-us *::before,
+.about-us *::after {
+  box-sizing: border-box;
+}
+
+.au-container {
+  width: min(var(--au-max), 100%);
+  margin-inline: auto;
+  padding-inline: var(--au-gutter);
+}
+
+.au-accent {
+  color: var(--au-blue);
+}
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+.au-hero {
+  padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 6vw, 72px);
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(31, 111, 235, 0.16) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(180deg, var(--au-blue-wash) 0%, #ffffff 100%);
+}
+
+.au-hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.au-eyebrow {
+  display: inline-block;
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--au-blue-dark);
+  background: var(--au-blue-soft);
+  border: 1px solid rgba(31, 111, 235, 0.18);
+  border-radius: 999px;
+}
+
+.au-hero__title {
+  margin: 18px 0 0;
+  font-size: clamp(2.25rem, 1.3rem + 4.2vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.au-hero__lead {
+  max-width: 40ch;
+  margin: 18px 0 0;
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
+  line-height: 1.6;
+  color: var(--au-text);
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Sections
+   -------------------------------------------------------------------------- */
+.au-section {
+  padding: var(--section-space, 80px) 0;
+}
+
+.au-section--wash {
+  background: linear-gradient(180deg, var(--au-blue-wash) 0%, #ffffff 100%);
+}
+
+.au-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+}
+
+.au-split__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.au-split__text p {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--au-text);
+  text-wrap: pretty;
+}
+
+.au-kicker {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--au-blue);
+}
+
+.au-h2 {
+  position: relative;
+  margin: 0;
+  padding-bottom: 14px;
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.au-h2--bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--au-blue);
+}
+
+.au-h2--center::after {
+  left: 50%;
+  translate: -50% 0;
+}
+
+.au-center {
+  display: flex;
+  justify-content: center;
+  margin-bottom: clamp(28px, 4vw, 48px);
+  text-align: center;
+}
+
+/* Check list */
+.au-checks {
+  display: grid;
+  gap: 12px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.au-checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--au-navy);
+}
+
+.au-check__icon {
+  flex: none;
+  margin-top: 2px;
+  color: #16a34a;
+}
+
+/* Image */
+.au-media {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  border: 1px solid var(--au-line);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--au-blue-soft);
+  box-shadow: 0 20px 48px rgba(31, 111, 235, 0.16);
+}
+
+.au-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Stats
+   -------------------------------------------------------------------------- */
+.au-stats {
+  padding: 0 0 var(--section-space, 80px);
+}
+
+.au-stats__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.au-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 28px 20px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid var(--au-line);
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.au-stat__value {
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--au-blue);
+}
+
+.au-stat__label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--au-text);
+}
+
+/* --------------------------------------------------------------------------
+   Mission / Vision / Founder cards
+   -------------------------------------------------------------------------- */
+.au-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+.au-card {
+  padding: 28px 24px;
+  background: #ffffff;
+  border: 1px solid var(--au-line);
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition:
+    translate 0.35s var(--au-ease),
+    box-shadow 0.35s var(--au-ease),
+    border-color 0.35s var(--au-ease);
+}
+
+.au-card__title {
+  margin: 0 0 12px;
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.au-card__text {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--au-text);
+  text-wrap: pretty;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .au-card:hover {
+    translate: 0 -6px;
+    border-color: rgba(31, 111, 235, 0.25);
+    box-shadow: 0 20px 40px rgba(31, 111, 235, 0.16);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   CTA
+   -------------------------------------------------------------------------- */
+.au-cta {
+  padding: 0 0 var(--section-space, 80px);
+}
+
+.au-cta__box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: clamp(28px, 5vw, 56px);
+  border-radius: 24px;
+  color: #ffffff;
+  background: linear-gradient(120deg, var(--au-navy-deep) 0%, var(--au-blue) 100%);
+  box-shadow: 0 20px 48px rgba(31, 111, 235, 0.28);
+}
+
+.au-cta__title {
+  max-width: 24ch;
+  margin: 0;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Button
+   -------------------------------------------------------------------------- */
+.au-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-block-size: 52px;
+  padding: 0 28px;
+  border-radius: 10px;
+  background: var(--au-blue);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.2s ease,
+    translate 0.2s var(--au-ease),
+    scale 0.15s var(--au-ease);
+}
+
+.au-btn--light {
+  background: #ffffff;
+  color: var(--au-blue-dark);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.25);
+}
+
+.au-btn__icon {
+  transition: translate 0.2s var(--au-ease);
+}
+
+.au-btn:active {
+  scale: 0.98;
+}
+
+.au-btn:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .au-btn--light:hover {
+    background: var(--au-blue-soft);
+    translate: 0 -2px;
+  }
+
+  .au-btn:hover .au-btn__icon {
+    translate: 4px 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Motion: one hero entrance, only when the visitor allows motion
+   -------------------------------------------------------------------------- */
+@keyframes auIn {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .au-hero__inner > * {
+    animation: auIn 0.7s var(--au-ease) backwards;
+  }
+
+  .au-hero__inner > :nth-child(2) { animation-delay: 80ms; }
+  .au-hero__inner > :nth-child(3) { animation-delay: 160ms; }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive (container queries, mobile-first)
+   < 640: one column, full-width CTA button
+   >= 640: three stat columns, CTA in a row
+   >= 960: two-column splits, three cards
+   -------------------------------------------------------------------------- */
+@container aboutus (max-width: 639px) {
+  .au-cta__box .au-btn {
+    align-self: stretch;
+    width: 100%;
+  }
+}
+
+@container aboutus (min-width: 640px) {
+  .au-stats__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .au-cta__box {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@container aboutus (min-width: 960px) {
+  .au-split {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+
+  .au-split--reverse {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  }
+
+  /* image on the left in the "Why us" section */
+  .au-split--reverse .au-media {
+    order: -1;
+  }
+
+  .au-media {
+    max-width: none;
+    margin: 0;
+  }
+
+  .au-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .about-us *,
+  .about-us *::before,
+  .about-us *::after {
+    transition-duration: 0.001ms !important;
+  }
+
+  .au-card:hover,
+  .au-btn:hover {
+    translate: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .au-card,
+  .au-stat,
+  .au-media,
+  .au-btn {
+    border: 1px solid CanvasText;
+  }
+}

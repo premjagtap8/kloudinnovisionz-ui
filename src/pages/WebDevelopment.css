@@ -1,0 +1,710 @@
+/* ==========================================================================
+   Web Development Page Styles
+   Same theme as Projects / Hero / Contact: Inter, navy #0f172a, blue #1f6feb,
+   soft blue tints, two-tone headings, 10px buttons, 24px cards.
+   ========================================================================== */
+
+.webdev {
+  --wd-navy: #0f172a;
+  --wd-text: #4b5563;
+  --wd-blue: #1f6feb;
+  --wd-blue-dark: #1558c7;
+  --wd-blue-soft: #eaf2ff;
+  --wd-blue-wash: #f3f8ff;
+  --wd-line: #e5edf7;
+  --wd-green: #16a34a;
+  --wd-navy-deep: #0b2a6b;
+  --wd-gutter: clamp(20px, 2.5vw, 48px);
+  --wd-max: 1240px;
+  --wd-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color: var(--wd-navy);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  background: #ffffff;
+  /* inline-size containment makes the intrinsic width 0, so always fill the parent */
+  display: block;
+  width: 100%;
+  container: webdev / inline-size;
+}
+
+.webdev *,
+.webdev *::before,
+.webdev *::after {
+  box-sizing: border-box;
+}
+
+.wd-container {
+  width: min(var(--wd-max), 100%);
+  margin-inline: auto;
+  padding-inline: var(--wd-gutter);
+}
+
+.wd-accent {
+  color: var(--wd-blue);
+}
+
+.wd-h2 {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons (shared)
+   -------------------------------------------------------------------------- */
+.wd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-block-size: 52px;
+  padding: 0 28px;
+  border-radius: 10px;
+  background: var(--wd-blue);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(31, 111, 235, 0.32);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.2s ease,
+    translate 0.2s var(--wd-ease),
+    scale 0.15s var(--wd-ease),
+    box-shadow 0.2s ease;
+}
+
+.wd-btn--full {
+  width: 100%;
+}
+
+.wd-btn--ghost {
+  background: #ffffff;
+  color: var(--wd-blue);
+  border: 1px solid var(--wd-blue);
+  box-shadow: none;
+}
+
+.wd-btn--light {
+  background: #ffffff;
+  color: var(--wd-blue-dark);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.25);
+}
+
+.wd-btn__icon {
+  transition: translate 0.2s var(--wd-ease);
+}
+
+.wd-btn:active {
+  scale: 0.98;
+}
+
+.wd-btn:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.45);
+  outline-offset: 3px;
+}
+
+/* blue ring is invisible on the blue CTA band, so use white there */
+.wd-btn--light:focus-visible {
+  outline-color: #ffffff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wd-btn:hover {
+    background: var(--wd-blue-dark);
+    translate: 0 -2px;
+    box-shadow: 0 14px 28px rgba(31, 111, 235, 0.38);
+  }
+
+  .wd-btn--ghost:hover {
+    background: var(--wd-blue-soft);
+    color: var(--wd-blue-dark);
+    box-shadow: none;
+  }
+
+  .wd-btn--light:hover {
+    background: var(--wd-blue-soft);
+  }
+
+  .wd-btn:hover .wd-btn__icon {
+    translate: 4px 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+.wd-hero {
+  padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 6vw, 72px);
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(31, 111, 235, 0.16) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(180deg, var(--wd-blue-wash) 0%, #ffffff 100%);
+}
+
+.wd-hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.wd-eyebrow {
+  display: inline-block;
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--wd-blue-dark);
+  background: var(--wd-blue-soft);
+  border: 1px solid rgba(31, 111, 235, 0.18);
+  border-radius: 999px;
+}
+
+.wd-hero__title {
+  margin: 18px 0 0;
+  font-size: clamp(2.25rem, 1.3rem + 4.2vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.wd-hero__lead {
+  max-width: 34ch;
+  margin: 18px 0 0;
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
+  line-height: 1.6;
+  color: var(--wd-text);
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Intro
+   -------------------------------------------------------------------------- */
+.wd-intro {
+  padding: clamp(32px, 5vw, 64px) 0 var(--section-space, 80px);
+}
+
+.wd-intro__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+}
+
+.wd-intro__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.wd-intro__text p {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--wd-text);
+  text-wrap: pretty;
+}
+
+.wd-checks {
+  display: grid;
+  gap: 12px;
+  margin: 6px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wd-checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--wd-navy);
+}
+
+.wd-check__icon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--wd-green);
+}
+
+.wd-intro__text .wd-btn {
+  margin-top: 8px;
+}
+
+/* Intro image */
+.wd-intro__media {
+  width: 100%;
+  max-width: 640px; /* stacked layout: do not stretch across a tablet */
+  margin: 0 auto;
+  border: 1px solid var(--wd-line);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--wd-blue-soft);
+  box-shadow: 0 20px 48px rgba(31, 111, 235, 0.16);
+}
+
+.wd-intro__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Portfolio
+   -------------------------------------------------------------------------- */
+.wd-work {
+  padding: var(--section-space, 80px) 0;
+  background: linear-gradient(180deg, var(--wd-blue-wash) 0%, #ffffff 100%);
+}
+
+.wd-work__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+  text-align: center;
+}
+
+.wd-work__header p {
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--wd-text);
+  text-wrap: balance;
+}
+
+.wd-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+.wd-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid var(--wd-line);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition:
+    translate 0.35s var(--wd-ease),
+    box-shadow 0.35s var(--wd-ease),
+    border-color 0.35s var(--wd-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wd-card:hover {
+    translate: 0 -6px;
+    border-color: rgba(31, 111, 235, 0.25);
+    box-shadow: 0 20px 40px rgba(31, 111, 235, 0.16);
+  }
+
+  .wd-card:hover .wd-card__media img {
+    scale: 1.05;
+  }
+}
+
+.wd-card__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--wd-blue-soft);
+}
+
+.wd-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 0.6s var(--wd-ease);
+}
+
+.wd-card__tags {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.wd-card__tag {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--wd-blue-dark);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.wd-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 22px 24px;
+  text-align: center;
+}
+
+.wd-card__title {
+  margin: 0;
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.wd-work__more {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(28px, 4vw, 48px);
+}
+
+/* --------------------------------------------------------------------------
+   FAQ
+   -------------------------------------------------------------------------- */
+.wd-faq {
+  padding: var(--section-space, 80px) 0;
+  background: #ffffff;
+}
+
+.wd-faq__inner {
+  max-width: 920px; /* narrower reading column; still padded by .wd-container */
+}
+
+.wd-faq__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+  text-align: center;
+}
+
+.wd-faq__header p {
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--wd-text);
+  text-wrap: balance;
+}
+
+.wd-faq__list {
+  display: grid;
+  gap: 14px;
+}
+
+.wd-faq__item {
+  background: #ffffff;
+  border: 1px solid var(--wd-line);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  transition:
+    border-color 0.3s var(--wd-ease),
+    box-shadow 0.3s var(--wd-ease),
+    background-color 0.3s var(--wd-ease);
+}
+
+.wd-faq__item.is-open {
+  background: var(--wd-blue-wash);
+  border-color: rgba(31, 111, 235, 0.28);
+  box-shadow: 0 14px 32px rgba(31, 111, 235, 0.12);
+}
+
+.wd-faq__q {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.wd-faq__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-block-size: 64px;
+  padding: 16px 20px;
+  border: 0;
+  background: transparent;
+  color: var(--wd-navy);
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.wd-faq__trigger:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.45);
+  outline-offset: -3px;
+  border-radius: 20px;
+}
+
+.wd-faq__question {
+  flex: 1;
+  min-width: 0;
+  text-wrap: pretty;
+}
+
+.wd-faq__toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--wd-blue-soft);
+  color: var(--wd-blue);
+  transition:
+    background-color 0.3s var(--wd-ease),
+    color 0.3s var(--wd-ease);
+}
+
+.wd-faq__icon-bar {
+  transform-origin: center;
+  transform-box: fill-box;
+  transition:
+    transform 0.3s var(--wd-ease),
+    opacity 0.2s ease;
+}
+
+.wd-faq__item.is-open .wd-faq__toggle {
+  background: var(--wd-blue);
+  color: #ffffff;
+}
+
+/* vertical bar collapses so the plus becomes a minus */
+.wd-faq__item.is-open .wd-faq__icon-bar {
+  transform: rotate(90deg) scaleX(0);
+  opacity: 0;
+}
+
+/* smooth height animation without measuring: 0fr -> 1fr */
+.wd-faq__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s var(--wd-ease);
+}
+
+.wd-faq__item.is-open .wd-faq__panel {
+  grid-template-rows: 1fr;
+}
+
+.wd-faq__panel-inner {
+  min-height: 0;
+  overflow: hidden;
+  /* hide closed content from keyboard and screen readers once the collapse finishes */
+  visibility: hidden;
+  transition: visibility 0s linear 0.35s;
+}
+
+.wd-faq__item.is-open .wd-faq__panel-inner {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.wd-faq__answer {
+  margin: 0 20px;
+  padding: 16px 0 22px;
+  border-top: 1px solid var(--wd-line);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--wd-text);
+  text-wrap: pretty;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wd-faq__item:not(.is-open):hover {
+    border-color: rgba(31, 111, 235, 0.25);
+    box-shadow: 0 14px 32px rgba(31, 111, 235, 0.1);
+  }
+
+  .wd-faq__trigger:hover {
+    color: var(--wd-blue-dark);
+  }
+
+  .wd-faq__item:not(.is-open) .wd-faq__trigger:hover .wd-faq__toggle {
+    background: #d9e8ff;
+  }
+}
+
+@media (forced-colors: active) {
+  .wd-faq__item,
+  .wd-faq__toggle {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   CTA
+   -------------------------------------------------------------------------- */
+.wd-cta {
+  padding: 0 0 var(--section-space, 80px);
+}
+
+.wd-cta__box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: clamp(28px, 5vw, 56px);
+  border-radius: 24px;
+  color: #ffffff;
+  background: linear-gradient(120deg, var(--wd-navy-deep) 0%, var(--wd-blue) 100%);
+  box-shadow: 0 20px 48px rgba(31, 111, 235, 0.28);
+}
+
+.wd-cta__title {
+  max-width: 24ch;
+  margin: 0;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Motion: one hero entrance, only when the visitor allows motion
+   -------------------------------------------------------------------------- */
+@keyframes wdIn {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wd-hero__inner > * {
+    animation: wdIn 0.7s var(--wd-ease) backwards;
+  }
+
+  .wd-hero__inner > :nth-child(2) {
+    animation-delay: 80ms;
+  }
+
+  .wd-hero__inner > :nth-child(3) {
+    animation-delay: 160ms;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive (container queries, mobile-first)
+   < 640 (phone): one column, full-width buttons
+   >= 640 (tablet): two card columns, CTA in a row
+   >= 960 (desktop): intro in two columns, three card columns
+   -------------------------------------------------------------------------- */
+@container webdev (max-width: 639px) {
+  /* thumb-friendly full-width buttons on phones */
+  .wd-intro__text .wd-btn,
+  .wd-work__more .wd-btn,
+  .wd-cta__box .wd-btn {
+    align-self: stretch;
+    width: 100%;
+  }
+}
+
+@container webdev (min-width: 640px) {
+  .wd-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .wd-btn--full {
+    width: auto;
+  }
+
+  .wd-cta__box {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* FAQ: roomier rows on tablet and up */
+  .wd-faq__trigger {
+    min-block-size: 72px;
+    padding: 18px 28px;
+    font-size: 1.125rem;
+  }
+
+  .wd-faq__answer {
+    margin: 0 28px;
+    padding: 18px 0 26px;
+    font-size: 1.0625rem;
+  }
+}
+
+@container webdev (min-width: 960px) {
+  .wd-intro__grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
+
+  .wd-intro__media {
+    max-width: none;
+    margin: 0;
+  }
+
+  .wd-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .webdev *,
+  .webdev *::before,
+  .webdev *::after {
+    transition-duration: 0.001ms !important;
+  }
+
+  .wd-card:hover,
+  .wd-btn:hover {
+    translate: none;
+  }
+
+  .wd-card:hover .wd-card__media img {
+    scale: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .wd-card,
+  .wd-btn,
+  .wd-intro__media {
+    border: 1px solid CanvasText;
+  }
+}

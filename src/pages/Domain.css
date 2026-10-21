@@ -1,0 +1,730 @@
+/* ==========================================================================
+   Domain & Hosting Page Styles
+   Same theme as Web / App / Software Development and Digital Marketing:
+   Inter, navy #0f172a, blue #1f6feb, soft blue tints, two-tone headings,
+   10px buttons, 24px cards.
+   Responsive via container queries: phone < 640, tablet >= 640, desktop >= 960.
+   ========================================================================== */
+
+.domain {
+  --dn-navy: #0f172a;
+  --dn-navy-deep: #0b2a6b;
+  --dn-text: #4b5563;
+  --dn-blue: #1f6feb;
+  --dn-blue-dark: #1558c7;
+  --dn-blue-soft: #eaf2ff;
+  --dn-blue-wash: #f3f8ff;
+  --dn-line: #e5edf7;
+  --dn-gutter: clamp(20px, 2.5vw, 48px);
+  --dn-max: 1240px;
+  --dn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* fluid section rhythm; a global --section-space still wins if the site defines one */
+  --dn-section: clamp(56px, 8vw, 96px);
+
+  color: var(--dn-navy);
+  color-scheme: light;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  background: #ffffff;
+  /* inline-size containment makes the intrinsic width 0, so always fill the parent */
+  display: block;
+  width: 100%;
+  container: domain / inline-size;
+}
+
+.domain *,
+.domain *::before,
+.domain *::after {
+  box-sizing: border-box;
+}
+
+.dn-container {
+  width: min(var(--dn-max), 100%);
+  margin-inline: auto;
+  padding-inline: var(--dn-gutter);
+}
+
+.dn-accent {
+  color: var(--dn-blue);
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.dn-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-block-size: 52px;
+  padding: 0 28px;
+  border-radius: 10px;
+  background: var(--dn-blue);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(31, 111, 235, 0.32);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.2s ease,
+    translate 0.2s var(--dn-ease),
+    scale 0.15s var(--dn-ease),
+    box-shadow 0.2s ease;
+}
+
+.dn-btn--light {
+  background: #ffffff;
+  color: var(--dn-blue-dark);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.25);
+}
+
+.dn-btn__icon {
+  transition: translate 0.2s var(--dn-ease);
+}
+
+.dn-btn:active {
+  scale: 0.98;
+}
+
+.dn-btn:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.45);
+  outline-offset: 3px;
+}
+
+/* blue ring is invisible on the blue CTA band, so use white there */
+.dn-btn--light:focus-visible {
+  outline-color: #ffffff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dn-btn:hover {
+    background: var(--dn-blue-dark);
+    translate: 0 -2px;
+    box-shadow: 0 14px 28px rgba(31, 111, 235, 0.38);
+  }
+
+  .dn-btn--light:hover {
+    background: var(--dn-blue-soft);
+  }
+
+  .dn-btn:hover .dn-btn__icon {
+    translate: 4px 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+.dn-hero {
+  padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 6vw, 72px);
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(31, 111, 235, 0.16) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(180deg, var(--dn-blue-wash) 0%, #ffffff 100%);
+}
+
+.dn-hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.dn-hero__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  margin-bottom: 22px;
+  border-radius: 24px;
+  color: var(--dn-blue);
+  background: var(--dn-blue-soft);
+  border: 1px solid rgba(31, 111, 235, 0.18);
+  box-shadow: 0 12px 28px rgba(31, 111, 235, 0.16);
+}
+
+.dn-eyebrow {
+  display: inline-block;
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--dn-blue-dark);
+  background: var(--dn-blue-soft);
+  border: 1px solid rgba(31, 111, 235, 0.18);
+  border-radius: 999px;
+}
+
+.dn-hero__title {
+  margin: 18px 0 0;
+  font-size: clamp(2.25rem, 1.2rem + 5cqi, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.dn-hero__lead {
+  max-width: 52ch;
+  margin: 18px 0 0;
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
+  line-height: 1.6;
+  color: var(--dn-text);
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Sections: text + image (shared by Domain and Hosting)
+   -------------------------------------------------------------------------- */
+.dn-section {
+  padding: clamp(32px, 5vw, 64px) 0 var(--section-space, var(--dn-section));
+}
+
+/* alternating background: the Hosting band uses the soft wash */
+.dn-section--wash {
+  padding-top: var(--section-space, var(--dn-section));
+  background: linear-gradient(180deg, var(--dn-blue-wash) 0%, #ffffff 100%);
+}
+
+.dn-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+}
+
+/* mobile: image first, then the copy */
+.dn-split__side {
+  order: 1;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.dn-split__text {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.dn-split__text p {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--dn-text);
+  text-wrap: pretty;
+}
+
+.dn-split__text .dn-btn {
+  margin-top: 8px;
+}
+
+.dn-kicker {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dn-blue);
+}
+
+.dn-h2 {
+  position: relative;
+  margin: 0;
+  padding-bottom: 14px;
+  font-size: clamp(1.75rem, 1.2rem + 2.2cqi, 2.75rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* short blue bar under headings */
+.dn-h2--bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--dn-blue);
+}
+
+.dn-subhead {
+  margin: 8px 0 0;
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--dn-navy);
+}
+
+/* --------------------------------------------------------------------------
+   Image + placeholder
+   -------------------------------------------------------------------------- */
+.dn-media {
+  margin: 0; /* reset default <figure> margins */
+  border: 1px solid var(--dn-line);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--dn-blue-soft);
+  box-shadow: 0 20px 48px rgba(31, 111, 235, 0.16);
+}
+
+.dn-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.dn-placeholder {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  aspect-ratio: 4 / 3;
+  padding: 32px;
+  text-align: center;
+  color: var(--dn-blue-dark);
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(31, 111, 235, 0.18) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(180deg, var(--dn-blue-wash) 0%, var(--dn-blue-soft) 100%);
+  /* dashed frame inside the card marks it as a stand-in */
+  outline: 2px dashed rgba(31, 111, 235, 0.35);
+  outline-offset: -14px;
+  border-radius: 24px;
+}
+
+.dn-placeholder__title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--dn-navy);
+}
+
+.dn-placeholder__note {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--dn-text);
+}
+
+/* --------------------------------------------------------------------------
+   Feature cards
+   -------------------------------------------------------------------------- */
+.dn-why {
+  padding: 0 0 var(--section-space, var(--dn-section));
+}
+
+.dn-features {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dn-feature {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid var(--dn-line);
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition:
+    translate 0.35s var(--dn-ease),
+    box-shadow 0.35s var(--dn-ease),
+    border-color 0.35s var(--dn-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dn-feature:hover {
+    translate: 0 -6px;
+    border-color: rgba(31, 111, 235, 0.25);
+    box-shadow: 0 20px 40px rgba(31, 111, 235, 0.16);
+  }
+}
+
+.dn-feature__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 6px;
+  border-radius: 14px;
+  color: var(--dn-blue);
+  background: var(--dn-blue-soft);
+  border: 1px solid rgba(31, 111, 235, 0.18);
+}
+
+.dn-feature__title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--dn-navy);
+  text-wrap: balance;
+}
+
+.dn-feature__text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--dn-text);
+  text-wrap: pretty;
+}
+
+/* --------------------------------------------------------------------------
+   FAQ
+   -------------------------------------------------------------------------- */
+.dn-faq {
+  padding: var(--section-space, var(--dn-section)) 0;
+  background: linear-gradient(180deg, var(--dn-blue-wash) 0%, #ffffff 100%);
+}
+
+.dn-faq__inner {
+  max-width: 920px; /* narrower reading column; still padded by .dn-container */
+}
+
+.dn-faq__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+  text-align: center;
+}
+
+/* centered title: no left-aligned bar, so drop the bar's bottom padding */
+.dn-faq__header .dn-h2 {
+  padding-bottom: 0;
+}
+
+.dn-faq__header p {
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--dn-text);
+  text-wrap: balance;
+}
+
+.dn-faq__list {
+  display: grid;
+  gap: 14px;
+}
+
+.dn-faq__item {
+  background: #ffffff;
+  border: 1px solid var(--dn-line);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  transition:
+    border-color 0.3s var(--dn-ease),
+    box-shadow 0.3s var(--dn-ease),
+    background-color 0.3s var(--dn-ease);
+}
+
+.dn-faq__item.is-open {
+  background: var(--dn-blue-wash);
+  border-color: rgba(31, 111, 235, 0.28);
+  box-shadow: 0 14px 32px rgba(31, 111, 235, 0.12);
+}
+
+.dn-faq__q {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.dn-faq__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-block-size: 64px;
+  padding: 16px 20px;
+  border: 0;
+  background: transparent;
+  color: var(--dn-navy);
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.dn-faq__trigger:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.45);
+  outline-offset: -3px;
+  border-radius: 20px;
+}
+
+.dn-faq__question {
+  flex: 1;
+  min-width: 0;
+  text-wrap: pretty;
+}
+
+.dn-faq__toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--dn-blue-soft);
+  color: var(--dn-blue);
+  transition:
+    background-color 0.3s var(--dn-ease),
+    color 0.3s var(--dn-ease);
+}
+
+.dn-faq__icon-bar {
+  transform-origin: center;
+  transform-box: fill-box;
+  transition:
+    transform 0.3s var(--dn-ease),
+    opacity 0.2s ease;
+}
+
+.dn-faq__item.is-open .dn-faq__toggle {
+  background: var(--dn-blue);
+  color: #ffffff;
+}
+
+/* vertical bar collapses so the plus becomes a minus */
+.dn-faq__item.is-open .dn-faq__icon-bar {
+  transform: rotate(90deg) scaleX(0);
+  opacity: 0;
+}
+
+/* smooth height animation without measuring: 0fr -> 1fr */
+.dn-faq__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s var(--dn-ease);
+}
+
+.dn-faq__item.is-open .dn-faq__panel {
+  grid-template-rows: 1fr;
+}
+
+.dn-faq__panel-inner {
+  min-height: 0;
+  overflow: hidden;
+  /* hide closed content from keyboard and screen readers once the collapse finishes */
+  visibility: hidden;
+  transition: visibility 0s linear 0.35s;
+}
+
+.dn-faq__item.is-open .dn-faq__panel-inner {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.dn-faq__answer {
+  margin: 0 20px;
+  padding: 16px 0 22px;
+  border-top: 1px solid var(--dn-line);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--dn-text);
+  text-wrap: pretty;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dn-faq__item:not(.is-open):hover {
+    border-color: rgba(31, 111, 235, 0.25);
+    box-shadow: 0 14px 32px rgba(31, 111, 235, 0.1);
+  }
+
+  .dn-faq__trigger:hover {
+    color: var(--dn-blue-dark);
+  }
+
+  .dn-faq__item:not(.is-open) .dn-faq__trigger:hover .dn-faq__toggle {
+    background: #d9e8ff;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   CTA
+   -------------------------------------------------------------------------- */
+.dn-cta {
+  padding: 0 0 var(--section-space, var(--dn-section));
+}
+
+.dn-cta__box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: clamp(28px, 5vw, 56px);
+  border-radius: 24px;
+  color: #ffffff;
+  background: linear-gradient(120deg, var(--dn-navy-deep) 0%, var(--dn-blue) 100%);
+  box-shadow: 0 20px 48px rgba(31, 111, 235, 0.28);
+}
+
+.dn-cta__title {
+  max-width: 28ch;
+  margin: 0;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Motion: one hero entrance, only when the visitor allows motion
+   -------------------------------------------------------------------------- */
+@keyframes dnIn {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dn-hero__inner > * {
+    animation: dnIn 0.7s var(--dn-ease) backwards;
+  }
+
+  .dn-hero__inner > :nth-child(2) { animation-delay: 60ms; }
+  .dn-hero__inner > :nth-child(3) { animation-delay: 120ms; }
+  .dn-hero__inner > :nth-child(4) { animation-delay: 180ms; }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive (container queries, mobile-first)
+   < 640 (phone): full-width buttons
+   >= 640 (tablet): CTA in a row
+   >= 960 (desktop): text and image side by side, image sticks while reading
+   -------------------------------------------------------------------------- */
+@container domain (max-width: 639px) {
+  /* thumb-friendly full-width buttons on phones */
+  .dn-split__text .dn-btn,
+  .dn-cta__box .dn-btn {
+    align-self: stretch;
+    width: 100%;
+  }
+}
+
+@container domain (min-width: 640px) {
+  .dn-cta__box {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* feature cards: two per row on tablet */
+  .dn-features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  /* FAQ: roomier rows on tablet and up */
+  .dn-faq__trigger {
+    min-block-size: 72px;
+    padding: 18px 28px;
+    font-size: 1.125rem;
+  }
+
+  .dn-faq__answer {
+    margin: 0 28px;
+    padding: 18px 0 26px;
+    font-size: 1.0625rem;
+  }
+}
+
+@container domain (min-width: 960px) {
+  .dn-split {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  }
+
+  .dn-split__text {
+    order: 1;
+  }
+
+  .dn-split__side {
+    order: 2;
+    max-width: none;
+    margin: 0;
+    /* long copy column: keep the image in view while reading.
+       Set --header-height on :root if the site header is not ~88px. */
+    position: sticky;
+    top: calc(var(--header-height, 88px) + 24px);
+    align-self: start;
+  }
+
+  /* feature cards: four across on desktop */
+  .dn-features {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  /* Hosting: image on the left for rhythm */
+  .dn-split--flip {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  }
+
+  .dn-split--flip .dn-split__side {
+    order: 1;
+  }
+
+  .dn-split--flip .dn-split__text {
+    order: 2;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .domain *,
+  .domain *::before,
+  .domain *::after {
+    transition-duration: 0.001ms !important;
+  }
+
+  .dn-btn:hover,
+  .dn-feature:hover {
+    translate: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .dn-btn,
+  .dn-media,
+  .dn-hero__icon,
+  .dn-feature,
+  .dn-feature__icon,
+  .dn-faq__item,
+  .dn-faq__toggle {
+    border: 1px solid CanvasText;
+  }
+}

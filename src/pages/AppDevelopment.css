@@ -1,0 +1,612 @@
+/* ==========================================================================
+   App Development Page Styles
+   Same theme as Projects / Web Development: Inter, navy #0f172a, blue #1f6feb,
+   soft blue tints, two-tone headings, 10px buttons, 24px cards.
+   Responsive via container queries: phone < 640, tablet >= 640, desktop >= 960.
+   ========================================================================== */
+
+.appdev {
+  --ad-navy: #0f172a;
+  --ad-navy-deep: #0b2a6b;
+  --ad-text: #4b5563;
+  --ad-blue: #1f6feb;
+  --ad-blue-dark: #1558c7;
+  --ad-blue-soft: #eaf2ff;
+  --ad-blue-wash: #f3f8ff;
+  --ad-line: #e5edf7;
+  --ad-green: #16a34a;
+  --ad-gutter: clamp(20px, 2.5vw, 48px);
+  --ad-max: 1240px;
+  --ad-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* fluid section rhythm; a global --section-space still wins if the site defines one */
+  --ad-section: clamp(56px, 8vw, 96px);
+
+  color: var(--ad-navy);
+  color-scheme: light;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  background: #ffffff;
+  /* inline-size containment makes the intrinsic width 0, so always fill the parent */
+  display: block;
+  width: 100%;
+  container: appdev / inline-size;
+}
+
+.appdev *,
+.appdev *::before,
+.appdev *::after {
+  box-sizing: border-box;
+}
+
+.ad-container {
+  width: min(var(--ad-max), 100%);
+  margin-inline: auto;
+  padding-inline: var(--ad-gutter);
+}
+
+.ad-accent {
+  color: var(--ad-blue);
+}
+
+.ad-h2 {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.2rem + 2.2cqi, 2.75rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.ad-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-block-size: 52px;
+  padding: 0 28px;
+  border-radius: 10px;
+  background: var(--ad-blue);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(31, 111, 235, 0.32);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.2s ease,
+    translate 0.2s var(--ad-ease),
+    scale 0.15s var(--ad-ease),
+    box-shadow 0.2s ease;
+}
+
+.ad-btn--light {
+  background: #ffffff;
+  color: var(--ad-blue-dark);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.25);
+}
+
+.ad-btn__icon {
+  transition: translate 0.2s var(--ad-ease);
+}
+
+.ad-btn:active {
+  scale: 0.98;
+}
+
+.ad-btn:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.45);
+  outline-offset: 3px;
+}
+
+/* blue ring is invisible on the blue CTA band, so use white there */
+.ad-btn--light:focus-visible {
+  outline-color: #ffffff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ad-btn:hover {
+    background: var(--ad-blue-dark);
+    translate: 0 -2px;
+    box-shadow: 0 14px 28px rgba(31, 111, 235, 0.38);
+  }
+
+  .ad-btn--light:hover {
+    background: var(--ad-blue-soft);
+  }
+
+  .ad-btn:hover .ad-btn__icon {
+    translate: 4px 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+.ad-hero {
+  padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 6vw, 72px);
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(31, 111, 235, 0.16) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(180deg, var(--ad-blue-wash) 0%, #ffffff 100%);
+}
+
+.ad-hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.ad-eyebrow {
+  display: inline-block;
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ad-blue-dark);
+  background: var(--ad-blue-soft);
+  border: 1px solid rgba(31, 111, 235, 0.18);
+  border-radius: 999px;
+}
+
+.ad-hero__title {
+  margin: 18px 0 0;
+  font-size: clamp(2.25rem, 1.2rem + 5cqi, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.ad-hero__lead {
+  max-width: 34ch;
+  margin: 18px 0 0;
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
+  line-height: 1.6;
+  color: var(--ad-text);
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Intro
+   -------------------------------------------------------------------------- */
+.ad-intro {
+  padding: clamp(32px, 5vw, 64px) 0 var(--section-space, var(--ad-section));
+}
+
+.ad-intro__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+}
+
+.ad-intro__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.ad-intro__text p {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--ad-text);
+  text-wrap: pretty;
+}
+
+.ad-checks {
+  display: grid;
+  gap: 12px;
+  margin: 6px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ad-checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ad-navy);
+}
+
+.ad-check__icon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--ad-green);
+}
+
+.ad-intro__text .ad-btn {
+  margin-top: 8px;
+}
+
+/* Mobile app image */
+.ad-media {
+  margin: 0; /* reset default <figure> margins */
+  display: grid;
+  place-items: center;
+  padding: clamp(20px, 3.5vw, 40px);
+  border: 1px solid var(--ad-line);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(31, 111, 235, 0.18) 0%, rgba(31, 111, 235, 0) 70%),
+    linear-gradient(180deg, var(--ad-blue-wash) 0%, var(--ad-blue-soft) 100%);
+}
+
+.ad-media__img {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* --------------------------------------------------------------------------
+   Story
+   -------------------------------------------------------------------------- */
+.ad-story {
+  padding: var(--section-space, var(--ad-section)) 0;
+  background: linear-gradient(180deg, var(--ad-blue-wash) 0%, #ffffff 100%);
+}
+
+.ad-story__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.ad-story__inner p {
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--ad-text);
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   FAQ
+   -------------------------------------------------------------------------- */
+.ad-faq {
+  padding: var(--section-space, var(--ad-section)) 0;
+  background: #ffffff;
+}
+
+.ad-faq__inner {
+  max-width: 920px; /* narrower reading column; still padded by .ad-container */
+}
+
+.ad-faq__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+  text-align: center;
+}
+
+.ad-faq__header p {
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--ad-text);
+  text-wrap: balance;
+}
+
+.ad-faq__list {
+  display: grid;
+  gap: 14px;
+}
+
+.ad-faq__item {
+  background: #ffffff;
+  border: 1px solid var(--ad-line);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  transition:
+    border-color 0.3s var(--ad-ease),
+    box-shadow 0.3s var(--ad-ease),
+    background-color 0.3s var(--ad-ease);
+}
+
+.ad-faq__item.is-open {
+  background: var(--ad-blue-wash);
+  border-color: rgba(31, 111, 235, 0.28);
+  box-shadow: 0 14px 32px rgba(31, 111, 235, 0.12);
+}
+
+.ad-faq__q {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.ad-faq__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-block-size: 64px;
+  padding: 16px 20px;
+  border: 0;
+  background: transparent;
+  color: var(--ad-navy);
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.ad-faq__trigger:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.45);
+  outline-offset: -3px;
+  border-radius: 20px;
+}
+
+.ad-faq__question {
+  flex: 1;
+  min-width: 0;
+  text-wrap: pretty;
+}
+
+.ad-faq__toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--ad-blue-soft);
+  color: var(--ad-blue);
+  transition:
+    background-color 0.3s var(--ad-ease),
+    color 0.3s var(--ad-ease);
+}
+
+.ad-faq__icon-bar {
+  transform-origin: center;
+  transform-box: fill-box;
+  transition:
+    transform 0.3s var(--ad-ease),
+    opacity 0.2s ease;
+}
+
+.ad-faq__item.is-open .ad-faq__toggle {
+  background: var(--ad-blue);
+  color: #ffffff;
+}
+
+/* vertical bar collapses so the plus becomes a minus */
+.ad-faq__item.is-open .ad-faq__icon-bar {
+  transform: rotate(90deg) scaleX(0);
+  opacity: 0;
+}
+
+/* smooth height animation without measuring: 0fr -> 1fr */
+.ad-faq__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s var(--ad-ease);
+}
+
+.ad-faq__item.is-open .ad-faq__panel {
+  grid-template-rows: 1fr;
+}
+
+.ad-faq__panel-inner {
+  min-height: 0;
+  overflow: hidden;
+  /* hide closed content from keyboard and screen readers once the collapse finishes */
+  visibility: hidden;
+  transition: visibility 0s linear 0.35s;
+}
+
+.ad-faq__item.is-open .ad-faq__panel-inner {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.ad-faq__answer {
+  margin: 0 20px;
+  padding: 16px 0 22px;
+  border-top: 1px solid var(--ad-line);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ad-text);
+  text-wrap: pretty;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ad-faq__item:not(.is-open):hover {
+    border-color: rgba(31, 111, 235, 0.25);
+    box-shadow: 0 14px 32px rgba(31, 111, 235, 0.1);
+  }
+
+  .ad-faq__trigger:hover {
+    color: var(--ad-blue-dark);
+  }
+
+  .ad-faq__item:not(.is-open) .ad-faq__trigger:hover .ad-faq__toggle {
+    background: #d9e8ff;
+  }
+}
+
+@media (forced-colors: active) {
+  .ad-faq__item,
+  .ad-faq__toggle {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   CTA
+   -------------------------------------------------------------------------- */
+.ad-cta {
+  padding: 0 0 var(--section-space, var(--ad-section));
+}
+
+.ad-cta__box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: clamp(28px, 5vw, 56px);
+  border-radius: 24px;
+  color: #ffffff;
+  background: linear-gradient(120deg, var(--ad-navy-deep) 0%, var(--ad-blue) 100%);
+  box-shadow: 0 20px 48px rgba(31, 111, 235, 0.28);
+}
+
+.ad-cta__title {
+  max-width: 24ch;
+  margin: 0;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   Motion: one hero entrance, only when the visitor allows motion
+   -------------------------------------------------------------------------- */
+@keyframes adIn {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ad-hero__inner > * {
+    animation: adIn 0.7s var(--ad-ease) backwards;
+  }
+
+  .ad-hero__inner > :nth-child(2) {
+    animation-delay: 80ms;
+  }
+
+  .ad-hero__inner > :nth-child(3) {
+    animation-delay: 160ms;
+  }
+}
+
+/* Scroll-driven reveal for the app image: one moment, progressive enhancement.
+   Browsers without animation-timeline simply show the image. */
+@keyframes adRise {
+  from {
+    opacity: 0;
+    translate: 0 32px;
+    scale: 0.96;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .ad-media__img {
+      animation: adRise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive (container queries, mobile-first)
+   -------------------------------------------------------------------------- */
+@container appdev (max-width: 639px) {
+  /* thumb-friendly full-width buttons on phones */
+  .ad-intro__text .ad-btn,
+  .ad-cta__box .ad-btn {
+    align-self: stretch;
+    width: 100%;
+  }
+}
+
+@container appdev (min-width: 640px) {
+  .ad-cta__box {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* FAQ: roomier rows on tablet and up */
+  .ad-faq__trigger {
+    min-block-size: 72px;
+    padding: 18px 28px;
+    font-size: 1.125rem;
+  }
+
+  .ad-faq__answer {
+    margin: 0 28px;
+    padding: 18px 0 26px;
+    font-size: 1.0625rem;
+  }
+}
+
+@container appdev (min-width: 960px) {
+  .ad-intro__grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  }
+
+  /* long copy column: keep the image in view while reading.
+     Set --header-height on :root if the site header is not ~88px. */
+  .ad-media {
+    position: sticky;
+    top: calc(var(--header-height, 88px) + 24px);
+    align-self: start;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .appdev *,
+  .appdev *::before,
+  .appdev *::after {
+    transition-duration: 0.001ms !important;
+  }
+
+  .ad-btn:hover {
+    translate: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .ad-btn,
+  .ad-media {
+    border: 1px solid CanvasText;
+  }
+}

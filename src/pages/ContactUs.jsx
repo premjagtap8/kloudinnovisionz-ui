@@ -40,26 +40,6 @@ const OFFICES = [
       'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.47205814509!2d72.88764361485158!3d19.08693605658878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7d1c2d9496781%3A0x21fa39f59f2571d6!2sKlouD%20InnoVisionZ!5e0!3m2!1sen!2sin!4v1569570535096!5m2!1sen!2sin',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=KlouD+InnoVisionZ+Kurla+Mumbai',
   },
-  {
-    id: 'france',
-    country: 'France',
-    tag: 'Paris Office',
-    address: ['2 Rue Emile Zola', 'La Courneuve, Paris', 'France - 93120'],
-    email: 'HR@kloudinnovisionz.com',
-    phone: '+33 605 620 573',
-    tel: '+33605620573',
-    mapQuery: '2 Rue Emile Zola, La Courneuve, 93120, France',
-  },
-  {
-    id: 'hungary',
-    country: 'Hungary',
-    tag: 'Budapest Office',
-    address: ['Taksony U.S', 'Budapest', 'Hungary'],
-    email: 'info@kloudinnovisionz.com',
-    phone: '+36 20 619 8338',
-    tel: '+36206198338',
-    mapQuery: 'Taksony, Budapest, Hungary',
-  },
 ]
 
 const SOCIALS = [
@@ -336,11 +316,11 @@ export default function ContactUs() {
         </div>
       </section>
 
-      {/* ---------- Offices + maps ---------- */}
+      {/* ---------- Office + map ---------- */}
       <section className="ct-offices">
         <div className="ct-offices__inner">
           <h2 className="ct-offices__title">
-            Our <span className="ct-accent-green">Offices</span>
+            Our <span className="ct-accent-green">Office</span>
           </h2>
           <div className="ct-offices__grid">
             {OFFICES.map((office) => (

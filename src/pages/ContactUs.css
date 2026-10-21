@@ -5,7 +5,7 @@
    2. Hero + Form
    3. CTA Strip
    4. Contact Cards
-   5. Offices + Maps
+   5. Office + Map (single office)
    6. Animations (motion is opt-in)
    7. Responsive (container queries on the page width, mobile-first)
    8. Accessibility (reduced motion, forced colors)
@@ -34,6 +34,7 @@
   --ct-gutter: clamp(20px, 2.5vw, 48px);
   --ct-pad-y: var(--section-space, 80px);
   --ct-max: 1240px;
+  --ct-office-max: 1040px; /* width of the single office card */
   --ct-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ct-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -548,7 +549,9 @@
 }
 
 /* --------------------------------------------------------------------------
-   5. Offices + Maps
+   5. Office + Map (single office)
+   One wide card, centred. Stacked on phones (map on top); the map sits
+   beside the details from 720px up (see section 7).
    -------------------------------------------------------------------------- */
 .ct-offices {
   padding: 0 var(--ct-gutter) var(--ct-pad-y);
@@ -570,10 +573,11 @@
   text-wrap: balance;
 }
 
-/* explicit columns (set in section 7) instead of auto-fit, which left an orphan card on tablets */
 .ct-offices__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  width: min(var(--ct-office-max), 100%);
+  margin-inline: auto; /* centres the single card */
   gap: 24px;
 }
 
@@ -724,7 +728,7 @@
    >= 600: two-column form, two-column services.
    640-959 (tablet): cards 2-up, last card full width.
    >= 960: two-column CTA, three cards.
-   Offices: 1 col -> 2 cols (third card goes wide, map beside text) -> 3 cols at 1080.
+   Office: stacked (map on top) -> map beside details from 720.
    -------------------------------------------------------------------------- */
 @container ct (min-width: 600px) {
   .ct-form {
@@ -762,27 +766,34 @@
   }
 }
 
-@container ct (min-width: 640px) {
-  .ct-offices__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* Tablet: the third office spans both columns, map beside the details */
-@container ct (min-width: 640px) and (max-width: 1079px) {
-  .ct-office:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
+/* Office: map on the left, details on the right */
+@container ct (min-width: 720px) {
+  .ct-office {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
   }
 
-  .ct-office:last-child:nth-child(odd) .ct-office__map {
+  .ct-office__map {
     aspect-ratio: auto;
-    min-block-size: 260px;
+    min-block-size: 340px;
   }
 
-  .ct-office:last-child:nth-child(odd) .ct-office__body {
+  .ct-office__body {
     align-self: center;
+    padding: clamp(24px, 3vw, 40px);
+  }
+
+  .ct-office__head h3 {
+    font-size: 1.5rem;
+  }
+
+  .ct-office__tag {
+    font-size: 0.8125rem;
+  }
+
+  .ct-office address {
+    margin-bottom: 16px;
+    font-size: 1.0625rem;
   }
 }
 
@@ -794,12 +805,6 @@
   .ct-cards__inner {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 24px;
-  }
-}
-
-@container ct (min-width: 1080px) {
-  .ct-offices__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
