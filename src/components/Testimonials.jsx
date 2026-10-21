@@ -5,11 +5,9 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import { Link } from "react-router-dom";
 import {
   ChevronLeft,
   ChevronRight,
-  ArrowRight,
   Quote,
   Star,
 } from "lucide-react";
@@ -241,18 +239,6 @@ export default function Testimonials() {
               What Our <span className="tm__title-blue">Clients</span>{" "}
               <span className="tm__title-green">Say</span>
             </h2>
-          </div>
-          <div className="tm__intro">
-            <p>
-              Our customer stories are not just reflections of today’s success
-              but a source of inspiration for tomorrow’s triumphs. Explore the
-              digital evolution that has paved the way for unparalleled business
-              growth.
-            </p>
-            <Link to="/case-studies" className="tm__more">
-              <span>View Case Studies</span>
-              <ArrowRight size={16} aria-hidden="true" />
-            </Link>
           </div>
         </div>
 
