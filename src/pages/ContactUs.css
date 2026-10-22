@@ -10,8 +10,10 @@
    7. Responsive (container queries on the page width, mobile-first)
    8. Accessibility (reduced motion, forced colors)
 
-   Theme: Inter, navy #0f172a, blue #1f6feb, green #16a34a, soft blue tints.
-   Note: Inter is already loaded by Navbar.css.
+   Theme: Poppins, navy #0f172a, blue #1f6feb, green #16a34a, soft blue tints.
+   Note: Poppins is loaded once in index.html and set globally in index.css
+   (--font-main), so no @import is needed here. This file uses var(--font-main)
+   with a Poppins fallback stack, like the other sections.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -39,8 +41,8 @@
   --ct-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   color: var(--ct-navy);
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-optical-sizing: auto;
+  /* Poppins, set globally in index.css; the stack after the comma is the fallback */
+  font-family: var(--font-main, "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%; /* stop iOS inflating text in landscape */
   background: #ffffff;
@@ -104,10 +106,10 @@
 
 .ct-hero__title {
   margin: 22px 0 0;
-  font-size: clamp(2.25rem, 1.4rem + 3.4vw, 3.75rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  font-size: clamp(2rem, 1.3rem + 3vw, 3.4rem); /* a bit smaller than before: Poppins runs wider than Inter */
+  font-weight: 700; /* 700 instead of 800: Poppins is heavier, and this matches the other sections */
+  line-height: 1.15;
+  letter-spacing: -0.02em;
   color: var(--ct-navy);
   text-wrap: balance;
 }
@@ -115,8 +117,8 @@
 .ct-hero__subtitle {
   margin: 14px auto clamp(28px, 4vw, 44px);
   max-width: 44ch; /* comfortable measure */
-  font-size: clamp(1rem, 0.9rem + 0.6vw, 1.3rem);
-  line-height: 1.6;
+  font-size: clamp(0.9375rem, 0.88rem + 0.5vw, 1.2rem);
+  line-height: 1.7;
   color: var(--ct-text);
   text-wrap: balance;
 }
@@ -135,7 +137,7 @@
   border: 1px solid var(--ct-field-line);
   border-radius: 10px;
   background: #ffffff;
-  font: inherit;
+  font: inherit; /* form fields keep Poppins */
   font-size: 1rem; /* 16px+ prevents iOS zoom-on-focus */
   color: var(--ct-navy);
   appearance: none; /* removes iOS inner shadow / default radius */
@@ -193,7 +195,7 @@
   gap: 14px;
   min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
   cursor: pointer;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--ct-navy);
   user-select: none;
@@ -265,8 +267,8 @@
   border-radius: 10px;
   background: var(--ct-blue);
   color: #ffffff;
-  font: inherit;
-  font-size: 1rem;
+  font: inherit; /* buttons keep Poppins */
+  font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 10px 24px rgba(31, 111, 235, 0.32);
@@ -302,8 +304,8 @@
   min-height: 1.4em;
   margin: 4px 0 0;
   text-align: center;
-  font-size: 0.9375rem;
-  line-height: 1.5;
+  font-size: 0.875rem;
+  line-height: 1.55;
   text-wrap: balance;
 }
 
@@ -343,10 +345,10 @@
 
 .ct-cta__title {
   margin: 0;
-  font-size: clamp(1.9rem, 1.2rem + 2.4vw, 3rem);
-  font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.75rem, 1.15rem + 2.1vw, 2.65rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: var(--ct-navy);
   text-wrap: balance;
 }
@@ -354,8 +356,8 @@
 .ct-cta__side p {
   margin: 0 0 18px;
   max-width: 52ch;
-  font-size: clamp(1rem, 0.92rem + 0.35vw, 1.125rem);
-  line-height: 1.75;
+  font-size: clamp(0.9375rem, 0.88rem + 0.3vw, 1.0625rem);
+  line-height: 1.8;
   color: var(--ct-text);
   text-wrap: pretty;
 }
@@ -365,7 +367,7 @@
   align-items: center;
   gap: 8px;
   min-block-size: 44px;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--ct-blue);
   text-decoration: none;
@@ -446,9 +448,10 @@
 
 .ct-card__title {
   margin: 18px 0 20px;
-  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   color: var(--ct-navy);
   text-wrap: balance;
 }
@@ -465,7 +468,7 @@
   display: inline-block;
   padding-block: 4px; /* taller tap area */
   color: var(--ct-navy);
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-variant-numeric: tabular-nums; /* phone digits line up */
   text-decoration: none;
   overflow-wrap: anywhere;
@@ -565,10 +568,10 @@
 .ct-offices__title {
   margin: 0 0 clamp(24px, 3vw, 40px);
   text-align: center;
-  font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.6rem);
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
   color: var(--ct-navy);
   text-wrap: balance;
 }
@@ -632,9 +635,10 @@
 
 .ct-office__head h3 {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   color: var(--ct-navy);
 }
 
@@ -652,9 +656,10 @@
   display: grid;
   gap: 2px;
   margin: 0 0 12px;
+  font-size: 0.9375rem;
   font-style: normal;
   color: var(--ct-text);
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 .ct-office__dir {
@@ -663,7 +668,7 @@
   gap: 6px;
   min-block-size: 44px;
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   color: var(--ct-blue);
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
@@ -784,7 +789,7 @@
   }
 
   .ct-office__head h3 {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
   }
 
   .ct-office__tag {
@@ -793,7 +798,7 @@
 
   .ct-office address {
     margin-bottom: 16px;
-    font-size: 1.0625rem;
+    font-size: 1rem;
   }
 }
 

@@ -1,8 +1,12 @@
 /* ==========================================================================
    Software Development Page Styles
-   Same theme as Projects / Web / App Development: Inter, navy #0f172a,
+   Same theme as Projects / Web / App Development: Poppins, navy #0f172a,
    blue #1f6feb, soft blue tints, two-tone headings, 10px buttons, 24px cards.
    Responsive via container queries: phone < 640, tablet >= 640, desktop >= 960.
+
+   Poppins is loaded once in index.html and set globally in index.css
+   (--font-main), so no @import is needed here. This file uses var(--font-main)
+   with a Poppins fallback stack, like the other sections.
    ========================================================================== */
 
 .softdev {
@@ -23,8 +27,8 @@
 
   color: var(--sd-navy);
   color-scheme: light;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-optical-sizing: auto;
+  /* Poppins, set globally in index.css; the stack after the comma is the fallback */
+  font-family: var(--font-main, "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
   background: #ffffff;
@@ -52,10 +56,10 @@
 
 .sd-h2 {
   margin: 0;
-  font-size: clamp(1.75rem, 1.2rem + 2.2cqi, 2.75rem);
-  font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.6rem, 1.1rem + 2cqi, 2.5rem); /* a bit smaller than before: Poppins runs wider than Inter */
+  font-weight: 700; /* 700 instead of 800: Poppins is heavier, and this matches the other sections */
+  line-height: 1.2;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
@@ -72,7 +76,8 @@
   border-radius: 10px;
   background: var(--sd-blue);
   color: #ffffff;
-  font-size: 1rem;
+  font-family: inherit; /* links/buttons keep Poppins */
+  font-size: 0.9375rem;
   font-weight: 600;
   text-decoration: none;
   box-shadow: 0 10px 24px rgba(31, 111, 235, 0.32);
@@ -156,19 +161,21 @@
 
 .sd-hero__title {
   margin: 18px 0 0;
-  /* "Development" is a long word: keep the minimum small enough for 320px screens */
-  font-size: clamp(2rem, 1.1rem + 5cqi, 4.5rem);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.035em;
+  /* "Development" is a long word, and Poppins is wider than Inter:
+     the minimum is lowered so it still fits 320px screens */
+  font-size: clamp(1.75rem, 1rem + 4.5cqi, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
   text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 .sd-hero__lead {
-  max-width: 34ch;
+  max-width: 36ch;
   margin: 18px 0 0;
-  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
-  line-height: 1.6;
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.25rem);
+  line-height: 1.7;
   color: var(--sd-text);
   text-wrap: balance;
 }
@@ -197,8 +204,8 @@
 .sd-intro__text p {
   margin: 0;
   max-width: 62ch;
-  font-size: 1.0625rem;
-  line-height: 1.7;
+  font-size: 1rem;
+  line-height: 1.8;
   color: var(--sd-text);
   text-wrap: pretty;
 }
@@ -215,15 +222,15 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  font-size: 1.0625rem;
+  font-size: 1rem;
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--sd-navy);
 }
 
 .sd-check__icon {
   flex: none;
-  margin-top: 1px;
+  margin-top: 2px;
   color: var(--sd-green);
 }
 
@@ -278,8 +285,8 @@
 .sd-details__text p {
   margin: 0;
   max-width: 62ch;
-  font-size: 1.0625rem;
-  line-height: 1.7;
+  font-size: 1rem;
+  line-height: 1.8;
   color: var(--sd-text);
   text-wrap: pretty;
 }
@@ -298,7 +305,7 @@
   border: 1px solid var(--sd-line);
   border-radius: 999px;
   background: #ffffff;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.4;
   color: var(--sd-navy);
@@ -342,10 +349,10 @@
   border: 0;
   background: transparent;
   color: var(--sd-navy);
-  font: inherit;
-  font-size: 1.0625rem;
-  font-weight: 700;
-  line-height: 1.35;
+  font: inherit; /* buttons keep Poppins */
+  font-size: 1rem;
+  font-weight: 600; /* 600 instead of 700: Poppins is heavier */
+  line-height: 1.4;
   text-align: start;
   cursor: pointer;
   touch-action: manipulation;
@@ -439,9 +446,9 @@
   align-items: flex-start;
   gap: 12px;
   counter-increment: sd-step;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--sd-navy);
 }
 
@@ -456,7 +463,7 @@
   background: var(--sd-blue-soft);
   color: var(--sd-blue-dark);
   font-size: 0.8125rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* Industries */
@@ -491,16 +498,16 @@
 
 .sd-industry__title {
   margin: 0 0 4px;
-  font-size: 1.0625rem;
-  font-weight: 700;
-  line-height: 1.3;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
   color: var(--sd-navy);
 }
 
 .sd-industry__text {
   margin: 0;
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: 0.9375rem;
+  line-height: 1.7;
   color: var(--sd-text);
   text-wrap: pretty;
 }
@@ -527,10 +534,10 @@
 }
 
 .sd-faq__header p {
-  max-width: 52ch;
+  max-width: 54ch;
   margin: 0;
-  font-size: 1.0625rem;
-  line-height: 1.65;
+  font-size: 1rem;
+  line-height: 1.75;
   color: var(--sd-text);
   text-wrap: balance;
 }
@@ -539,8 +546,8 @@
   margin: 0;
   padding-top: 14px;
   border-top: 1px solid var(--sd-line);
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: 0.9375rem;
+  line-height: 1.75;
   color: var(--sd-text);
   text-wrap: pretty;
 }
@@ -572,10 +579,10 @@
 .sd-cta__title {
   max-width: 24ch;
   margin: 0;
-  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.4rem, 1.05rem + 1.4vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
@@ -621,7 +628,7 @@
   /* tighter accordion padding on phones */
   .sd-acc__trigger {
     padding: 14px 18px;
-    font-size: 1rem;
+    font-size: 0.9375rem;
   }
 
   .sd-acc__body {

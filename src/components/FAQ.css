@@ -9,7 +9,9 @@
    6. Responsive (container queries on the section width)
    7. Accessibility (Reduced Motion)
 
-   Note: Inter is already loaded by Navbar.css, so no @import is needed here.
+   Note: Poppins is loaded once in index.html and set globally in index.css
+   (--font-main), so no @import is needed here. This file uses var(--font-main)
+   with a Poppins fallback stack, exactly like Testimonials.css.
    Palette, eyebrow, heading and spacing match Hero.css / Testimonials.css:
    navy #0f172a, blue #1f6feb, green #16a34a.
 
@@ -36,8 +38,8 @@
   --faq-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --faq-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-optical-sizing: auto;
+  /* Poppins, set globally in index.css; the stack after the comma is the fallback */
+  font-family: var(--font-main, "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   -webkit-font-smoothing: antialiased;
   color: var(--faq-navy);
   /* Starts on the exact colour the testimonials section ends on, so there is no seam */
@@ -90,8 +92,8 @@
 .faq__eyebrow {
   margin: 0 0 10px;
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--faq-green-text);
 }
@@ -101,9 +103,9 @@
   margin: 0 0 14px;
   font-size: clamp(1.4rem, 1.15rem + 1.2vw, 1.85rem); /* fallback */
   font-size: clamp(1.4rem, 1.1rem + 0.7cqi, 1.85rem);
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
+  font-weight: 700; /* Poppins is wider/heavier than Inter, so 700 matches Testimonials */
+  line-height: 1.25;
+  letter-spacing: -0.01em;
   color: var(--faq-navy);
   text-wrap: balance;
 }
@@ -201,10 +203,10 @@
   background: none;
   border: none;
   border-radius: 12px;
-  font-family: inherit;
-  font-size: 15px;
+  font-family: inherit; /* buttons do not inherit the font by default; this keeps Poppins */
+  font-size: 14.5px; /* slightly smaller than before: Poppins runs wider than Inter */
   font-weight: 500;
-  line-height: 1.45;
+  line-height: 1.5;
   text-align: left;
   color: var(--faq-navy);
   cursor: pointer;
@@ -272,8 +274,8 @@
 .faq__answer {
   margin: 0;
   padding: 0 16px 18px;
-  font-size: 14.5px;
-  line-height: 1.7;
+  font-size: 14px;
+  line-height: 1.75;
   color: var(--faq-text);
   text-wrap: pretty;
   overflow-wrap: break-word;

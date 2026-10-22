@@ -11,9 +11,12 @@
    8. Accessibility (reduced motion, forced colors)
 
    Theme: identical to the rest of the app (Hero / Contact Us / Careers):
-   Inter, navy #0f172a, blue #1f6feb, green #16a34a, soft blue tints,
+   Poppins, navy #0f172a, blue #1f6feb, green #16a34a, soft blue tints,
    two-tone headings, 10px buttons, 24px cards. No more lavender / near-black
-   button. Note: Inter is already loaded by Navbar.css.
+   button.
+   Note: Poppins is loaded once in index.html and set globally in index.css
+   (--font-main), so no @import is needed here. This file uses var(--font-main)
+   with a Poppins fallback stack, like the other sections.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -35,8 +38,8 @@
   --pr-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   color: var(--pr-navy);
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-optical-sizing: auto;
+  /* Poppins, set globally in index.css; the stack after the comma is the fallback */
+  font-family: var(--font-main, "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
   /* same soft blue wash as the hero sections, fading to white */
@@ -98,10 +101,10 @@
 
 .projects__title {
   margin: 18px 0 0;
-  font-size: clamp(2.25rem, 1.4rem + 3.4vw, 3.75rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  font-size: clamp(2rem, 1.3rem + 3vw, 3.4rem); /* a bit smaller than before: Poppins runs wider than Inter */
+  font-weight: 700; /* 700 instead of 800: Poppins is heavier, and this matches the other sections */
+  line-height: 1.15;
+  letter-spacing: -0.02em;
   color: var(--pr-navy);
   text-wrap: balance;
 }
@@ -132,8 +135,8 @@
   border-radius: 999px;
   background: #ffffff;
   color: var(--pr-navy);
-  font: inherit;
-  font-size: 0.9375rem;
+  font: inherit; /* buttons keep Poppins */
+  font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
@@ -245,9 +248,10 @@
     radial-gradient(ellipse 80% 70% at 50% 0%, rgba(31, 111, 235, 0.18) 0%, rgba(31, 111, 235, 0) 70%),
     linear-gradient(180deg, var(--pr-blue-wash) 0%, var(--pr-blue-soft) 100%);
   color: var(--pr-blue-dark);
-  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.45rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   text-align: center;
   text-wrap: balance;
 }
@@ -284,9 +288,10 @@
 
 .project-card__title {
   margin: 0;
-  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   color: var(--pr-navy);
   text-wrap: balance;
 }
@@ -305,7 +310,8 @@
   border-radius: 10px;
   background: var(--pr-blue);
   color: #ffffff;
-  font-size: 1rem;
+  font-family: inherit; /* links/buttons keep Poppins */
+  font-size: 0.9375rem;
   font-weight: 600;
   text-decoration: none;
   box-shadow: 0 10px 24px rgba(31, 111, 235, 0.32);

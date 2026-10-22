@@ -16,6 +16,8 @@ import {
   Headphones,
 } from "lucide-react";
 import KloudLogoMark from "../assets/KloudLogoMark.png";
+import logoIcon from "../assets/logo-icon.png"
+
 import "./Hero.css";
 
 // -----------------------------------------------------------------------------
@@ -297,7 +299,7 @@ export default function Hero() {
 
               <div className="hero__orbit-center">
                 <img
-                  src={KloudLogoMark}
+                  src={logoIcon}
                   alt=""
                   className="hero__orbit-logo"
                   width={124}

@@ -10,7 +10,8 @@
    7. Responsive (container queries)
    8. Accessibility (Reduced Motion)
 
-   Note: Inter is already loaded by Navbar.css, so no @import is needed here.
+   Note: Poppins is loaded once in index.html and set globally in index.css
+   (--font-main), so no @import is needed here.
    Palette matches KloudWay.css (the other dark section): navy #0f172a / #0a1224,
    brand blue #1f6feb, light blue #3b8bff, green #22c55e. No teal.
    ========================================================================== */
@@ -34,8 +35,7 @@
   --ins-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --ins-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-optical-sizing: auto;
+  font-family: var(--font-main); /* Poppins, set globally in index.css */
   -webkit-font-smoothing: antialiased;
   color: #ffffff;
   background: #ffffff;
@@ -86,8 +86,8 @@
 
 .ins__eyebrow {
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ins-green); /* green eyebrow, like KloudWay and PracticeAreas */
 }
@@ -95,10 +95,9 @@
 .ins__title {
   margin: 12px 0 0;
   max-width: 28ch;
-  font-size: clamp(1.5rem, 1.2rem + 0.4cqi, 1.875rem);
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.4rem, 1.1rem + 0.4cqi, 1.7rem);
+  font-weight: 600;
+  line-height: 1.35;
   color: #ffffff;
   text-wrap: balance;
 }
@@ -106,8 +105,8 @@
 .ins__desc {
   margin: 16px 0 12px;
   max-width: 52ch;
-  font-size: 14px;
-  line-height: 1.65;
+  font-size: 13.5px;
+  line-height: 1.7;
   color: var(--ins-muted);
   text-wrap: pretty;
 }
@@ -119,7 +118,7 @@
   align-self: flex-start;
   min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
   margin-top: auto;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--ins-blue-light); /* blue links, like KloudWay */
   text-decoration: none;
@@ -223,9 +222,9 @@
   right: 12px;
   bottom: 8px;
   z-index: 2;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #ffffff;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
@@ -242,9 +241,9 @@
 .ins__tag {
   display: inline-block;
   padding: 3px 9px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   border-radius: 6px;
   border: 1px solid transparent;
@@ -264,10 +263,9 @@
 
 .ins__card-title {
   margin: 12px 0 14px;
-  font-size: clamp(0.9375rem, 0.8rem + 0.35cqi, 1.0625rem); /* 15px > 17px */
-  font-weight: 700;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
+  font-size: clamp(0.875rem, 0.78rem + 0.3cqi, 1rem); /* 14px > 16px */
+  font-weight: 600;
+  line-height: 1.4;
   color: #ffffff;
   text-wrap: balance;
 }
@@ -278,7 +276,7 @@
   gap: 7px;
   min-block-size: 44px;
   margin-top: auto;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--ins-blue-light);
   text-decoration: none;
@@ -327,8 +325,8 @@
 .ins__resources-title {
   margin: 0;
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #ffffff;
 }
@@ -346,7 +344,7 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
   gap: 2px 20px;
   flex: 1;
   min-width: 0;
@@ -357,9 +355,9 @@
   align-items: center;
   gap: 10px;
   min-block-size: 40px;
-  font-size: 13.5px;
-  font-weight: 600;
-  line-height: 1.35;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
   color: rgba(255, 255, 255, 0.92);
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
@@ -409,7 +407,7 @@
   min-block-size: 48px;
   margin-top: auto;
   padding: 0 20px;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   color: #ffffff;
   text-decoration: none;
@@ -495,7 +493,7 @@
 
 @container ins (min-width: 1360px) {
   .ins__panel {
-    grid-template-columns: minmax(220px, 19fr) minmax(0, 54fr) minmax(290px, 27fr);
+    grid-template-columns: minmax(230px, 19fr) minmax(0, 54fr) minmax(300px, 27fr);
     gap: clamp(18px, 1.8cqi, 32px);
   }
 

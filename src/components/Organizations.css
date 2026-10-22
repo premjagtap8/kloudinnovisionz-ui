@@ -29,7 +29,7 @@
 
   --org-gutter: clamp(16px, 2.5vw, 48px);
 
-  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: var(--font-main); /* Poppins, set globally in index.css */
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   width: 100%;
@@ -67,7 +67,6 @@
   font-size: 15px;
   font-weight: 600;
   line-height: 1.4;
-  letter-spacing: -0.005em;
   color: var(--org-navy);
 }
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, ArrowRight, Menu, X } from "lucide-react";
-import KloudLogoMark from "../assets/KloudLogoMark.png";
+import logoIcon from "../assets/logo-icon.png";
 import "./Navbar.css";
 
 // -----------------------------------------------------------------------------
@@ -14,17 +14,18 @@ const NAV_LINKS = [
     id: "services",
     label: "Services",
     to: "/services",
+    // Dropdown items are kept in ascending (A to Z) order
     children: [
-      { label: "Web Design Development", to: "/services/web-design-development" },
-      { label: "Graphics Designing", to: "/services/graphic-designing" },
-      { label: "Mobile App Development", to: "/services/mobile-app-development" },
-      { label: "Software Development", to: "/services/software-development" },
       { label: "Digital Marketing", to: "/services/digital-marketing" },
       { label: "Domain Hosting", to: "/services/domain-hosting" },
       { label: "ERP & CRM", to: "/services/erp-crm" },
+      { label: "Graphics Designing", to: "/services/graphic-designing" },
+      { label: "Mobile App Development", to: "/services/mobile-app-development" },
+      { label: "Software Development", to: "/services/software-development" },
+      { label: "Web Design Development", to: "/services/web-design-development" },
     ],
   },
-  { id: "our-software", label: "Our Software", to: "/Our-Software" },
+  // { id: "our-software", label: "Our Software", to: "/Our-Software" },
   { id: "projects", label: "Projects", to: "/projects" },
   { id: "careers", label: "Careers", to: "/careers" },
   { id: "contact", label: "Contact", to: "/contact-us" },
@@ -166,7 +167,7 @@ export default function Navbar() {
   return (
     <header className={`navbar ${scrolled ? "navbar--scrolled" : ""}`} ref={navRef}>
       <div className="navbar__container">
-        {/* Logo lockup */}
+        {/* Logo lockup: icon-only logo + brand name + tagline */}
         <Link
           to="/"
           className="navbar__brand"
@@ -174,11 +175,11 @@ export default function Navbar() {
           onClick={closeAll}
         >
           <img
-            src={KloudLogoMark}
+            src={logoIcon}
             alt=""
             className="navbar__logo"
-            width={64}
-            height={64}
+            width={46}
+            height={52}
             decoding="async"
           />
           <span className="navbar__brand-text">

@@ -11,12 +11,13 @@
 
 /* --------------------------------------------------------------------------
    1. Tokens & Bar
+   Colours match Hero.css: --blue-dark #1558c7, --blue #1f6feb, headline #3b8bff
    -------------------------------------------------------------------------- */
 .topbar {
-  --tb-navy: #071b4d;
-  --tb-navy-mid: #0a2f7a;
-  --tb-blue: #1F6FEB;      /* same blue as the navbar */
-  --tb-hover: #BFD7FF;
+  --tb-blue-dark: #1558c7;  /* Hero --blue-dark */
+  --tb-blue: #1f6feb;       /* Hero --blue (buttons, headline) */
+  --tb-blue-light: #3b8bff; /* Hero headline gradient end */
+  --tb-hover: #eaf2ff;      /* Hero --blue-soft */
   --tb-pad-x: clamp(16px, 3vw, 40px);
 
   display: flex;
@@ -29,20 +30,25 @@
   /* env() keeps text clear of phone notches in landscape */
   padding-inline: max(var(--tb-pad-x), env(safe-area-inset-left))
                   max(var(--tb-pad-x), env(safe-area-inset-right));
-  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: var(--font-main); /* Poppins, set globally in index.css */
   color: #ffffff;
   -webkit-font-smoothing: antialiased;
   /* Solid fallback colour in case the gradient layers fail to paint */
-  background-color: var(--tb-navy-mid);
+  background-color: var(--tb-blue);
   background-image:
     repeating-linear-gradient(
       115deg,
-      rgba(255, 255, 255, 0.05) 0px,
-      rgba(255, 255, 255, 0.05) 2px,
+      rgba(255, 255, 255, 0.04) 0px,
+      rgba(255, 255, 255, 0.04) 2px,
       transparent 2px,
       transparent 46px
     ),
-    linear-gradient(90deg, var(--tb-navy) 0%, var(--tb-navy-mid) 45%, var(--tb-blue) 100%);
+    linear-gradient(
+      90deg,
+      var(--tb-blue-dark) 0%,
+      var(--tb-blue) 55%,
+      var(--tb-blue-light) 100%
+    );
 }
 
 .topbar *,
@@ -60,7 +66,6 @@
   font-size: clamp(0.8125rem, 0.75rem + 0.3vw, 1rem);
   font-weight: 400;
   line-height: 1.45;
-  letter-spacing: -0.005em;
   text-align: center;
   text-wrap: balance; /* even line breaks if the message wraps */
 }
@@ -75,10 +80,10 @@
   min-height: 32px;
   padding: 4px 8px 4px 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   font-size: clamp(0.8125rem, 0.75rem + 0.3vw, 1rem);
   font-weight: 600;
-  letter-spacing: -0.005em;
   color: #ffffff;
   text-decoration: none;
   white-space: nowrap; /* "Learn More" never splits across two lines */
@@ -95,7 +100,7 @@
 /* Hover styles only for real pointers, so touch screens don't get a stuck hover */
 @media (hover: hover) {
   .topbar__link:hover {
-    background: rgba(255, 255, 255, 0.24);
+    background: rgba(255, 255, 255, 0.28);
     color: var(--tb-hover);
   }
 
@@ -105,7 +110,7 @@
 }
 
 .topbar__link:active {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.34);
 }
 
 .topbar__link:focus-visible {

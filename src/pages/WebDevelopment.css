@@ -1,7 +1,11 @@
 /* ==========================================================================
    Web Development Page Styles
-   Same theme as Projects / Hero / Contact: Inter, navy #0f172a, blue #1f6feb,
+   Same theme as Projects / Hero / Contact: Poppins, navy #0f172a, blue #1f6feb,
    soft blue tints, two-tone headings, 10px buttons, 24px cards.
+
+   Poppins is loaded once in index.html and set globally in index.css
+   (--font-main), so no @import is needed here. This file uses var(--font-main)
+   with a Poppins fallback stack, like the other sections.
    ========================================================================== */
 
 .webdev {
@@ -19,8 +23,8 @@
   --wd-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   color: var(--wd-navy);
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-optical-sizing: auto;
+  /* Poppins, set globally in index.css; the stack after the comma is the fallback */
+  font-family: var(--font-main, "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
   background: #ffffff;
@@ -48,10 +52,10 @@
 
 .wd-h2 {
   margin: 0;
-  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
-  font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.5rem); /* a bit smaller than before: Poppins runs wider than Inter */
+  font-weight: 700; /* 700 instead of 800: Poppins is heavier, and this matches the other sections */
+  line-height: 1.2;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
@@ -68,7 +72,8 @@
   border-radius: 10px;
   background: var(--wd-blue);
   color: #ffffff;
-  font-size: 1rem;
+  font-family: inherit; /* links/buttons keep Poppins */
+  font-size: 0.9375rem;
   font-weight: 600;
   text-decoration: none;
   box-shadow: 0 10px 24px rgba(31, 111, 235, 0.32);
@@ -169,18 +174,18 @@
 
 .wd-hero__title {
   margin: 18px 0 0;
-  font-size: clamp(2.25rem, 1.3rem + 4.2vw, 4.5rem);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.035em;
+  font-size: clamp(2rem, 1.2rem + 3.8vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
 .wd-hero__lead {
-  max-width: 34ch;
+  max-width: 36ch;
   margin: 18px 0 0;
-  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
-  line-height: 1.6;
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.25rem);
+  line-height: 1.7;
   color: var(--wd-text);
   text-wrap: balance;
 }
@@ -209,8 +214,8 @@
 .wd-intro__text p {
   margin: 0;
   max-width: 62ch;
-  font-size: 1.0625rem;
-  line-height: 1.7;
+  font-size: 1rem;
+  line-height: 1.8;
   color: var(--wd-text);
   text-wrap: pretty;
 }
@@ -227,15 +232,15 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  font-size: 1.0625rem;
+  font-size: 1rem;
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--wd-navy);
 }
 
 .wd-check__icon {
   flex: none;
-  margin-top: 1px;
+  margin-top: 2px;
   color: var(--wd-green);
 }
 
@@ -279,10 +284,10 @@
 }
 
 .wd-work__header p {
-  max-width: 52ch;
+  max-width: 54ch;
   margin: 0;
-  font-size: 1.0625rem;
-  line-height: 1.65;
+  font-size: 1rem;
+  line-height: 1.75;
   color: var(--wd-text);
   text-wrap: balance;
 }
@@ -366,9 +371,10 @@
 
 .wd-card__title {
   margin: 0;
-  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
@@ -400,10 +406,10 @@
 }
 
 .wd-faq__header p {
-  max-width: 52ch;
+  max-width: 54ch;
   margin: 0;
-  font-size: 1.0625rem;
-  line-height: 1.65;
+  font-size: 1rem;
+  line-height: 1.75;
   color: var(--wd-text);
   text-wrap: balance;
 }
@@ -448,11 +454,11 @@
   border: 0;
   background: transparent;
   color: var(--wd-navy);
-  font: inherit;
-  font-size: 1.0625rem;
-  font-weight: 700;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
+  font: inherit; /* buttons keep Poppins */
+  font-size: 1rem;
+  font-weight: 600; /* 600 instead of 700: Poppins is heavier */
+  line-height: 1.45;
+  letter-spacing: -0.005em;
   text-align: left;
   cursor: pointer;
   touch-action: manipulation;
@@ -534,8 +540,8 @@
   margin: 0 20px;
   padding: 16px 0 22px;
   border-top: 1px solid var(--wd-line);
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: 0.9375rem;
+  line-height: 1.75;
   color: var(--wd-text);
   text-wrap: pretty;
 }
@@ -584,10 +590,10 @@
 .wd-cta__title {
   max-width: 24ch;
   margin: 0;
-  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.4rem, 1.05rem + 1.4vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
@@ -655,13 +661,13 @@
   .wd-faq__trigger {
     min-block-size: 72px;
     padding: 18px 28px;
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
   }
 
   .wd-faq__answer {
     margin: 0 28px;
     padding: 18px 0 26px;
-    font-size: 1.0625rem;
+    font-size: 1rem;
   }
 }
 

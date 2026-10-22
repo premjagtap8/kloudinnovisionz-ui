@@ -9,7 +9,8 @@
    6. Responsive (laptop / tablet / mobile)
    7. Accessibility (Reduced Motion)
 
-   Note: Inter is already loaded by Navbar.css, so no @import is needed here.
+   Note: Poppins is loaded once in index.html and set globally in index.css
+   (--font-main), so no @import is needed here.
    Palette is aligned with Hero.css / Navbar.css:
    brand navy #0f172a, brand blue #1f6feb, blue gradient end #3b8bff,
    brand green #16a34a (lightened to #22c55e for use on the dark background).
@@ -44,8 +45,7 @@
   --kw-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --kw-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-optical-sizing: auto;
+  font-family: var(--font-main); /* Poppins, set globally in index.css */
   -webkit-font-smoothing: antialiased;
   color: #ffffff;
   position: relative;
@@ -97,18 +97,17 @@
 
 .kw__eyebrow {
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--kw-eyebrow);
 }
 
 .kw__title {
   margin: 14px 0 0;
-  font-size: clamp(1.4rem, 1.75vw, 2rem);
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.3rem, 1.6vw, 1.85rem);
+  font-weight: 600;
+  line-height: 1.35;
   color: #ffffff;
   text-wrap: balance;
 }
@@ -120,7 +119,7 @@
   align-self: flex-start;
   min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
   margin-top: 22px;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   line-height: 1.5;
   color: var(--kw-link);
@@ -130,12 +129,13 @@
 }
 
 /* Wraps the label into two lines: "Learn More About / Our Approach".
-   FIX: `text-wrap: balance` balances the lines but never shrinks the box, so the old
-   12em max-width left ~40px of empty space and pushed the arrow away from the text.
-   9.5em is just wider than "Learn More About" and narrower than "...About Our",
-   so the box hugs the text and the arrow sits right next to it. */
+   `text-wrap: balance` balances the lines but never shrinks the box, so the
+   max-width must hug the text or the arrow gets pushed away from it.
+   Poppins is wider than Inter, so this is 10.5em (was 9.5em): just wider than
+   "Learn More About" and narrower than "Learn More About Our".
+   If the text wraps onto three lines, raise it a little (e.g. 11em). */
 .kw__link-text {
-  max-width: 9.5em;
+  max-width: 10.5em;
   text-wrap: balance;
 }
 
@@ -254,9 +254,9 @@
 
 .kw__step-title {
   margin: 0;
-  font-size: clamp(0.875rem, 0.55rem + 0.55cqi, 1rem); /* 14px > 16px with the section width */
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: clamp(0.8125rem, 0.5rem + 0.5cqi, 0.9375rem); /* 13px > 15px with the section width */
+  font-weight: 600;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   color: #ffffff;
 }
@@ -264,8 +264,8 @@
 .kw__step-text {
   margin: 8px 0 0;
   max-width: 14em;
-  font-size: clamp(0.8125rem, 0.7rem + 0.25cqi, 0.875rem); /* 13px > 14px */
-  line-height: 1.6;
+  font-size: clamp(0.78rem, 0.68rem + 0.22cqi, 0.84rem); /* 12.5px > 13.5px */
+  line-height: 1.65;
   color: rgba(255, 255, 255, 0.76);
   text-wrap: pretty;
 }
@@ -412,7 +412,7 @@
 
   .kw__step-text {
     max-width: 420px;
-    font-size: 14px;
+    font-size: 13.5px;
   }
 }
 
@@ -432,7 +432,7 @@
   }
 
   .kw__step-title {
-    font-size: 14.5px;
+    font-size: 14px;
   }
 }
 

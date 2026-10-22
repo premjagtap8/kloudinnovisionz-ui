@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Footter.css";
-import logoMark from "../assets/KloudLogoMark.png";
+import logoIcon from "../assets/logo-icon.png";
 
 // Each column is split into two sub-lists, exactly like the live site.
 // `to` must match the route paths defined in main.jsx.
@@ -51,7 +51,7 @@ function Footter() {
             aria-label="KlouD InnoVisionZ home"
             onClick={scrollToTop}
           >
-            <img src={logoMark} alt="" className="ftr__logo" />
+            <img src={logoIcon} alt="" className="ftr__logo" />
             <span className="ftr__brand-text">
               <span className="ftr__brand-name">KlouD InnoVisionZ</span>
               <span className="ftr__brand-tag">Transforming Client&rsquo;s Vision</span>

@@ -1,6 +1,6 @@
 /* ==========================================================================
-   Footter: dark navy footer (K logo, Inter) with its own "ftr" class names so it
-   never clashes with Footer.css.
+   Footter: blue-to-green gradient footer (logo colors, K logo, Poppins) with its
+   own "ftr" class names so it never clashes with Footer.css.
 
    Table of Contents:
    1. Design Tokens & Base
@@ -10,7 +10,9 @@
    5. Responsive (container queries on the footer width, mobile-first)
    6. Accessibility (reduced motion)
 
-   Note: Inter is already loaded by Navbar.css.
+   Note: Poppins is loaded once in index.html and set globally in index.css
+   (--font-main), so no @import is needed here. This file uses var(--font-main)
+   with a Poppins fallback stack, like the other sections.
    Mobile-first: base = phone, then
      >= 480px : the two sub-lists of each column sit side by side
      >= 600px : tablet, two columns under a brand row
@@ -24,21 +26,47 @@
 .ftr {
   --ftr-edge: 20px; /* side padding; the content is centred up to --ftr-max */
   --ftr-max: 1240px;
-  --ftr-line: rgba(255, 255, 255, 0.14);
-  --ftr-text: #d3dae6;
-  --ftr-muted: #aab4c4;
-  --ftr-link-hover: #4da3ff;
 
-  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-  font-optical-sizing: auto;
+  /* Colors sampled from the logo */
+  --ftr-blue: #0a96ff;
+  --ftr-blue-deep: #0a86ee;
+  --ftr-teal: #12a07a; /* midpoint between the logo blue and green */
+  --ftr-green: #1e8a3c;
+  --ftr-green-dark: #0b5d1e;
+  --ftr-ink: #0f2a44;
+
+  /* Text and lines on the gradient */
+  --ftr-line: rgba(255, 255, 255, 0.3);
+  --ftr-text: #ffffff;
+  --ftr-muted: rgba(255, 255, 255, 0.85);
+  --ftr-link-hover: #d9ffe5;
+
+  position: relative;
+  /* Poppins, set globally in index.css; the stack after the comma is the fallback */
+  font-family: var(--font-main, "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif);
   -webkit-font-smoothing: antialiased;
-  background: #040a16;
+  background: linear-gradient(
+    120deg,
+    var(--ftr-blue-deep) 0%,
+    var(--ftr-blue) 30%,
+    var(--ftr-teal) 70%,
+    var(--ftr-green) 100%
+  );
   color: var(--ftr-text);
-  padding-top: 32px;
+  padding-top: 36px;
   /* keeps the bottom bar clear of the home indicator on iPhones */
   padding-bottom: max(20px, env(safe-area-inset-bottom));
   /* The footer is a size container: the layout follows its own width */
   container: ftr / inline-size;
+}
+
+/* Thin light line along the top edge, separates the footer from the banner */
+.ftr::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.15));
 }
 
 .ftr *,
@@ -76,12 +104,17 @@
   min-width: 0;
 }
 
+/* White card behind the logo so the blue K and green tagline stay visible */
 .ftr__brand-link {
   display: inline-flex;
   align-items: center;
   gap: 12px;
   align-self: flex-start;
   text-decoration: none;
+  background: #ffffff;
+  padding: 10px 16px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 40, 90, 0.2);
 }
 
 .ftr__logo {
@@ -101,14 +134,14 @@
   font-size: 18px;
   font-weight: 700;
   line-height: 1.1;
-  color: #ffffff;
+  color: var(--ftr-ink);
   white-space: nowrap;
 }
 
 .ftr__brand-tag {
   font-size: 10.5px;
   font-weight: 600;
-  color: #2fbf4b;
+  color: var(--ftr-green);
   white-space: nowrap;
 }
 
@@ -116,7 +149,7 @@
 .ftr__copy {
   margin: 0;
   font-size: 12px;
-  line-height: 1.5;
+  line-height: 1.6;
   color: var(--ftr-muted);
   text-wrap: balance;
 }
@@ -157,7 +190,7 @@
   display: inline-block;
   padding-block: 3px; /* taller tap area, same look */
   font-size: 13px;
-  line-height: 1.35;
+  line-height: 1.4;
   color: var(--ftr-text);
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
@@ -165,16 +198,18 @@
 }
 
 .ftr a:focus-visible {
-  outline: 2px solid var(--ftr-link-hover);
+  outline: 2px solid #ffffff;
   outline-offset: 3px;
   border-radius: 3px;
 }
 
-/* Hover only on devices that really hover, so a tap never leaves a link "stuck" blue */
+/* Hover only on devices that really hover, so a tap never leaves a link "stuck" */
 @media (hover: hover) and (pointer: fine) {
   .ftr__list a:hover,
   .ftr__terms:hover {
     color: var(--ftr-link-hover);
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 }
 
@@ -203,7 +238,7 @@
 @container ftr (min-width: 600px) {
   .ftr {
     --ftr-edge: 24px;
-    padding-top: 34px;
+    padding-top: 38px;
   }
 
   .ftr__inner {

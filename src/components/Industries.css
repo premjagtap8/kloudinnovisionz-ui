@@ -10,7 +10,8 @@
    7. Responsive (container queries)
    8. Accessibility (Reduced Motion)
 
-   Note: Inter is already loaded by Navbar.css, so no @import is needed here.
+   Note: Poppins is loaded once in index.html and set globally in index.css
+   (--font-main), so no @import is needed here.
    Palette matches Hero.css / Navbar.css: navy, blue, green (no extra colours).
    ========================================================================== */
 
@@ -33,8 +34,7 @@
   --ind-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --ind-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-optical-sizing: auto;
+  font-family: var(--font-main); /* Poppins, set globally in index.css */
   -webkit-font-smoothing: antialiased;
   color: var(--ind-navy);
   background: linear-gradient(180deg, #f3f8ff 0%, #ffffff 100%);
@@ -94,26 +94,25 @@
 
 .ind__eyebrow {
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ind-green-text);
 }
 
 .ind__title {
   margin: 10px 0 0;
-  font-size: clamp(1.375rem, 1rem + 0.9cqi, 1.75rem);
-  font-weight: 800;
-  line-height: 1.22;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.25rem, 0.95rem + 0.85cqi, 1.6rem);
+  font-weight: 700;
+  line-height: 1.28;
   color: var(--ind-navy);
   text-wrap: balance;
 }
 
 .ind__desc {
   margin: 14px 0 12px;
-  font-size: 14px;
-  line-height: 1.65;
+  font-size: 13.5px;
+  line-height: 1.7;
   color: var(--ind-text);
   text-wrap: pretty;
 }
@@ -125,7 +124,7 @@
   align-self: flex-start;
   min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
   margin-top: auto;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--ind-blue);
   text-decoration: none;
@@ -211,9 +210,9 @@
 }
 
 .ind__industry-label {
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.3;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.35;
   text-wrap: balance;
 }
 
@@ -310,10 +309,9 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: clamp(0.9375rem, 3cqi, 1.125rem); /* 15px > 18px with the carousel width */
-  font-weight: 700;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
+  font-size: clamp(0.875rem, 2.8cqi, 1.0625rem); /* 14px > 17px with the carousel width */
+  font-weight: 600;
+  line-height: 1.4;
   color: #ffffff;
   text-wrap: balance;
 }
@@ -333,18 +331,18 @@
 }
 
 .ind__stat-value {
-  font-size: clamp(1.375rem, 4.4cqi, 1.875rem); /* 22px > 30px */
-  font-weight: 700;
-  line-height: 1.1;
+  font-size: clamp(1.25rem, 4cqi, 1.75rem); /* 20px > 28px */
+  font-weight: 600;
+  line-height: 1.15;
   color: var(--ind-blue-light);
   font-variant-numeric: tabular-nums;
 }
 
 .ind__stat-label {
   margin-top: 4px;
-  font-size: clamp(0.6875rem, 2cqi, 0.75rem); /* 11px > 12px: never smaller than 11px */
-  font-weight: 500;
-  line-height: 1.3;
+  font-size: clamp(0.6875rem, 1.9cqi, 0.75rem); /* 11px > 12px: never smaller than 11px */
+  font-weight: 400;
+  line-height: 1.35;
   color: rgba(255, 255, 255, 0.88);
 }
 
@@ -355,7 +353,7 @@
   align-self: flex-start;
   min-block-size: 40px;
   padding: 0 16px;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   color: #ffffff;
   text-decoration: none;

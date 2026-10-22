@@ -10,7 +10,8 @@
    7. Responsive Media Queries
    8. Accessibility (Reduced Motion)
 
-   Note: Inter is already loaded by Navbar.css, so no @import is needed here.
+   Note: Poppins is loaded once in index.html and set globally in index.css
+   (--font-main), so no @import is needed here.
    Palette matches Hero.css / Navbar.css: navy, blue, green (no extra colours).
    ========================================================================== */
 
@@ -32,8 +33,7 @@
   --pa-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --pa-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-optical-sizing: auto;
+  font-family: var(--font-main); /* Poppins, set globally in index.css */
   -webkit-font-smoothing: antialiased;
   color: var(--pa-navy);
   background: linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
@@ -68,18 +68,17 @@
 .pa__eyebrow {
   display: block;
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--pa-green);
 }
 
 .pa__title {
   margin: 10px 0 0;
-  font-size: clamp(1.5rem, 2.2vw, 2.4rem);
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.4rem, 2vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.25;
   color: var(--pa-navy);
   text-wrap: balance;
 }
@@ -177,17 +176,16 @@
 
 .pa__card-title {
   margin: 0;
-  font-size: clamp(1rem, 0.9rem + 0.25cqi, 1.125rem); /* 16px > 18px */
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
+  font-size: clamp(0.9375rem, 0.85rem + 0.25cqi, 1.0625rem); /* 15px > 17px */
+  font-weight: 600;
+  line-height: 1.35;
   color: var(--pa-navy);
 }
 
 .pa__card-text {
   margin: 8px 0 0;
-  font-size: clamp(0.8125rem, 0.75rem + 0.15cqi, 0.875rem); /* 13px > 14px */
-  line-height: 1.6;
+  font-size: clamp(0.78rem, 0.72rem + 0.15cqi, 0.84rem); /* 12.5px > 13.5px */
+  line-height: 1.65;
   color: var(--pa-text);
   text-wrap: pretty;
 }
@@ -201,7 +199,7 @@
   min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
   margin-top: auto;
   margin-bottom: -8px; /* the 44px target would otherwise add height to the card */
-  font-size: clamp(0.8125rem, 0.75rem + 0.15cqi, 0.875rem);
+  font-size: clamp(0.78rem, 0.72rem + 0.15cqi, 0.84rem);
   font-weight: 600;
   color: var(--pa-blue);
   text-decoration: none;

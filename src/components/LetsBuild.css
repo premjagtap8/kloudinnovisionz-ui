@@ -10,7 +10,9 @@
    7. Responsive (container queries on the section width)
    8. Accessibility (Reduced Motion)
 
-   Note: Inter is already loaded by Navbar.css, so no @import is needed here.
+   Note: Poppins is loaded once in index.html and set globally in index.css
+   (--font-main), so no @import is needed here. This file uses var(--font-main)
+   with a Poppins fallback stack, like Testimonials.css and FAQ.css.
 
    Look: the banner is INSET from the Footer's side edges, has rounded top
    corners and a square bottom, so it rests on the Footer like a tab and the
@@ -28,8 +30,8 @@
   --lb-content-max: 1240px; /* same content width as the Footer */
   --lb-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-optical-sizing: auto;
+  /* Poppins, set globally in index.css; the stack after the comma is the fallback */
+  font-family: var(--font-main, "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   -webkit-font-smoothing: antialiased;
   color: #ffffff;
   background: #ffffff;
@@ -77,20 +79,21 @@
   min-width: 0;
 }
 
+/* Same eyebrow style as Testimonials / FAQ */
 .lb__eyebrow {
   margin: 0;
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--lb-eyebrow);
 }
 
 .lb__lead-text {
   margin: 8px 0 0;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.5;
+  font-size: 13.5px; /* slightly smaller than before: Poppins runs wider than Inter */
+  font-weight: 500;
+  line-height: 1.55;
   color: #ffffff;
 }
 
@@ -99,9 +102,9 @@
    -------------------------------------------------------------------------- */
 .lb__title {
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 1.3;
   letter-spacing: -0.01em;
   text-align: left;
   color: #ffffff;
@@ -127,8 +130,8 @@
   width: 100%;
   min-block-size: 48px; /* comfortable touch target (WCAG 2.5.8) */
   padding: 13px 24px;
-  font-family: inherit;
-  font-size: 14.5px;
+  font-family: inherit; /* links/buttons keep Poppins */
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.3;
   text-align: center;
@@ -214,7 +217,7 @@
   }
 
   .lb__title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .lb__action {
@@ -240,14 +243,14 @@
   }
 
   .lb__lead-text {
-    font-size: clamp(13px, 1vw, 15px); /* fallback */
-    font-size: clamp(13px, 1cqi, 15px);
+    font-size: clamp(13px, 1vw, 14.5px); /* fallback */
+    font-size: clamp(13px, 1cqi, 14.5px);
   }
 
   .lb__title {
     text-align: center;
-    font-size: clamp(1.15rem, 1.7vw, 1.9rem); /* fallback */
-    font-size: clamp(1.15rem, 1.7cqi, 1.9rem);
+    font-size: clamp(1.1rem, 1.6vw, 1.8rem); /* fallback */
+    font-size: clamp(1.1rem, 1.6cqi, 1.8rem);
   }
 
   .lb__action {
