@@ -20,7 +20,7 @@ const ARTICLES = [
     date: "May 22, 2024",
     dateTime: "2024-05-22",
     title: "How AI is Transforming Business Operations",
-    href: "#insight-ai",
+    href: "/insights",
   },
   {
     id: "sme-roadmap",
@@ -31,7 +31,7 @@ const ARTICLES = [
     date: "May 15, 2024",
     dateTime: "2024-05-15",
     title: "Digital Transformation Roadmap for SMEs",
-    href: "#insight-strategy",
+    href: "/insights",
   },
   {
     id: "cyber-trends",
@@ -42,7 +42,7 @@ const ARTICLES = [
     date: "May 10, 2024",
     dateTime: "2024-05-10",
     title: "Top Cyber Security Trends in 2024",
-    href: "#insight-cyber",
+    href: "/insights",
   },
 ];
 
@@ -110,7 +110,7 @@ export default function Insights() {
           </a>
         </div>
 
-        {/* Middle: article cards (the whole card is clickable through the "Read More" link) */}
+        {/* Middle: article cards ("Read More" navigates to /insights) */}
         <ul className="ins__cards" role="list">
           {ARTICLES.map((article, index) => (
             <li
