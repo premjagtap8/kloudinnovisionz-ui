@@ -10,7 +10,7 @@ import "./LetsBuild.css";
 // -----------------------------------------------------------------------------
 
 // Where the button goes. Change this to your real contact / booking route.
-const CONTACT_PATH = "/contact";
+const CONTACT_PATH = "/contact-us";
 
 export default function LetsBuild() {
   const [isVisible, setIsVisible] = useState(false);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight, Download, CloudDownload } from "lucide-react";
 import aiImg from "../assets/insight-ai.jpg";
 import strategyImg from "../assets/insight-strategy.jpg";
@@ -138,14 +139,14 @@ export default function Insights() {
                     {article.category}
                   </span>
                   <h3 className="ins__card-title">{article.title}</h3>
-                  <a
-                    href={article.href}
+                  <Link
+                    to={article.href}
                     className="ins__card-link"
                     aria-label={`Read more: ${article.title}`}
                   >
                     <span>Read More</span>
                     <ArrowRight size={14} className="ins__link-icon" aria-hidden="true" />
-                  </a>
+                  </Link>
                 </div>
               </article>
             </li>
