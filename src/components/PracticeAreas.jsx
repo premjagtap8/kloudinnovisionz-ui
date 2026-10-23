@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import {
   Users,
   Code2,
@@ -14,6 +15,7 @@ import "./PracticeAreas.css";
 // Data Definitions (edit titles / text / links here)
 // `color` is "blue" or "green" only (the two brand colours, same as the Hero).
 // The six cards run blue > green, like the rest of the site.
+// `href` must match a route defined in main.jsx.
 // -----------------------------------------------------------------------------
 
 const AREAS = [
@@ -24,7 +26,7 @@ const AREAS = [
     title: "Consult",
     description:
       "Strategy, advisory and digital roadmap to accelerate your business transformation.",
-    href: "#consult",
+    href: "/contact-us",
   },
   {
     id: "build",
@@ -33,7 +35,7 @@ const AREAS = [
     title: "Build",
     description:
       "Custom software, ERP, CRM, portals and platforms that scale with your business.",
-    href: "#build",
+    href: "/services/software-development",
   },
   {
     id: "transform",
@@ -42,7 +44,7 @@ const AREAS = [
     title: "Transform",
     description:
       "Automation, cloud migration and digital transformation for smarter operations.",
-    href: "#transform",
+    href: "/services/erp-crm",
   },
   {
     id: "grow",
@@ -51,7 +53,7 @@ const AREAS = [
     title: "Grow",
     description:
       "Digital marketing, SEO, AEO, GEO and lead generation strategies that drive growth.",
-    href: "#grow",
+    href: "/services/digital-marketing",
   },
   {
     id: "protect",
@@ -60,7 +62,7 @@ const AREAS = [
     title: "Protect",
     description:
       "Cyber security, cloud security and managed IT for a secure and resilient business.",
-    href: "#protect",
+    href: "/contact-us",
   },
   {
     id: "innovate",
@@ -69,7 +71,7 @@ const AREAS = [
     title: "Innovate",
     description:
       "AI solutions, data analytics and innovation workshops to future-proof your business.",
-    href: "#innovate",
+    href: "/contact-us",
   },
 ];
 
@@ -145,14 +147,14 @@ export default function PracticeAreas() {
                     </div>
                   </div>
 
-                  <a
-                    href={area.href}
+                  <Link
+                    to={area.href}
                     className="pa__card-link"
                     aria-label={`Explore ${area.title}`}
                   >
                     <span>Explore</span>
                     <ArrowRight size={14} className="pa__card-link-icon" aria-hidden="true" />
-                  </a>
+                  </Link>
                 </article>
               </li>
             );
