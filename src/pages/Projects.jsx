@@ -1,25 +1,25 @@
 import { useMemo, useState } from 'react'
 import './Projects.css'
-import desividesi from '../assets/desividesi (1).webp'
+import dcaipl from "../assets/dcaipl.png"
+import paiwalagroup from '../assets/paiwalagroup.png'
+import sahanahomes from '../assets/sahanahomes.png'
+import inventors from '../assets/pawpaa.png'
+import caudatetech from '../assets/caudatetech.png'
+import thediethubbysayantani from '../assets/thediethubbysayantani.png'
+import asadecor from '../assets/asadecor.png'
+import dolcevitaevents from '../assets/dolcevitaevents.png'
+import navhealthclinic from '../assets/navhealthclinicc.png'
+import acewfm from '../assets/acewfm.png'
+import bookyourresearch from '../assets/bookyourresearch.png'
+import pawpaa from '../assets/pawpaa.png'
+import lifecaretrust from '../assets/lifecaretrust.png'
+import biohackingindia from '../assets/biohackingindia.png'
+import msvmarine from '../assets/msvmarines.png'
 import paiwala from "../assets/Capture.webp"
-import rishta from "../assets/rishta (2).webp"
-import shine from "../assets/shine.webp"
-import marinejewels from "../assets/marinejewels.webp"
-import laiba from "../assets/laiba.webp"
-import priya from "../assets/priya.webp"
-import faith from "../assets/faith.webp"
-import hospital from "../assets/hospital (1).webp"
-import meraveg from "../assets/meraveg-project.webp"
-import netlinks from "../assets/netlinks.webp"
-import organic from "../assets/organic (2).webp"
-import parkar from "../assets/parkar (2).webp"
-import sanjivani from "../assets/sanjivani.webp"
-import school from "../assets/school.webp"
-import sigma from "../assets/sigma (2).webp"
-import yaaymina from "../assets/yaaymina.webp"
-import zaincomputers from "../assets/zaincomputers.webp"
-import qrsproject from "../assets/qrsproject.webp"
-import bollywoodfest from "../assets/bollywoodfest (1).webp"
+import mpowerminds from '../assets/mpowerminds.png'
+import urbanacres from '../assets/urbanacres.png'
+import communicure from '../assets/communicure.png'
+import dockair from '../assets/dockair.png'
 
 const FILTERS = [
   { key: 'all', label: 'All' },
@@ -36,30 +36,29 @@ const CATEGORY_LABELS = {
   webapp: 'Web App',
 }
 
-// A project with `image: null` shows a blue title card until you add a screenshot,
-// e.g. import it above and set `image: hospitalShot`
+// Drop each screenshot into src/assets/ with the same file name as its import
+// (e.g. sahanahomes.webp) and it will load.
 const PROJECTS = [
-  { id: 1, title: 'Desividesi', url: 'https://desividesi.in/', categories: ['ecommerce', 'dynamic'], image: desividesi },
-  { id: 2, title: 'Hospital', url: 'https://aitibbiamumbai.in/site/login', categories: ['dynamic', 'webapp'], image: null },
-  { id: 3, title: 'Paiwala Interiors', url: 'http://paiwalainteriors.com/', categories: ['dynamic', 'webapp'], image: paiwala },
-  { id: 4, title: 'Rishta Mubarak', url: 'https://rishtamubarak.com/', categories: ['dynamic', 'webapp'], image: rishta },
-  { id: 5, title: 'Shining Angels', url: 'https://shiningangels.org/', categories: ['dynamic', 'webapp'], image: shine },
-  { id: 6, title: 'Marine Jewels', url: 'http://marinejewels.in/', categories: ['static'], image: marinejewels },
-  { id: 7, title: 'Laiba Interiors', url: 'http://laibainteriors.com/', categories: ['static'], image: laiba },
-  { id: 8, title: 'Priya Saini', url: 'http://priyasainiofficial.com/', categories: ['static'], image: priya },
-  { id: 9, title: 'Faith Glass', url: 'http://faithglass.in/', categories: ['static'], image: faith },
-  { id: 10, title: 'Hospital', url: 'https://kloudinnovisionz.com/hospital/', categories: ['dynamic', 'webapp'], image: hospital },
-  { id: 11, title: 'Mera Veg', url: 'https://meraveg.com/', categories: ['static'], image: meraveg },
-  { id: 12, title: 'Netlink India', url: 'http://www.netlinkindia.net/', categories: ['static'], image: netlinks },
-  { id: 13, title: 'Organic Harvest', url: 'http://organicharvestarabia.com/', categories: ['ecommerce', 'dynamic'], image: organic },
-  { id: 14, title: 'Parker Impex', url: 'http://www.parkarimpex.com', categories: ['static'], image: parkar },
-  { id: 15, title: 'Sanjivani', url: 'https://sanjivani.org.in/', categories: ['dynamic', 'static'], image: sanjivani },
-  { id: 16, title: 'School', url: 'https://kloudschools.in/site/login', categories: ['webapp', 'dynamic'], image: school },
-  { id: 17, title: 'Sigma9', url: 'http://sigma9.in/vendor', categories: ['static'], image: sigma },
-  { id: 18, title: 'Yaaymina', url: 'http://www.yaaymina.com/yaaymina_new/', categories: ['ecommerce', 'dynamic'], image: yaaymina },
-  { id: 19, title: 'Zain Computers', url: 'http://zaincomputers.com/', categories: ['static'], image: zaincomputers },
-  { id: 20, title: 'QRS', url: 'https://qrs.net.in/', categories: ['static'], image: qrsproject },
-  { id: 21, title: 'Bollywoodfest', url: 'http://www.bollywoodfest.com/', categories: ['static'], image: bollywoodfest },
+  { id: 1, title: 'DCAIPL', url: 'https://www.dcaipl.com/', categories: ['static'], image: dcaipl },
+  { id: 2, title: 'Paiwala Group', url: 'https://www.paiwalagroup.com/', categories: ['static'], image: paiwalagroup },
+  { id: 3, title: 'Sahana Homes', url: 'https://www.sahanahomes.in/', categories: ['static'], image: sahanahomes },
+  { id: 4, title: 'Inventors', url: 'https://www.inventors.co.in/', categories: ['static'], image: inventors },
+  { id: 5, title: 'Caudate Tech', url: 'https://www.caudatetech.com/', categories: ['static'], image: caudatetech },
+  { id: 6, title: 'The Diet Hub by Sayantani', url: 'https://www.thediethubbysayantani.in/', categories: ['static'], image: thediethubbysayantani },
+  { id: 7, title: 'Asa Decor', url: 'https://www.asadecor.co.in/', categories: ['static'], image: asadecor },
+  { id: 8, title: 'Dolce Vita Events', url: 'https://www.dolcevitaevents.gr/', categories: ['static'], image: dolcevitaevents },
+  { id: 9, title: 'Nav Health Clinic', url: 'https://www.navhealthclinic.com/', categories: ['static'], image: navhealthclinic },
+  { id: 10, title: 'ACE WFM', url: 'https://www.acewfm.com/', categories: ['static'], image: acewfm },
+  { id: 11, title: 'Book Your Research', url: 'https://www.bookyourresearch.com/', categories: ['dynamic', 'webapp'], image: bookyourresearch },
+  { id: 12, title: 'Pawpaa', url: 'https://www.pawpaa.com/', categories: ['ecommerce', 'dynamic'], image: pawpaa },
+  { id: 13, title: 'Life Care Trust', url: 'https://www.lifecaretrust.org/', categories: ['static'], image: lifecaretrust },
+  { id: 14, title: 'Biohacking India', url: 'https://www.biohackingindia.in/', categories: ['static'], image: biohackingindia },
+  { id: 15, title: 'MSV Marine', url: 'https://www.msv-marine.com/', categories: ['static'], image: msvmarine },
+  { id: 16, title: 'Paiwala Interiors', url: 'https://www.paiwalainteriors.com/', categories: ['dynamic', 'webapp'], image: paiwala },
+  { id: 17, title: 'MPower Minds', url: 'https://www.mpowerminds.com/', categories: ['static'], image: mpowerminds },
+  { id: 18, title: 'Urban Acres', url: 'https://www.urbanacres.in/', categories: ['static'], image: urbanacres },
+  { id: 19, title: 'Communicure', url: 'https://www.communicure.com/', categories: ['static'], image: communicure },
+  { id: 20, title: 'Dockair Exiim', url: 'https://dockairexiim.com/', categories: ['static'], image: dockair },
 ]
 
 function ArrowIcon() {

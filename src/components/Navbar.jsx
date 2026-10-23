@@ -27,6 +27,7 @@ const NAV_LINKS = [
   },
   // { id: "our-software", label: "Our Software", to: "/Our-Software" },
   { id: "projects", label: "Projects", to: "/projects" },
+  { id: "insights", label: "Insights", to: "/insights" },
   { id: "careers", label: "Careers", to: "/careers" },
   { id: "contact", label: "Contact", to: "/contact-us" },
 ];

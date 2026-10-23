@@ -1,40 +1,38 @@
 /* ==========================================================================
-   Organizations (client logo marquee)
-   Table of Contents:
-   1. Design Tokens (card size is set once per breakpoint)
+   Organizations - Client Logo Marquee
+   1. Design Tokens
    2. Section & Layout
    3. Label & Divider
-   4. Logo Marquee (full-colour logos in white cards)
-   5. Responsive (tablet / mobile)
-   6. Accessibility (Reduced Motion)
+   4. Transparent Logos & Auto-Scrolling Marquee
+   5. Responsive Design
+   6. Accessibility
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. Design Tokens (same palette as Hero / Navbar / PracticeAreas)
+   1. Design Tokens
    -------------------------------------------------------------------------- */
+
 .organizations {
   --org-navy: #0f172a;
   --org-blue: #1f6feb;
   --org-border: #e5e7eb;
   --org-card-border: #eef2f7;
 
-  /* Card size: every width in this file is derived from these, so the
-     breakpoints below only have to change them. */
-  --org-card-w: 211px;
-  --org-card-h: 116px;
-  --org-space: 20px; /* empty space on each side of a card */
+  --org-card-w: 200px;
+  --org-card-h: 100px;
+  --org-space: 20px;
   --org-pad-y: 12px;
   --org-pad-x: 16px;
   --org-radius: 14px;
 
   --org-gutter: clamp(16px, 2.5vw, 48px);
 
-  font-family: var(--font-main); /* Poppins, set globally in index.css */
+  font-family: var(--font-main, "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif); /* Poppins, set globally in index.css */
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   width: 100%;
   padding: 28px var(--org-gutter);
-  /* Same white -> pale blue fade as the sections around it (no hard border line) */
+
   background: linear-gradient(180deg, #ffffff 0%, #f6f9fe 100%);
 }
 
@@ -47,9 +45,11 @@
 /* --------------------------------------------------------------------------
    2. Section & Layout
    -------------------------------------------------------------------------- */
+
 .organizations__inner {
   max-width: 1200px;
   margin: 0 auto;
+
   display: flex;
   align-items: center;
   gap: 28px;
@@ -58,15 +58,20 @@
 /* --------------------------------------------------------------------------
    3. Label & Divider
    -------------------------------------------------------------------------- */
+
 .organizations__label {
   margin: 0;
   flex-shrink: 0;
   padding-left: 14px;
-  border-left: 3px solid var(--org-blue); /* blue accent */
+
+  border-left: 3px solid var(--org-blue);
+
   font-family: inherit;
   font-size: 15px;
   font-weight: 600;
   line-height: 1.4;
+  letter-spacing: -0.005em;
+
   color: var(--org-navy);
 }
 
@@ -80,88 +85,164 @@
 /* --------------------------------------------------------------------------
    4. Logo Marquee
    -------------------------------------------------------------------------- */
-/* Scrolling area with soft faded edges.
-   The extra top/bottom padding (cancelled by the negative margin, so the layout
-   height is unchanged) gives the lifted card and its shadow room: overflow:hidden
-   would otherwise cut the shadow off on hover. */
+
+/* Viewport */
+
 .organizations__viewport {
   flex: 1;
   min-width: 0;
   overflow: hidden;
+
   padding-block: 24px;
   margin-block: -14px;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
 }
 
-/* Endless loop: the logo set is rendered twice, so moving by -50% restarts seamlessly.
-   All items have the same width, which keeps the -50% jump invisible.
-   --org-duration is set from the JSX (logo count x seconds per logo). */
+/* Scrolling track
+   Requires two identical sets of logos in the JSX.
+*/
+
 .organizations__track {
   list-style: none;
   margin: 0;
   padding: 0;
+
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
+
   width: max-content;
-  animation: organizations-scroll var(--org-duration, 90s) linear infinite;
+  max-width: none;
+
+  animation: organizations-scroll var(--org-duration, 35s) linear infinite;
+
   will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
-/* Pause while the pointer is over it or a keyboard user is inside it */
+/* Pause on hover or keyboard focus */
+
 .organizations__viewport:hover .organizations__track,
 .organizations__viewport:focus-within .organizations__track {
   animation-play-state: paused;
 }
 
+/* Individual logo item */
+
 .organizations__item {
   flex: 0 0 auto;
+
   width: calc(var(--org-card-w) + var(--org-space) * 2);
-  padding: 0 var(--org-space);
+  padding-inline: var(--org-space);
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Each logo sits in the same white card: mismatched logo backgrounds (white boxes,
-   Tikona's solid colour) don't show against the pale page background. Full colour. */
+/* Logo image - transparent background */
+
 .organizations__item img {
   display: block;
+
   width: var(--org-card-w);
   height: var(--org-card-h);
-  object-fit: contain; /* the logo is fitted inside the card padding, never stretched */
+
+  object-fit: contain;
+  object-position: center;
+
   padding: var(--org-pad-y) var(--org-pad-x);
-  background: #ffffff;
-  border: 1px solid var(--org-card-border);
-  border-radius: var(--org-radius);
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+
+  /* Remove the white logo-card background */
+  background: transparent !important;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
-/* Hover only on devices that really hover (no sticky hover after a tap) */
+/* Logos with white text on a transparent background (Caudate, Ace WFM).
+   A tight dark outline makes the text readable on the light section. */
+.organizations__item img.logo-light-text {
+  filter:
+    drop-shadow(0 0 1px #0f172a)
+    drop-shadow(0 0 1px #0f172a)
+    drop-shadow(0 0 2px #0f172a);
+}
+
+/* Logos with tiny or thin text (DH, Dolce Vita, Nav Health).
+   The image is made bigger with width/height instead of `scale`, because
+   the marquee track is a GPU layer and scaling inside it is rendered
+   at the small size first, which makes the logo blurry. */
+.organizations__item img.logo-zoom {
+  --zoom: 1.35;
+  width: calc(var(--org-card-w) * var(--zoom));
+  height: calc(var(--org-card-h) * var(--zoom));
+  max-width: none;
+  flex-shrink: 0;
+  /* keep the row height the same as the other logos */
+  margin-block: calc(var(--org-card-h) * (1 - var(--zoom)) / 2);
+  padding: 0;
+}
+
+/* Extra contrast for logos with pale text (not used on Dolce Vita,
+   so its gold is not shifted). */
+.organizations__item img.logo-sharpen {
+  filter: contrast(1.25);
+}
+
+/* Hover effect */
+
 @media (hover: hover) and (pointer: fine) {
   .organizations__item img:hover {
     transform: translateY(-3px);
-    border-color: #d6e4fb; /* fallback for browsers without color-mix() */
-    border-color: color-mix(in srgb, var(--org-blue) 25%, #ffffff);
+    border: 1px solid var(--org-card-border);
+    border-radius: var(--org-radius);
+    border-color: #d6e4fb;
+    border-color: color-mix(
+      in srgb,
+      var(--org-blue) 25%,
+      #ffffff
+    );
+
     box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
   }
 }
 
+/* Seamless infinite scrolling */
+
 @keyframes organizations-scroll {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
+
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 /* --------------------------------------------------------------------------
-   5. Responsive
+   5. Responsive Design
    -------------------------------------------------------------------------- */
 
-/* Tablet: slightly smaller cards, tighter gap */
+/* Tablet */
+
 @media (max-width: 1023px) {
   .organizations {
     --org-card-w: 192px;
@@ -174,12 +255,14 @@
   }
 }
 
-/* Mobile: label on top, logos below */
+/* Mobile */
+
 @media (max-width: 768px) {
   .organizations {
     --org-card-w: 152px;
     --org-card-h: 84px;
     --org-space: 10px;
+
     --org-pad-y: 10px;
     --org-pad-x: 12px;
     --org-radius: 12px;
@@ -202,28 +285,31 @@
   }
 
   .organizations__label br {
-    display: none; /* one line when there is room */
+    display: none;
   }
 
   .organizations__viewport {
     width: 100%;
+    flex: none;
   }
 }
 
 /* --------------------------------------------------------------------------
-   6. Accessibility: Reduced Motion
-   No auto-scroll: the row can be scrolled by hand, and the duplicate set
-   (which only exists for the loop) is hidden.
+   6. Accessibility - Respect Reduced Motion
    -------------------------------------------------------------------------- */
+
 @media (prefers-reduced-motion: reduce) {
   .organizations__viewport {
     overflow-x: auto;
+
     -webkit-mask-image: none;
     mask-image: none;
   }
 
   .organizations__track {
     animation: none;
+    transform: none;
+    will-change: auto;
   }
 
   .organizations__item[aria-hidden="true"] {

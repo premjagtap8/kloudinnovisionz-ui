@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Link } from "react-router-dom";
 import {
   Factory,
   HeartPulse,
@@ -201,10 +202,11 @@ export default function Industries() {
                 Explore how we’ve helped businesses across industries achieve
                 measurable growth.
               </p>
-              <a href="#case-studies" className="ind__link">
+              {/* Navigates to the Insights page */}
+              <Link to="/insights" className="ind__link">
                 <span>View All Case Studies</span>
                 <ArrowRight size={14} className="ind__link-icon" aria-hidden="true" />
-              </a>
+              </Link>
             </div>
 
             <div
