@@ -291,8 +291,8 @@ const Contact = () => {
             <div className="info-content">
               <h3>Call Us</h3>
               <a href="tel:+919594865555" className="info-phone-link">+91 95948 65555</a>
-              <p>Monday – Sunday</p>
-              <span className="info-sub">10:00 AM – 6:00 PM (IST)</span>
+              <p>Available 24 × 7</p>
+              <span className="info-sub">Every day, round the clock</span>
             </div>
           </div>
         </div>
@@ -371,10 +371,6 @@ const Contact = () => {
             <button className="primary-cta-btn" type="button" onClick={scrollToForm}>
               Let’s Talk <span aria-hidden="true">→</span>
             </button>
-            <a className="secondary-cta-btn" href="tel:+919594865555">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-              Schedule a Call
-            </a>
           </div>
         </div>
       </section>

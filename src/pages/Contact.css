@@ -583,6 +583,16 @@
   color: #ffffff;
 }
 
+/* Desktop: enlarge the photo and anchor it to the right so the sun moves
+   left into the gap between the text and the buttons (it used to sit
+   directly behind the buttons). */
+@media (min-width: 1101px) {
+  .cta-banner-section {
+    background-size: 120% auto;
+    background-position: 100% center;
+  }
+}
+
 .cta-overlay {
   position: absolute;
   inset: 0;
@@ -643,8 +653,7 @@
   gap: 16px;
 }
 
-.cta-banner-section .primary-cta-btn,
-.cta-banner-section .secondary-cta-btn {
+.cta-banner-section .primary-cta-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -670,17 +679,6 @@
 .cta-banner-section .primary-cta-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.2), 0 12px 26px rgba(0, 0, 0, 0.28);
-}
-
-.cta-banner-section .secondary-cta-btn {
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  background: transparent;
-  color: #ffffff;
-}
-
-.cta-banner-section .secondary-cta-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  transform: translateY(-2px);
 }
 
 /* =========================================================
@@ -785,8 +783,7 @@
     width: 100%;
   }
 
-  .cta-banner-section .primary-cta-btn,
-  .cta-banner-section .secondary-cta-btn {
+  .cta-banner-section .primary-cta-btn {
     width: 100%;
   }
 }
