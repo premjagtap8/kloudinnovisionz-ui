@@ -4,11 +4,9 @@ import "./Careers.css";
 // Put submitresume.jpg inside: src/assets/
 import RESUME_IMG from "../assets/submitresume.jpg";
 
-/* Backend URL comes from the .env file (VITE_API_URL),
-   e.g. VITE_API_URL=http://localhost:5000
-   The trailing slash is stripped so "http://localhost:5000/" also works. */
-const API_URL = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
-const REQUEST_TIMEOUT_MS = 30000; // resume upload can be slower than a plain form
+/* WhatsApp number that receives the career enquiries.
+   Country code + number, digits only (no +, spaces or dashes). */
+const WHATSAPP_NUMBER = "919594865555";
 
 /* ---------- Icons (same stroke style as the Contact Us page) ---------- */
 const iconProps = {
@@ -110,83 +108,44 @@ const HERO_IMG_2 =
 
 const initialForm = { name: "", email: "", phone: "", role: "" };
 
+/* Builds the WhatsApp message and the wa.me link from the form values */
+const buildWhatsAppLink = (form) => {
+  const roleLabel =
+    jobRoles.find((r) => r.value === form.role)?.label || form.role;
+
+  const message = [
+    "*New Career Enquiry*",
+    "",
+    `Name: ${form.name.trim()}`,
+    `Email: ${form.email.trim()}`,
+    `Phone: ${form.phone.trim()}`,
+    `Job Role: ${roleLabel}`,
+  ].join("\n");
+
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+};
+
 const Careers = () => {
   const [form, setForm] = useState(initialForm);
-  const [file, setFile] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [waLink, setWaLink] = useState(""); // set after a successful submit
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFile = (e) => {
-    setFile(e.target.files[0] || null);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (loading) return; // ignore double submits while a request is in flight
 
-    const formEl = e.currentTarget; // keep a reference, used after the await
+    const link = buildWhatsAppLink(form);
 
-    setSubmitted(false);
-    setError("");
+    // Open WhatsApp right away (inside the click, so browsers do not block it)
+    window.open(link, "_blank", "noopener,noreferrer");
 
-    if (!file) {
-      setError("Please upload your resume");
-      return;
-    }
-
-    // Send the readable label ("Software Developer") instead of the value
-    const roleLabel =
-      jobRoles.find((r) => r.value === form.role)?.label || form.role;
-
-    // Keys must match the backend: name, email, phone, jobRole, resume
-    const data = new FormData();
-    data.append("name", form.name);
-    data.append("email", form.email);
-    data.append("phone", form.phone);
-    data.append("jobRole", roleLabel);
-    data.append("resume", file);
-
-    // Abort the request if the server does not answer in time
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-
-    try {
-      setLoading(true);
-
-      // Do NOT set the Content-Type header; the browser adds it with the boundary
-      const res = await fetch(`${API_URL}/api/career`, {
-        method: "POST",
-        body: data,
-        signal: controller.signal,
-      });
-
-      // The backend answers with JSON { message }; guard in case it does not
-      const result = await res.json().catch(() => ({}));
-
-      if (!res.ok) {
-        throw new Error(result.message || "Something went wrong");
-      }
-
-      setSubmitted(true);
-      setForm(initialForm);
-      setFile(null);
-      formEl.reset();
-    } catch (err) {
-      setError(
-        err.name === "AbortError"
-          ? "The request timed out. Please try again."
-          : err.message || "Could not submit. Please try again."
-      );
-    } finally {
-      clearTimeout(timer);
-      setLoading(false);
-    }
+    // Keep the link so the visitor can retry if the pop-up was blocked
+    setWaLink(link);
+    setForm(initialForm);
+    e.currentTarget.reset();
   };
 
   return (
@@ -269,28 +228,29 @@ const Careers = () => {
         <div className="career-container">
           <div className="career-apply__wrap">
             <div className="career-apply__form">
-              <h2 className="career-apply__title">Send Us Your Application</h2>
+              <h2 className="career-apply__title">Send Us Your Enquiry</h2>
               <p className="career-apply__sub">
-                Share your details and resume. Our team will get back to you.
+                Share your details and our team will get back to you on
+                WhatsApp.
               </p>
 
-              {submitted && (
+              {waLink && (
                 <div className="career-apply__success" role="status">
-                  Thank you! Your application has been submitted.
+                  Thank you! Your enquiry is ready on WhatsApp. If it did not
+                  open, tap{" "}
+                  <a
+                    className="career-apply__wa-link"
+                    href={waLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Open WhatsApp
+                  </a>{" "}
+                  and press Send.
                 </div>
               )}
 
-              {error && (
-                <div className="career-apply__error" role="alert">
-                  {error}
-                </div>
-              )}
-
-              <form
-                onSubmit={handleSubmit}
-                encType="multipart/form-data"
-                aria-busy={loading}
-              >
+              <form onSubmit={handleSubmit}>
                 <div className="career-field">
                   <label htmlFor="career-name" className="career-sr">
                     Your name
@@ -365,29 +325,8 @@ const Careers = () => {
                   </select>
                 </div>
 
-                <div className="career-field">
-                  <label className="career-file" htmlFor="career-resume">
-                    <span className="career-file__btn">Choose File</span>
-                    <span className="career-file__name">
-                      {file ? file.name : "Upload your resume (PDF, DOC, DOCX)"}
-                    </span>
-                  </label>
-                  <input
-                    id="career-resume"
-                    type="file"
-                    name="resume"
-                    accept=".pdf,.doc,.docx"
-                    onChange={handleFile}
-                    className="career-file__input"
-                  />
-                </div>
-
-                <button
-                  className="career-submit"
-                  type="submit"
-                  disabled={loading}
-                >
-                  {loading ? "Submitting..." : "Submit Now"}
+                <button className="career-submit" type="submit">
+                  Send on WhatsApp
                 </button>
               </form>
             </div>
@@ -395,7 +334,7 @@ const Careers = () => {
             <div className="career-apply__image">
               <img
                 src={RESUME_IMG}
-                alt="Submit your resume"
+                alt="Join our team"
                 loading="lazy"
                 decoding="async"
               />

@@ -13,10 +13,11 @@ function Home() {
   return (
     <>
       <Hero />
+       <KloudWay />
       <Organizations />
       <Challenges />
       {/* <WhatWeDo /> */}
-      <KloudWay />
+     
       <PracticeAreas />
       <Industries />
       <Insights />

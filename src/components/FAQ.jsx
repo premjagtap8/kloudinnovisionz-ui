@@ -6,67 +6,62 @@ import "./FAQ.css";
 // -----------------------------------------------------------------------------
 // Data Definitions (edit questions / answers here)
 // Each inner array is one column on desktop.
+// 8 questions are split 3 / 3 / 2 across the three columns.
 // -----------------------------------------------------------------------------
 
 const FAQ_COLUMNS = [
   [
     {
-      id: "what-is-dt",
-      question: "What is Digital Transformation?",
+      id: "what-we-do",
+      question: "What does Kloud Innovisionz do?",
       answer:
-        "Digital transformation is the process of using technology to improve how your business operates and serves customers. It covers everything from automating manual processes and moving to the cloud to using data and AI for better decisions.",
+        "Kloud Innovisionz works across business technology consulting, digital transformation, enterprise software, digital growth, cybersecurity and AI-related initiatives. The appropriate engagement depends on the organisation's needs and objectives.",
+    },
+    {
+      id: "smes",
+      question: "Does Kloud work with small and medium-sized businesses?",
+      answer:
+        "Kloud's proposed positioning includes SMEs and growing organisations. The scope of each engagement should reflect the client's requirements, budget and available resources.",
+    },
+    {
+      id: "choose-tech",
+      question: "Can Kloud help us choose the right technology?",
+      answer:
+        "Yes. Technology consulting can begin with understanding business objectives, existing systems, operational challenges and constraints before identifying suitable options.",
+    },
+  ],
+  [
+    {
+      id: "erp-crm",
+      question: "Does Kloud develop ERP and CRM software?",
+      answer:
+        "Kloud's proposed Build practice covers ERP, CRM, custom software and system integrations. The precise solution and delivery approach depend on the project requirements.",
     },
     {
       id: "ai-help",
-      question: "How can AI help my business?",
+      question: "How can AI help our business?",
       answer:
-        "AI can automate repetitive work, surface insights from your data, improve customer service and speed up decision-making. We start with a quick readiness assessment to find where it will have the biggest impact for you.",
+        "AI may support tasks such as information retrieval, document processing, customer support and workflow automation. Use cases should be assessed for feasibility, data security, cost and measurable business value.",
     },
     {
-      id: "startups",
-      question: "Do you work with startups?",
+      id: "seo-aeo-geo",
+      question: "What is the difference between SEO, AEO and GEO?",
       answer:
-        "Yes. We work with startups, SMEs and large enterprises. For early-stage teams we offer flexible engagement models, so you can start small and scale as you grow.",
+        "SEO improves a website's visibility in search engines. AEO focuses on making content useful for direct answers, while GEO focuses on visibility and representation in generative AI experiences. These approaches overlap and should be supported by useful content and sound technical foundations.",
     },
   ],
   [
-    {
-      id: "project-time",
-      question: "How long does a typical project take?",
-      answer:
-        "It depends on the scope. A focused automation or website project can take a few weeks, while ERP or large platform builds typically run several months. We share a clear timeline and milestones after the discovery phase.",
-    },
-    {
-      id: "different",
-      question: "What makes KlouD InnoVisionZ different?",
-      answer:
-        "We combine consulting, engineering, security and growth under one roof, backed by 25+ years of experience. That means one accountable partner from strategy through to delivery and ongoing support.",
-    },
     {
       id: "support",
-      question: "Do you provide post-implementation support?",
+      question: "Does Kloud provide ongoing support after implementation?",
       answer:
-        "Yes. We offer managed services and 24/7 support and monitoring, along with regular reviews, so your systems stay secure, reliable and continue to deliver value.",
-    },
-  ],
-  [
-    {
-      id: "industries",
-      question: "Which industries do you serve?",
-      answer:
-        "We serve 12+ industries, including manufacturing, healthcare, construction, education, retail, hospitality, logistics, professional services and government.",
-    },
-    {
-      id: "technologies",
-      question: "What technologies do you work with?",
-      answer:
-        "We work across cloud platforms, modern web and mobile stacks, ERP and CRM systems, data and analytics tools, AI and machine learning, and cyber security solutions. We choose the stack that fits your needs rather than forcing one.",
+        "Ongoing maintenance and support can be considered as part of the engagement where these services are available and included in the agreed scope.",
     },
     {
       id: "get-started",
       question: "How do we get started?",
       answer:
-        "Just reach out through the Let’s Talk button. We’ll schedule a short discovery call to understand your goals, then propose a roadmap and clear next steps.",
+        "Start by contacting Kloud to explain your business challenge, objectives and priorities. The next step is to determine whether an advisory discussion, assessment or defined project is appropriate.",
     },
   ],
 ];

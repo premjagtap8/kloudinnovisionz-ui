@@ -27,12 +27,12 @@
   --ftr-edge: 20px; /* side padding; the content is centred up to --ftr-max */
   --ftr-max: 1240px;
 
-  /* Colors sampled from the logo */
-  --ftr-blue: #0a96ff;
+  /* Colors sampled directly from the logo file */
+  --ftr-blue: #0097fe;       /* logo K blue */
   --ftr-blue-deep: #0a86ee;
-  --ftr-teal: #12a07a; /* midpoint between the logo blue and green */
-  --ftr-green: #1e8a3c;
-  --ftr-green-dark: #0b5d1e;
+  --ftr-teal: #0a9a8a;       /* soft bridge between the logo blue and logo green */
+  --ftr-green: #015807;      /* logo green (cloud + "Transforming Client's Vision") */
+  --ftr-green-dark: #015807;
   --ftr-ink: #0f2a44;
 
   /* Text and lines on the gradient */
@@ -45,11 +45,12 @@
   /* Poppins, set globally in index.css; the stack after the comma is the fallback */
   font-family: var(--font-main, "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif);
   -webkit-font-smoothing: antialiased;
+  /* Ends on the exact logo green, so the right side matches the tagline color */
   background: linear-gradient(
     120deg,
     var(--ftr-blue-deep) 0%,
-    var(--ftr-blue) 30%,
-    var(--ftr-teal) 70%,
+    var(--ftr-blue) 28%,
+    var(--ftr-teal) 62%,
     var(--ftr-green) 100%
   );
   color: var(--ftr-text);
@@ -138,6 +139,7 @@
   white-space: nowrap;
 }
 
+/* Same green as the logo's "Transforming Client's Vision" text */
 .ftr__brand-tag {
   font-size: 10.5px;
   font-weight: 600;

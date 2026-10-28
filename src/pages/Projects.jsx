@@ -20,6 +20,7 @@ import mpowerminds from '../assets/mpowerminds.png'
 import urbanacres from '../assets/urbanacres.png'
 import communicure from '../assets/communicure.png'
 import dockair from '../assets/dockair.png'
+import zaidinfotech from '../assets/zaidinfotech.png'
 
 const FILTERS = [
   { key: 'all', label: 'All' },
@@ -59,6 +60,7 @@ const PROJECTS = [
   { id: 18, title: 'Urban Acres', url: 'https://www.urbanacres.in/', categories: ['static'], image: urbanacres },
   { id: 19, title: 'Communicure', url: 'https://www.communicure.com/', categories: ['static'], image: communicure },
   { id: 20, title: 'Dockair Exiim', url: 'https://dockairexiim.com/', categories: ['static'], image: dockair },
+  { id: 21, title: 'Zaid Infotech', url: 'https://zaidinfotech.in/', categories: ['ecommerce'], image: zaidinfotech },
 ]
 
 function ArrowIcon() {

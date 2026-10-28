@@ -2,15 +2,17 @@
    KloudWay Component Styles
    Table of Contents:
    1. Design Tokens
-   2. Section Background & Container
-   3. Left Intro (Eyebrow, Title, Link)
-   4. Steps (Icon Badges, Connectors, Text)
-   5. Entrance Animation
-   6. Responsive (laptop / tablet / mobile)
-   7. Accessibility (Reduced Motion)
+   2. Section Header (eyebrow, heading, subtitle)
+   3. Section Container
+   4. Left Intro (Title, Link)
+   5. Steps (Icon Badges, Connectors, Text)
+   6. Entrance Animation
+   7. Responsive (laptop / tablet / mobile)
+   8. Accessibility (Reduced Motion)
 
    Note: Poppins is loaded once in index.html and set globally in index.css
-   (--font-main), so no @import is needed here.
+   (--font-main), so no @import is needed here. The font-family below uses
+   var(--font-main) with a Poppins fallback stack.
    Palette is aligned with Hero.css / Navbar.css:
    brand navy #0f172a, brand blue #1f6feb, blue gradient end #3b8bff,
    brand green #16a34a (lightened to #22c55e for use on the dark background).
@@ -31,13 +33,13 @@
 
   /* The five step accents: blue > sky > blue-green > green > deep green.
      Every colour comes from the brand palette (the middle one is a mix of two). */
-  --kw-blue: var(--kw-brand-blue);
+  --kw-blue: var(--kw-brand-blue-light); /* brighter than #1f6feb so Know reads clearly on navy */
   --kw-sky: #62a2ff; /* lighter tint of #3b8bff, so Lead reads apart from Know */
   --kw-aqua: #2fa8af; /* blue/green midpoint (fallback; see @supports below) */
-  --kw-green: var(--kw-brand-green);
-  --kw-forest: var(--kw-brand-green-deep);
+  --kw-green: #4ade80; /* bright tint of brand green, for Unlock */
+  --kw-forest: var(--kw-brand-green); /* #22c55e, for Deliver (brighter than the deep #16a34a) */
 
-  --kw-eyebrow: var(--kw-brand-green); /* echoes the green logo tagline */
+  --kw-eyebrow: #8dbaff; /* soft blue, readable on navy */
   --kw-link: var(--kw-brand-blue-light); /* same blue family as the site CTAs */
   --kw-link-hover: #8dbaff;
 
@@ -45,7 +47,8 @@
   --kw-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --kw-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-  font-family: var(--font-main); /* Poppins, set globally in index.css */
+  /* Poppins, set globally in index.css; the stack after the comma is the fallback */
+  font-family: var(--font-main, "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   -webkit-font-smoothing: antialiased;
   color: #ffffff;
   position: relative;
@@ -55,6 +58,7 @@
   /* The section is a size container: the layout reacts to the width of the section
      itself (same idea as the hero orbit), not only to the browser window. */
   container: kw / inline-size;
+  border-top: 1px solid rgba(59, 139, 255, 0.28); /* crisp, subtle edge where the light section ends */
   background:
     radial-gradient(ellipse 60% 120% at 78% 50%, rgba(31, 111, 235, 0.22) 0%, rgba(31, 111, 235, 0) 70%),
     linear-gradient(90deg, var(--kw-navy-deep) 0%, var(--kw-navy) 55%, var(--kw-navy-deep) 100%);
@@ -75,11 +79,75 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. Section Background & Container
+   2. Section Header
+   Centered eyebrow (with a line on each side), heading and subtitle.
+   -------------------------------------------------------------------------- */
+.kw__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px var(--kw-gutter) 0;
+  text-align: center;
+}
+
+/* Eyebrow with a thin line on each side */
+.kw__eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--kw-eyebrow);
+}
+
+.kw__eyebrow::before,
+.kw__eyebrow::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(141, 186, 255, 0) 0%, rgba(141, 186, 255, 0.45) 100%);
+}
+
+.kw__eyebrow::after {
+  background: linear-gradient(270deg, rgba(141, 186, 255, 0) 0%, rgba(141, 186, 255, 0.45) 100%);
+}
+
+.kw__heading {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.25rem + 1.5cqi, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  text-wrap: balance;
+}
+
+.kw__heading-accent {
+  color: var(--kw-brand-blue-light);
+}
+
+.kw__subtitle {
+  max-width: 600px;
+  margin: 14px 0 0;
+  font-size: clamp(0.875rem, 0.8rem + 0.25cqi, 0.97rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   3. Section Container
    -------------------------------------------------------------------------- */
 .kw__container {
   width: 100%;
-  padding: 44px var(--kw-gutter);
+  padding: 40px var(--kw-gutter) 48px;
   display: grid;
   grid-template-columns: minmax(240px, 23fr) minmax(0, 77fr);
   align-items: center;
@@ -87,7 +155,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. Left Intro
+   4. Left Intro
    -------------------------------------------------------------------------- */
 .kw__intro {
   display: flex;
@@ -95,20 +163,13 @@
   min-width: 0;
 }
 
-.kw__eyebrow {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--kw-eyebrow);
-}
-
 .kw__title {
-  margin: 14px 0 0;
-  font-size: clamp(1.3rem, 1.6vw, 1.85rem);
+  margin: 0;
+  /* Supporting line: kept clearly smaller than the centred "From Vision to Value" heading */
+  font-size: clamp(1.05rem, 0.9rem + 0.45cqi, 1.3rem);
   font-weight: 600;
-  line-height: 1.35;
-  color: #ffffff;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.92);
   text-wrap: balance;
 }
 
@@ -131,7 +192,7 @@
 /* Wraps the label into two lines: "Learn More About / Our Approach".
    `text-wrap: balance` balances the lines but never shrinks the box, so the
    max-width must hug the text or the arrow gets pushed away from it.
-   Poppins is wider than Inter, so this is 10.5em (was 9.5em): just wider than
+   Poppins is wider than Inter, so this is 10.5em: just wider than
    "Learn More About" and narrower than "Learn More About Our".
    If the text wraps onto three lines, raise it a little (e.g. 11em). */
 .kw__link-text {
@@ -161,7 +222,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. Steps
+   5. Steps
    -------------------------------------------------------------------------- */
 .kw__steps {
   list-style: none;
@@ -271,10 +332,11 @@
 }
 
 /* --------------------------------------------------------------------------
-   5. Entrance Animation
+   6. Entrance Animation
    Steps animate `translate` + `opacity` (not `transform`), so the animation never
    overrides other transforms. The connectors grow with `transform: scale`.
    -------------------------------------------------------------------------- */
+.kw__header,
 .kw__intro,
 .kw__step {
   opacity: 0;
@@ -286,16 +348,20 @@
   transform-origin: left center;
 }
 
-.kw--visible .kw__intro {
+.kw--visible .kw__header {
   animation: kwFadeUp 0.65s var(--kw-ease-out) both;
 }
 
+.kw--visible .kw__intro {
+  animation: kwFadeUp 0.65s var(--kw-ease-out) 100ms both;
+}
+
 .kw--visible .kw__step {
-  animation: kwFadeUp 0.65s var(--kw-ease-out) calc(var(--delay, 0ms) + 150ms) both;
+  animation: kwFadeUp 0.65s var(--kw-ease-out) calc(var(--delay, 0ms) + 200ms) both;
 }
 
 .kw--visible .kw__connector {
-  animation: kwGrowX 0.7s ease calc(var(--delay, 0ms) + 450ms) both;
+  animation: kwGrowX 0.7s ease calc(var(--delay, 0ms) + 500ms) both;
 }
 
 @keyframes kwFadeUp {
@@ -320,7 +386,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   6. Responsive
+   7. Responsive
    Uses container queries (@container kw), so widths are those of the section.
    Desktop (>= 1280px): intro left, 5 steps in a row
    Laptop (992-1279px): intro on top, 5 steps in a row
@@ -330,7 +396,7 @@
   .kw__container {
     grid-template-columns: 1fr;
     gap: 32px;
-    padding: 44px var(--kw-gutter) 48px;
+    padding: 36px var(--kw-gutter) 48px;
   }
 
   .kw__title {
@@ -417,8 +483,17 @@
 }
 
 @container kw (max-width: 599px) {
+  .kw__header {
+    padding: 44px 16px 0;
+  }
+
+  .kw__eyebrow {
+    gap: 12px;
+    font-size: 11px;
+  }
+
   .kw__container {
-    padding: 36px 16px 40px;
+    padding: 32px 16px 40px;
   }
 
   .kw__icon {
@@ -437,7 +512,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   7. Accessibility: Reduced Motion
+   8. Accessibility: Reduced Motion
    Animations are removed, so everything simply shows in its final state.
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
@@ -448,6 +523,7 @@
     transition-duration: 0.001ms !important;
   }
 
+  .kw__header,
   .kw__intro,
   .kw__step {
     opacity: 1;

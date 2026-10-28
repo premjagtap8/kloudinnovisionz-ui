@@ -17,13 +17,16 @@ import paiwala from '../assets/images/paiwalainteriors.webp'
 import pawpaa from '../assets/images/pawpaa.webp'
 import urbenAcers from '../assets/images/urban_acres.png'
 
+// New logos (located directly in src/assets)
+import bollywoodfest from "../assets/bollywoodfest.png";
+import organicharvest from "../assets/organicharvest.png";
+
 // import desividesi from "../assets/desividesi.webp";
 // import qrslogo from "../assets/qrslogo.webp";
 // import meraveg from "../assets/meraveg.webp";
 // import marine from "../assets/marine.webp";
 // import yaaymina from "../assets/yaaymina-logo.webp";
 // import organic from "../assets/organic.webp";
-// import bollywoodfest from "../assets/bollywoodfest.webp";
 // import digitalID from "../assets/digitalID.webp";
 // import nexus from "../assets/nexus.webp";
 // import zainnew from "../assets/zainnew.webp";
@@ -54,6 +57,8 @@ const CLIENTS = [
   { src: pawpaa, name: "pawpaa" },
   { src: urbenAcers, name: "urbenAcers" },
   { src: SahanaHome, name: "SahanaHomes" },
+  { src: bollywoodfest, name: "bollywoodfest" },
+  { src: organicharvest, name: "organicharvest" },
   // { src: sanjivani, name: "Sanjivani Group" },
   // { src: hijama, name: "Hijama" },
   // { src: justbookus, name: "Just Book Us" },

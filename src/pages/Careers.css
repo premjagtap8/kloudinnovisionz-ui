@@ -5,7 +5,7 @@
    2. Shared Text
    3. Hero
    4. Join Us
-   5. Application Form
+   5. Enquiry Form
    6. Animations (motion is opt-in)
    7. Responsive (container queries on the page width, mobile-first)
    8. Accessibility (reduced motion, forced colors)
@@ -33,7 +33,6 @@
   --career-line: #e5edf7; /* card borders */
   --career-field-line: #8895a7; /* input borders (3:1 on white) */
   --career-error: #dc2626;
-  --career-error-text: #b91c1c;
   --career-gutter: clamp(20px, 2.5vw, 48px);
   --career-pad-y: var(--section-space, 80px); /* same vertical rhythm as the other pages */
   --career-max: 1240px;
@@ -268,7 +267,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   5. Application Form
+   5. Enquiry Form
    -------------------------------------------------------------------------- */
 .career-apply {
   padding: 0 0 var(--career-pad-y);
@@ -304,31 +303,40 @@
   text-wrap: pretty;
 }
 
-.career-apply__success,
-.career-apply__error {
+.career-apply__success {
   margin-bottom: 18px;
   padding: 12px 16px;
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.55;
-  border: 1px solid transparent;
+  color: var(--career-green-text);
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
   border-radius: 10px;
 }
 
-.career-apply__success {
+/* "Open WhatsApp" fallback link inside the success box */
+.career-apply__wa-link {
+  font-weight: 600;
   color: var(--career-green-text);
-  background: #f0fdf4;
-  border-color: #bbf7d0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.career-apply__error {
-  color: var(--career-error-text);
-  background: #fef2f2;
-  border-color: #fecaca;
+.career-apply__wa-link:focus-visible {
+  outline: 3px solid rgba(22, 163, 74, 0.45);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .career-apply__wa-link:hover {
+    color: var(--career-green);
+  }
 }
 
 .career-field {
-  position: relative; /* anchors the visually-hidden file input */
+  position: relative;
   margin-bottom: 14px;
 }
 
@@ -397,62 +405,6 @@
   color: var(--career-navy);
 }
 
-/* file upload: the real input is visually hidden but still keyboard-focusable */
-.career-file__input {
-  position: absolute;
-  inset: 0 auto auto 0;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-
-.career-file {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  min-block-size: 58px;
-  padding: 8px;
-  background: var(--career-blue-wash);
-  border: 1.5px dashed rgba(31, 111, 235, 0.45);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s var(--career-ease), border-color 0.2s var(--career-ease);
-}
-
-.career-field:has(.career-file__input:focus-visible) .career-file {
-  outline: 3px solid rgba(31, 111, 235, 0.4);
-  outline-offset: 2px;
-  border-color: var(--career-blue);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .career-file:hover {
-    background: var(--career-blue-soft);
-    border-color: var(--career-blue);
-  }
-}
-
-.career-file__btn {
-  flex-shrink: 0;
-  padding: 10px 16px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--career-blue-dark);
-  background: #ffffff;
-  border: 1px solid rgba(31, 111, 235, 0.25);
-  border-radius: 8px;
-}
-
-.career-file__name {
-  min-width: 0;
-  font-size: 0.875rem;
-  color: var(--career-text);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 /* Submit: same solid blue button as the rest of the app */
 .career-submit {
   width: 100%;
@@ -472,7 +424,7 @@
   transition: background-color 0.2s ease, translate 0.2s var(--career-ease), scale 0.15s var(--career-ease), box-shadow 0.2s ease;
 }
 
-.career-submit:active:not(:disabled) {
+.career-submit:active {
   scale: 0.98;
 }
 
@@ -481,13 +433,8 @@
   outline-offset: 3px;
 }
 
-.career-submit:disabled {
-  opacity: 0.7;
-  cursor: progress;
-}
-
 @media (hover: hover) and (pointer: fine) {
-  .career-submit:hover:not(:disabled) {
+  .career-submit:hover {
     background: var(--career-blue-dark);
     translate: 0 -2px;
     box-shadow: 0 14px 28px rgba(31, 111, 235, 0.38);
@@ -618,11 +565,10 @@
   }
 }
 
-/* Windows High Contrast: keep card edges, upload box and button visible */
+/* Windows High Contrast: keep card edges and button visible */
 @media (forced-colors: active) {
   .join-card,
   .career-apply__wrap,
-  .career-file,
   .career-submit,
   .career-hero__video,
   .career-hero__img {

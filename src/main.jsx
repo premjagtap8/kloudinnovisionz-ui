@@ -13,7 +13,7 @@ import IndustriesPage from './pages/IndustriesPage'
 import InsightsPage from './pages/InsightsPage'
 import CaseStudies from './pages/CaseStudies'
 import Careers from './pages/Careers'
-import ContactUs from './pages/ContactUs'
+
 import TermsAndConditions from './pages/TermsAndConditions'
 import NotFound from './pages/NotFound'
 import AppDevelopment from './pages/AppDevelopment.jsx'
@@ -22,6 +22,7 @@ import DigitalMarketing from './pages/DigitalMarketing.jsx'
 import Graphics from './pages/Graphics.jsx'
 import ERP from './pages/ERP.jsx'
 import Domain from './pages/Domain.jsx'
+import Contact from './pages/Contact.jsx'
 
 
 const router = createBrowserRouter([
@@ -47,7 +48,7 @@ const router = createBrowserRouter([
       { path: 'insights', element: <InsightsPage /> },
       { path: 'case-studies', element: <CaseStudies /> },
       { path: 'careers', element: <Careers /> },
-      { path: 'contact-us', element: <ContactUs /> },
+      { path: 'contact-us', element: <Contact /> },
       { path: 'terms-and-conditions', element: <TermsAndConditions /> },
       { path: '*', element: <NotFound /> },
     ],

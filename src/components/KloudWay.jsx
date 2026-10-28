@@ -97,13 +97,25 @@ export default function KloudWay() {
       ref={sectionRef}
       aria-labelledby="kw-heading"
     >
+      {/* Top: centered section header */}
+      <header className="kw__header">
+        <p className="kw__eyebrow">The Kloud Way</p>
+        <h2 className="kw__heading" id="kw-heading">
+          From <span className="kw__heading-accent">Vision</span> to{" "}
+          <span className="kw__heading-accent">Value</span>
+        </h2>
+        <p className="kw__subtitle">
+          A structured approach to help businesses navigate change, unlock
+          opportunities and achieve sustainable growth.
+        </p>
+      </header>
+
       <div className="kw__container">
         {/* Left: intro */}
         <div className="kw__intro">
-          <span className="kw__eyebrow">The Kloud Way</span>
-          <h2 className="kw__title" id="kw-heading">
+          <h3 className="kw__title">
             A proven framework for transformation that delivers results.
-          </h2>
+          </h3>
           <Link to={APPROACH_LINK} className="kw__link">
             {/* One text node: the CSS wraps it into two balanced lines, so screen
                 readers get a normal sentence instead of text split by a <br />. */}

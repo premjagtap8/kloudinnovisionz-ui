@@ -1,487 +1,972 @@
-/* ==========================================================================
-   About Us Page Styles
-   Same theme as Web Development / Digital Marketing: Poppins, navy #0f172a,
-   blue #1f6feb, soft blue tints, two-tone headings, 10px buttons, 24px cards.
+/* =========================================================
+   About Us page – Kloud InnoVisionZ
+   All classes are prefixed with "ab-" to avoid conflicts.
+   Font: Poppins only.
+   ========================================================= */
 
-   Poppins is loaded once in index.html and set globally in index.css
-   (--font-main), so no @import is needed here. This file uses var(--font-main)
-   with a Poppins fallback stack, like the other sections.
-   ========================================================================== */
+.ab-page {
+  --ab-blue: #0b63e5;
+  --ab-blue-dark: #0a3d91;
+  --ab-navy: #0b1b3a;
+  --ab-text: #4a5568;
+  --ab-muted: #6b7a90;
+  --ab-green: #16a34a;
+  --ab-bg-soft: #f2f7fd;
+  --ab-border: #e3eaf4;
+  --ab-circle: #e6f0fd;
 
-.about-us {
-  --au-navy: #0f172a;
-  --au-text: #4b5563;
-  --au-blue: #1f6feb;
-  --au-blue-dark: #1558c7;
-  --au-blue-soft: #eaf2ff;
-  --au-blue-wash: #f3f8ff;
-  --au-line: #e5edf7;
-  --au-navy-deep: #0b2a6b;
-  --au-gutter: clamp(20px, 2.5vw, 48px);
-  --au-max: 1240px;
-  --au-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* side padding grows with the screen: content always fills the width */
+  --ab-gutter: clamp(20px, 4vw, 120px);
 
-  color: var(--au-navy);
-  /* Poppins, set globally in index.css; the stack after the comma is the fallback */
-  font-family: var(--font-main, "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  -webkit-font-smoothing: antialiased;
-  overflow-x: clip;
-  background: #ffffff;
+  /* full width + reset anything inherited from a Vite-style #root / App.css
+     (max-width, margin: 0 auto, text-align: center) */
   display: block;
   width: 100%;
-  container: aboutus / inline-size;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+
+  font-family: "Poppins", sans-serif;   /* Poppins only */
+  color: var(--ab-navy);
+  background: #ffffff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-.about-us *,
-.about-us *::before,
-.about-us *::after {
+.ab-page *,
+.ab-page *::before,
+.ab-page *::after {
   box-sizing: border-box;
 }
 
-.au-container {
-  width: min(var(--au-max), 100%);
-  margin-inline: auto;
-  padding-inline: var(--au-gutter);
+/* links and buttons never fall back to a system font */
+.ab-page a,
+.ab-page button {
+  font-family: inherit;
 }
 
-.au-accent {
-  color: var(--au-blue);
-}
-
-/* --------------------------------------------------------------------------
-   Hero
-   -------------------------------------------------------------------------- */
-.au-hero {
-  padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 6vw, 72px);
-  background:
-    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(31, 111, 235, 0.16) 0%, rgba(31, 111, 235, 0) 70%),
-    linear-gradient(180deg, var(--au-blue-wash) 0%, #ffffff 100%);
-}
-
-.au-hero__inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.au-eyebrow {
-  display: inline-block;
-  padding: 6px 16px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  line-height: 1.4;
-  color: var(--au-blue-dark);
-  background: var(--au-blue-soft);
-  border: 1px solid rgba(31, 111, 235, 0.18);
-  border-radius: 999px;
-}
-
-.au-hero__title {
-  margin: 18px 0 0;
-  font-size: clamp(2rem, 1.2rem + 3.8vw, 4rem); /* a bit smaller than before: Poppins runs wider than Inter */
-  font-weight: 700; /* 700 instead of 800: Poppins is heavier, and this matches the other sections */
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-  text-wrap: balance;
-}
-
-.au-hero__lead {
-  max-width: 42ch;
-  margin: 18px 0 0;
-  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.25rem);
-  line-height: 1.7;
-  color: var(--au-text);
-  text-wrap: balance;
-}
-
-/* --------------------------------------------------------------------------
-   Sections
-   -------------------------------------------------------------------------- */
-.au-section {
-  padding: var(--section-space, 80px) 0;
-}
-
-.au-section--wash {
-  background: linear-gradient(180deg, var(--au-blue-wash) 0%, #ffffff 100%);
-}
-
-.au-split {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(32px, 5vw, 64px);
-  align-items: center;
-}
-
-.au-split__text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.au-split__text p {
+.ab-page h1,
+.ab-page h2,
+.ab-page h3,
+.ab-page h4,
+.ab-page p {
   margin: 0;
-  max-width: 62ch;
-  font-size: 1rem;
-  line-height: 1.8;
-  color: var(--au-text);
-  text-wrap: pretty;
 }
 
-.au-kicker {
+.ab-container {
+  width: 100%;
+  max-width: none;
   margin: 0;
-  font-size: 0.8125rem;
+  padding: 0 var(--ab-gutter);
+}
+
+/* ---------- Shared: eyebrow, headings, buttons, icons ---------- */
+
+.ab-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.ab-eyebrow span {
+  font-size: clamp(11px, 0.75vw, 14px);
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--au-blue);
+  color: var(--ab-blue);
 }
 
-.au-h2 {
-  position: relative;
-  margin: 0;
-  padding-bottom: 14px;
-  font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.5rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.015em;
-  text-wrap: balance;
-}
-
-.au-h2--bar::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 56px;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--au-blue);
-}
-
-.au-h2--center::after {
-  left: 50%;
-  translate: -50% 0;
-}
-
-.au-center {
-  display: flex;
-  justify-content: center;
-  margin-bottom: clamp(28px, 4vw, 48px);
-  text-align: center;
-}
-
-/* Check list */
-.au-checks {
-  display: grid;
-  gap: 12px;
-  margin: 6px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.au-checks li {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.55;
-  color: var(--au-navy);
-}
-
-.au-check__icon {
-  flex: none;
-  margin-top: 2px;
-  color: #16a34a;
-}
-
-/* Image */
-.au-media {
-  width: 100%;
-  max-width: 640px;
-  margin: 0 auto;
-  border: 1px solid var(--au-line);
-  border-radius: 24px;
-  overflow: hidden;
-  background: var(--au-blue-soft);
-  box-shadow: 0 20px 48px rgba(31, 111, 235, 0.16);
-}
-
-.au-media img {
+.ab-eyebrow__line {
   display: block;
-  width: 100%;
-  height: auto;
+  width: 56px;
+  height: 1px;
+  background: #b9cdea;
 }
 
-/* --------------------------------------------------------------------------
-   Stats
-   -------------------------------------------------------------------------- */
-.au-stats {
-  padding: 0 0 var(--section-space, 80px);
-}
-
-.au-stats__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 16px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.au-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 28px 20px;
-  text-align: center;
-  background: #ffffff;
-  border: 1px solid var(--au-line);
-  border-radius: 24px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-}
-
-.au-stat__value {
-  font-size: clamp(1.85rem, 1.4rem + 1.8vw, 2.75rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  color: var(--au-blue);
-}
-
-.au-stat__label {
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: var(--au-text);
-}
-
-/* --------------------------------------------------------------------------
-   Mission / Vision / Founder cards
-   -------------------------------------------------------------------------- */
-.au-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 20px;
-}
-
-.au-card {
-  padding: 28px 24px;
-  background: #ffffff;
-  border: 1px solid var(--au-line);
-  border-radius: 24px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-  transition:
-    translate 0.35s var(--au-ease),
-    box-shadow 0.35s var(--au-ease),
-    border-color 0.35s var(--au-ease);
-}
-
-.au-card__title {
-  margin: 0 0 12px;
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-}
-
-.au-card__text {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.75;
-  color: var(--au-text);
-  text-wrap: pretty;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .au-card:hover {
-    translate: 0 -6px;
-    border-color: rgba(31, 111, 235, 0.25);
-    box-shadow: 0 20px 40px rgba(31, 111, 235, 0.16);
-  }
-}
-
-/* --------------------------------------------------------------------------
-   CTA
-   -------------------------------------------------------------------------- */
-.au-cta {
-  padding: 0 0 var(--section-space, 80px);
-}
-
-.au-cta__box {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 24px;
-  padding: clamp(28px, 5vw, 56px);
-  border-radius: 24px;
-  color: #ffffff;
-  background: linear-gradient(120deg, var(--au-navy-deep) 0%, var(--au-blue) 100%);
-  box-shadow: 0 20px 48px rgba(31, 111, 235, 0.28);
-}
-
-.au-cta__title {
-  max-width: 24ch;
-  margin: 0;
-  font-size: clamp(1.4rem, 1.05rem + 1.4vw, 2.1rem);
+.ab-h2 {
+  font-size: clamp(24px, 2.2vw, 40px);
   font-weight: 700;
   line-height: 1.25;
-  letter-spacing: -0.015em;
-  text-wrap: balance;
+  letter-spacing: -0.01em;
+  color: var(--ab-navy);
 }
 
-/* --------------------------------------------------------------------------
-   Button
-   -------------------------------------------------------------------------- */
-.au-btn {
+.ab-h2--lg {
+  font-size: clamp(26px, 2.5vw, 46px);
+}
+
+.ab-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-block-size: 52px;
-  padding: 0 28px;
-  border-radius: 10px;
-  background: var(--au-blue);
-  color: #ffffff;
-  font-family: inherit; /* links/buttons keep Poppins */
-  font-size: 0.9375rem;
-  font-weight: 600;
+  min-height: 44px;
+  padding: 14px 26px;
+  border-radius: 8px;
+  font-size: clamp(14.5px, 0.95vw, 17px);
+  font-weight: 500;
   text-decoration: none;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  transition:
-    background-color 0.2s ease,
-    translate 0.2s var(--au-ease),
-    scale 0.15s var(--au-ease);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease,
+    color 0.2s ease;
 }
 
-.au-btn--light {
-  background: #ffffff;
-  color: var(--au-blue-dark);
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.25);
+.ab-btn:hover {
+  transform: translateY(-2px);
 }
 
-.au-btn__icon {
-  transition: translate 0.2s var(--au-ease);
+.ab-btn--primary {
+  background: var(--ab-blue);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(11, 99, 229, 0.28);
 }
 
-.au-btn:active {
-  scale: 0.98;
+.ab-btn--primary:hover {
+  background: #0952c2;
 }
 
-.au-btn:focus-visible {
-  outline: 3px solid #ffffff;
+.ab-btn--outline {
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ab-blue);
+  border-color: var(--ab-blue);
+}
+
+.ab-btn--outline:hover {
+  background: var(--ab-blue);
+  color: #fff;
+}
+
+.ab-btn--white {
+  background: #fff;
+  color: var(--ab-blue);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+}
+
+.ab-btn--ghost {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+.ab-btn--ghost:hover {
+  background: #fff;
+  color: var(--ab-blue-dark);
+}
+
+.ab-icon-circle {
+  flex: 0 0 auto;
+  width: clamp(48px, 3.5vw, 64px);
+  height: clamp(48px, 3.5vw, 64px);
+  border-radius: 50%;
+  background: var(--ab-circle);
+  color: var(--ab-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ab-icon-circle--lg {
+  width: clamp(56px, 4vw, 72px);
+  height: clamp(56px, 4vw, 72px);
+}
+
+.ab-icon-circle--step {
+  width: clamp(58px, 4.2vw, 76px);
+  height: clamp(58px, 4.2vw, 76px);
+}
+
+.ab-icon-circle--green {
+  background: #e4f6ea;
+  color: var(--ab-green);
+}
+
+/* ---------- HERO ----------
+   The photo spans the FULL width of the banner (object-fit: cover). Its left
+   side is already pale sky, so a soft mask melts it into the page background
+   behind the text. On desktop the banner keeps a fixed ratio, so photo and text
+   keep the same proportions at every screen width. */
+
+.ab-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 420px;
+  overflow: hidden;
+  background: linear-gradient(90deg, #f6f9fe 0%, #eaf3fd 45%, #dcebfb 100%);
+}
+
+@media (min-width: 901px) {
+  .ab-hero {
+    min-height: 0;
+    aspect-ratio: 3.7 / 1;   /* grows automatically if the text needs more room */
+    max-height: 760px;
+  }
+}
+
+.ab-hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 32%;   /* keeps the skyline + building in view */
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  /* the left edge melts into the hero background behind the text */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.5) 20%, #000 45%);
+  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.5) 20%, #000 45%);
+}
+
+.ab-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(246, 249, 254, 0.85) 0%,
+    rgba(246, 249, 254, 0.45) 35%,
+    rgba(246, 249, 254, 0) 60%
+  );
+  pointer-events: none;
+}
+
+.ab-hero__inner {
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(32px, 3vw, 64px);
+  padding-bottom: clamp(32px, 3vw, 64px);
+}
+
+.ab-hero__content {
+  max-width: min(100%, 52em);
+}
+
+.ab-hero__title {
+  font-size: clamp(32px, 3.5vw, 72px);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--ab-navy);
+  margin-bottom: clamp(18px, 1.8vw, 32px);
+}
+
+.ab-hero__title span {
+  display: block;
+  color: var(--ab-blue);
+}
+
+.ab-hero__text {
+  font-size: clamp(16px, 1.2vw, 24px);
+  line-height: 1.6;
+  color: #3d4a5e;
+  max-width: 36em;
+  margin-bottom: clamp(22px, 2vw, 36px);
+}
+
+.ab-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* ---------- WHO WE ARE ---------- */
+
+.ab-who {
+  padding: clamp(40px, 3.6vw, 80px) 0 clamp(36px, 3.2vw, 72px);
+  background: #fff;
+  scroll-margin-top: 80px;
+}
+
+.ab-who__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: clamp(32px, 5vw, 120px);
+  align-items: center;
+}
+
+.ab-who__text {
+  margin-top: 16px;
+  font-size: clamp(15px, 1.05vw, 19px);
+  line-height: 1.75;
+  color: var(--ab-text);
+  max-width: none;          /* fills its grid column */
+}
+
+.ab-who__right {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 2vw, 44px) clamp(24px, 3vw, 64px);
+}
+
+.ab-feature {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ab-feature h4 {
+  font-size: clamp(15px, 1.05vw, 19px);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.ab-feature p {
+  font-size: clamp(13.5px, 0.92vw, 16.5px);
+  line-height: 1.55;
+  color: var(--ab-muted);
+}
+
+/* ---------- VISION & MISSION ---------- */
+
+.ab-vm {
+  background: linear-gradient(180deg, #f1f7fe 0%, #f7fafe 100%);
+  padding: clamp(24px, 2.2vw, 48px) 0;
+}
+
+.ab-vm__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 1.8vw, 36px);
+}
+
+.ab-vm__card {
+  position: relative;
+  display: flex;
+  gap: 22px;
+  padding: clamp(26px, 2.2vw, 44px) clamp(26px, 2.4vw, 48px);
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e6eefa;
+  box-shadow: 0 10px 30px rgba(20, 70, 160, 0.07);
+  overflow: hidden;
+}
+
+.ab-vm__card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 130px;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(11, 99, 229, 0.1), rgba(11, 99, 229, 0) 70%);
+  pointer-events: none;
+}
+
+.ab-vm__card > * {
+  position: relative;
+}
+
+.ab-vm__label {
+  display: block;
+  font-size: clamp(11.5px, 0.78vw, 14px);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ab-blue);
+  margin-bottom: 8px;
+}
+
+.ab-vm__card h3 {
+  font-size: clamp(18px, 1.5vw, 28px);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 14px;
+}
+
+.ab-vm__card p {
+  font-size: clamp(14.5px, 1vw, 18px);
+  line-height: 1.7;
+  color: var(--ab-text);
+}
+
+/* ---------- JOURNEY ---------- */
+
+.ab-journey {
+  padding: clamp(36px, 3.2vw, 72px) 0 clamp(28px, 2.6vw, 56px);
+  background: #fff;
+}
+
+.ab-journey__sub {
+  margin-top: 10px;
+  font-size: clamp(15px, 1vw, 18px);
+  line-height: 1.65;
+  color: var(--ab-muted);
+  max-width: 52em;
+}
+
+.ab-journey__steps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: clamp(28px, 2.4vw, 48px);
+  padding-bottom: clamp(28px, 2.4vw, 48px);
+  border-bottom: 1px solid var(--ab-border);
+}
+
+.ab-step {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 0 1 auto;
+}
+
+.ab-step__body h4 {
+  font-size: clamp(15px, 1.05vw, 19px);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.ab-step__body p {
+  font-size: clamp(13px, 0.9vw, 16px);
+  line-height: 1.55;
+  color: var(--ab-muted);
+  max-width: 17em;
+}
+
+.ab-step__arrow {
+  position: relative;
+  flex: 1 1 60px;
+  min-width: 40px;
+  height: 1.5px;
+  background: var(--ab-blue);
+  margin-bottom: 18px;
+}
+
+.ab-step__arrow::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-top: 1.5px solid var(--ab-blue);
+  border-right: 1.5px solid var(--ab-blue);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* ---------- PRINCIPLES ---------- */
+
+.ab-principles {
+  padding: 8px 0 clamp(28px, 2.6vw, 56px);
+  background: #fff;
+}
+
+.ab-principles__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.ab-principles__head p {
+  max-width: 36em;
+  font-size: clamp(14.5px, 1vw, 18px);
+  line-height: 1.65;
+  color: var(--ab-muted);
+  padding-bottom: 4px;
+}
+
+.ab-principles__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: clamp(22px, 2vw, 40px);
+}
+
+.ab-principle {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 6px clamp(18px, 1.6vw, 32px);
+  border-right: 1px solid var(--ab-border);
+}
+
+.ab-principle:first-child {
+  padding-left: 0;
+}
+
+.ab-principle:last-child {
+  border-right: none;
+}
+
+.ab-principle h4 {
+  font-size: clamp(15px, 1.05vw, 19px);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.ab-principle p {
+  font-size: clamp(13.5px, 0.92vw, 16.5px);
+  line-height: 1.65;
+  color: var(--ab-muted);
+}
+
+/* ---------- FOUNDER ---------- */
+
+.ab-founder {
+  padding: 12px 0 clamp(20px, 2vw, 40px);
+  background: #fff;
+}
+
+.ab-founder__card {
+  display: grid;
+  grid-template-columns: clamp(260px, 22vw, 420px) minmax(0, 1fr);
+  background: linear-gradient(90deg, #f3f8fe, #fafcff);
+  border: 1px solid #e8eff9;
+  border-radius: 14px;
+  box-shadow: 0 8px 26px rgba(20, 70, 160, 0.06);
+}
+
+.ab-founder__photo {
+  position: relative;
+  min-height: 190px;
+}
+
+.ab-founder__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  border-radius: 13px 0 0 13px;
+}
+
+.ab-founder__pointer {
+  position: absolute;
+  top: 28px;
+  right: -9px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #fff;
+  filter: drop-shadow(1px 0 0 #dde7f5);
+}
+
+.ab-founder__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;   /* signature block hugs its content */
+  gap: clamp(24px, 4vw, 96px);
+  align-items: center;
+  padding: clamp(24px, 2vw, 44px) clamp(24px, 3vw, 64px);
+}
+
+.ab-founder__label {
+  display: block;
+  font-size: clamp(11px, 0.75vw, 14px);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ab-blue);
+  margin-bottom: 8px;
+}
+
+.ab-founder__main h3 {
+  font-size: clamp(22px, 1.9vw, 34px);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.ab-founder__main p {
+  font-size: clamp(14px, 0.98vw, 18px);
+  line-height: 1.75;
+  color: var(--ab-text);
+  margin-bottom: 14px;
+  max-width: none;
+}
+
+.ab-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: clamp(14px, 0.95vw, 17px);
+  font-weight: 500;
+  color: var(--ab-blue);
+  text-decoration: none;
+}
+
+.ab-link:hover {
+  text-decoration: underline;
+}
+
+.ab-founder__sign {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;   /* signature, name and titles share one left edge */
+  justify-self: end;
+  width: max-content;
+  text-align: left;
+}
+
+/* Signature
+   SignatureKadirSayed.png is the handwriting only, trimmed to its ink with a
+   transparent background, so it needs no cropping tricks, blend modes or
+   filters: just a width. Height follows the image's own ratio. */
+.ab-founder__sig {
+  display: block;
+  width: clamp(100px, 7.5vw, 150px);
+  height: auto;
+  max-width: 100%;
+  margin: 0 0 10px;          /* flush left = same edge as the name below */
+}
+
+.ab-founder__sign strong {
+  font-size: clamp(14px, 0.95vw, 17px);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.ab-founder__sign > span {
+  font-size: clamp(11.5px, 0.8vw, 14px);
+  line-height: 1.5;
+  color: var(--ab-muted);
+}
+
+/* ---------- CTA ---------- */
+
+.ab-cta-wrap {
+  padding: 22px 0 clamp(32px, 3vw, 64px);
+  background: #fff;
+}
+
+/* the CTA band sits closer to the screen edges than the text sections */
+.ab-cta-wrap .ab-container {
+  padding: 0 calc(var(--ab-gutter) * 0.6);
+}
+
+.ab-cta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: clamp(36px, 3vw, 72px) clamp(28px, 4vw, 96px);
+  border-radius: 22px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.ab-cta__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(6, 36, 106, 0.88) 0%,
+    rgba(8, 50, 135, 0.72) 55%,
+    rgba(10, 60, 150, 0.35) 100%
+  );
+}
+
+.ab-cta__text,
+.ab-cta__actions {
+  position: relative;
+  z-index: 1;
+}
+
+.ab-cta__text {
+  max-width: 44em;
+}
+
+.ab-cta__label {
+  display: block;
+  font-size: clamp(11.5px, 0.8vw, 14px);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #cfe0ff;
+  margin-bottom: 12px;
+}
+
+.ab-cta h2 {
+  font-size: clamp(26px, 2.5vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+
+.ab-cta p {
+  font-size: clamp(15px, 1.05vw, 20px);
+  line-height: 1.7;
+  color: #e6efff;
+}
+
+.ab-cta p em {
+  font-style: normal;
+  color: #6fb1ff;
+}
+
+.ab-cta__actions {
+  display: flex;
+  gap: 14px;
+  flex-shrink: 0;
+  align-self: flex-end;      /* bottom-right of the banner */
+}
+
+/* ---------- Typography, interaction, accessibility ---------- */
+
+.ab-hero__title,
+.ab-h2,
+.ab-vm__card h3,
+.ab-founder__main h3,
+.ab-cta h2 {
+  text-wrap: balance;
+}
+
+.ab-hero__text,
+.ab-who__text,
+.ab-journey__sub,
+.ab-founder__main p,
+.ab-cta p {
+  text-wrap: pretty;
+}
+
+.ab-btn svg,
+.ab-link svg {
+  transition: transform 0.2s ease;
+}
+
+.ab-icon-circle {
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.ab-vm__card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ab-page a:focus-visible {
+  outline: 2px solid var(--ab-blue);
   outline-offset: 3px;
+  border-radius: 6px;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .au-btn--light:hover {
-    background: var(--au-blue-soft);
-    translate: 0 -2px;
-  }
-
-  .au-btn:hover .au-btn__icon {
-    translate: 4px 0;
-  }
+.ab-btn--ghost:focus-visible,
+.ab-btn--white:focus-visible {
+  outline-color: #fff;
 }
 
-/* --------------------------------------------------------------------------
-   Motion: one hero entrance, only when the visitor allows motion
-   -------------------------------------------------------------------------- */
-@keyframes auIn {
-  from {
-    opacity: 0;
-    translate: 0 20px;
-  }
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
+/* One orchestrated moment: the hero text eases in on load. */
+@keyframes ab-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .au-hero__inner > * {
-    animation: auIn 0.7s var(--au-ease) backwards;
+  .ab-hero__content > * {
+    animation: ab-rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
-
-  .au-hero__inner > :nth-child(2) { animation-delay: 80ms; }
-  .au-hero__inner > :nth-child(3) { animation-delay: 160ms; }
+  .ab-hero__content > :nth-child(2) { animation-delay: 0.08s; }
+  .ab-hero__content > :nth-child(3) { animation-delay: 0.16s; }
+  .ab-hero__content > :nth-child(4) { animation-delay: 0.24s; }
 }
 
-/* --------------------------------------------------------------------------
-   Responsive (container queries, mobile-first)
-   < 640: one column, full-width CTA button
-   >= 640: three stat columns, CTA in a row
-   >= 960: two-column splits, three cards
-   -------------------------------------------------------------------------- */
-@container aboutus (max-width: 639px) {
-  .au-cta__box .au-btn {
-    align-self: stretch;
-    width: 100%;
+/* hover effects only where hover exists and motion is allowed */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .ab-btn:hover svg,
+  .ab-link:hover svg {
+    transform: translateX(4px);
+  }
+
+  .ab-vm__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 38px rgba(20, 70, 160, 0.13);
+  }
+
+  .ab-feature:hover .ab-icon-circle,
+  .ab-principle:hover .ab-icon-circle,
+  .ab-step:hover .ab-icon-circle {
+    background: var(--ab-blue);
+    color: #fff;
+    transform: scale(1.06);
+  }
+
+  .ab-feature:hover .ab-icon-circle--green,
+  .ab-step:hover .ab-icon-circle--green {
+    background: var(--ab-green);
   }
 }
 
-@container aboutus (min-width: 640px) {
-  .au-stats__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
-  }
-
-  .au-cta__box {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+@media (prefers-reduced-motion: reduce) {
+  .ab-page *,
+  .ab-page *::before,
+  .ab-page *::after {
+    transition: none !important;
+    animation: none !important;
   }
 }
 
-@container aboutus (min-width: 960px) {
-  .au-split {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+/* Small laptops / tablet landscape */
+@media (max-width: 1100px) {
+  .ab-journey__steps {
+    flex-wrap: wrap;
+    row-gap: 28px;
   }
 
-  .au-split--reverse {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  .ab-step__arrow {
+    display: none;
   }
 
-  /* image on the left in the "Why us" section */
-  .au-split--reverse .au-media {
-    order: -1;
+  .ab-step {
+    flex: 1 1 45%;
   }
 
-  .au-media {
-    max-width: none;
-    margin: 0;
+  .ab-principles__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 28px;
   }
 
-  .au-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .ab-principle:nth-child(2) {
+    border-right: none;
+  }
+
+  .ab-principle:nth-child(3) {
+    padding-left: 0;
+  }
+
+  .ab-founder__card {
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+
+  /* signature goes below the message instead of squeezing it */
+  .ab-founder__content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .ab-founder__sign {
+    justify-self: start;
+  }
+}
+
+/* Tablet portrait */
+@media (max-width: 900px) {
+  .ab-hero__overlay {
+    background: linear-gradient(
+      90deg,
+      rgba(246, 249, 254, 0.92) 0%,
+      rgba(246, 249, 254, 0.7) 60%,
+      rgba(246, 249, 254, 0.25) 100%
+    );
+  }
+
+  .ab-who__grid {
+    grid-template-columns: 1fr;
     gap: 28px;
   }
-}
 
-/* --------------------------------------------------------------------------
-   Accessibility
-   -------------------------------------------------------------------------- */
-@media (prefers-reduced-motion: reduce) {
-  .about-us *,
-  .about-us *::before,
-  .about-us *::after {
-    transition-duration: 0.001ms !important;
+  .ab-vm__grid {
+    grid-template-columns: 1fr;
   }
 
-  .au-card:hover,
-  .au-btn:hover {
-    translate: none;
+  .ab-principles__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .ab-founder__card {
+    grid-template-columns: 1fr;
+  }
+
+  .ab-founder__photo {
+    height: 300px;
+  }
+
+  .ab-founder__photo img {
+    border-radius: 13px 13px 0 0;
+    object-position: center 20%;
+  }
+
+  .ab-founder__pointer {
+    display: none;
+  }
+
+  .ab-founder__content {
+    padding: 24px;
+  }
+
+  .ab-cta {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 36px 28px;
+  }
+
+  .ab-cta__actions {
+    align-self: flex-start;
   }
 }
 
-@media (forced-colors: active) {
-  .au-card,
-  .au-stat,
-  .au-media,
-  .au-btn {
-    border: 1px solid CanvasText;
+/* Phones */
+@media (max-width: 600px) {
+  .ab-hero {
+    min-height: 460px;
+    align-items: flex-start;
+  }
+
+  /* keep text readable over the photo */
+  .ab-hero__img {
+    opacity: 0.55;
+    object-position: 75% 30%;
+  }
+
+  .ab-hero__actions .ab-btn {
+    flex: 1 1 100%;
+  }
+
+  .ab-who__right {
+    grid-template-columns: 1fr;
+  }
+
+  .ab-vm__card {
+    flex-direction: column;
+    padding: 28px 24px;
+  }
+
+  .ab-step {
+    flex: 1 1 100%;
+  }
+
+  .ab-step__body p {
+    max-width: none;
+  }
+
+  .ab-principles__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ab-principle,
+  .ab-principle:first-child,
+  .ab-principle:nth-child(3) {
+    padding: 0;
+    border-right: none;
+  }
+
+  .ab-founder__photo {
+    height: 250px;
+  }
+
+  .ab-founder__content {
+    padding: 20px;
+  }
+
+  .ab-cta {
+    border-radius: 18px;
+  }
+
+  .ab-cta__actions {
+    flex-direction: column;
+    width: 100%;
   }
 }

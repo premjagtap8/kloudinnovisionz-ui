@@ -3,20 +3,19 @@ import { Link } from "react-router-dom";
 import {
   ArrowRight,
   Target,
-  Lightbulb,
-  Cpu,
-  BarChart3,
+  Layers,
   Settings,
-  CheckCircle2,
+  TrendingUp,
+  Cloud,
+  ShieldCheck,
   Star,
-  Briefcase,
+  BarChart3,
   Building2,
   Globe,
   Users,
   Headphones,
 } from "lucide-react";
-import KloudLogoMark from "../assets/KloudLogoMark.png";
-import logoIcon from "../assets/logo-icon.png"
+import logoIcon from "../assets/logo-icon.png";
 
 import "./Hero.css";
 
@@ -32,63 +31,64 @@ const AVATARS = [
   { id: "avatar-5", src: "https://randomuser.me/api/portraits/men/12.jpg" },
 ];
 
+// `lines` = the subtitle, one entry per line (as in the design)
 const ORBIT_CARDS = [
   {
-    id: "strategy",
+    id: "consult",
     slotClass: "hero__orbit-slot--top-center",
     icon: Target,
-    title: "STRATEGY",
-    subtitle: "Right Roadmap",
+    title: "CONSULT",
+    lines: ["Digital Strategy", "& AI Readiness"],
     color: "blue",
     floatDelay: "0s",
     enterDelay: "0.2s",
   },
   {
-    id: "innovation",
+    id: "innovate",
     slotClass: "hero__orbit-slot--top-left",
-    icon: Lightbulb,
-    title: "INNOVATION",
-    subtitle: "Future Ready",
+    icon: Layers,
+    title: "INNOVATE",
+    lines: ["AI/ML &", "Business Intelligence"],
     color: "blue",
     floatDelay: "-1.2s",
     enterDelay: "0.3s",
   },
   {
-    id: "technology",
+    id: "build",
     slotClass: "hero__orbit-slot--top-right",
-    icon: Cpu,
-    title: "TECHNOLOGY",
-    subtitle: "Intelligent Solutions",
+    icon: Settings,
+    title: "BUILD",
+    lines: ["ERP, CRM &", "Custom Software"],
     color: "blue",
     floatDelay: "-2.4s",
     enterDelay: "0.4s",
   },
   {
-    id: "growth",
+    id: "grow",
     slotClass: "hero__orbit-slot--bottom-left",
-    icon: BarChart3,
-    title: "GROWTH",
-    subtitle: "Unlock Potential",
-    color: "green",
+    icon: TrendingUp,
+    title: "GROW",
+    lines: ["SEO, AEO, GEO &", "Performance Marketing"],
+    color: "blue",
     floatDelay: "-3.6s",
     enterDelay: "0.5s",
   },
   {
-    id: "transformation",
+    id: "transform",
     slotClass: "hero__orbit-slot--bottom-right",
-    icon: Settings,
-    title: "TRANSFORMATION",
-    subtitle: "Process. People. Performance.",
+    icon: Cloud,
+    title: "TRANSFORM",
+    lines: ["Automation,", "Cloud & Modernisation"],
     color: "blue",
     floatDelay: "-4.8s",
     enterDelay: "0.6s",
   },
   {
-    id: "results",
+    id: "protect",
     slotClass: "hero__orbit-slot--bottom-center",
-    icon: CheckCircle2,
-    title: "RESULTS",
-    subtitle: "Measurable Impact",
+    icon: ShieldCheck,
+    title: "PROTECT",
+    lines: ["Cyber Security", "& Risk Management"],
     color: "blue",
     floatDelay: "-2s",
     enterDelay: "0.7s",
@@ -96,8 +96,8 @@ const ORBIT_CARDS = [
 ];
 
 const STATS = [
-  { id: "experience", icon: Star, color: "blue", value: 25, suffix: "+", label: "Years of Experience" },
-  { id: "projects", icon: Briefcase, color: "green", value: 500, suffix: "+", label: "Projects Delivered" },
+  { id: "experience", icon: Star, color: "blue", value: 25, suffix: "+", unit: " Years", label: "Of Technology Excellence" },
+  { id: "projects", icon: BarChart3, color: "blue", value: 500, suffix: "+", label: "Projects Delivered" },
   { id: "industries", icon: Building2, color: "green", value: 12, suffix: "+", label: "Industries Served" },
   { id: "countries", icon: Globe, color: "blue", value: 3, suffix: "", label: "Countries Presence" },
   { id: "retention", icon: Users, color: "blue", value: 98, suffix: "%", label: "Client Retention" },
@@ -146,11 +146,11 @@ function useCountUp(target, duration = 1600, shouldStart = false) {
 // -----------------------------------------------------------------------------
 
 function StatItem({ item, isVisible }) {
-  const { icon: Icon, color, value, suffix = "", label, isStatic, staticValue } = item;
+  const { icon: Icon, color, value, suffix = "", unit = "", label, isStatic, staticValue } = item;
   const count = useCountUp(value, 1600, isVisible);
 
-  const finalValue = isStatic ? staticValue : `${value}${suffix}`;
-  const displayValue = isStatic ? staticValue : `${count}${suffix}`;
+  const finalValue = isStatic ? staticValue : `${value}${suffix}${unit}`;
+  const displayValue = isStatic ? staticValue : `${count}${suffix}${unit}`;
 
   return (
     <li className="hero__stat-item">
@@ -211,20 +211,29 @@ export default function Hero() {
         <div className="hero__main">
           {/* Left column */}
           <div className="hero__content">
+            <p className="hero__eyebrow">
+              <span>Business</span>
+              <span className="hero__eyebrow-sep" aria-hidden="true" />
+              <span>Technology</span>
+              <span className="hero__eyebrow-sep" aria-hidden="true" />
+              <span>People</span>
+            </p>
+
             <h1 className="hero__title" id="hero-title">
-              <span className="hero__title-line">We Don’t Just Build Technology.</span>
-              <span className="hero__title-accent">We Transform Businesses.</span>
+              <span className="hero__title-line">Your Business Vision.</span>
+              <span className="hero__title-line">The Right Technology.</span>
+              <span className="hero__title-accent">A Clearer Way Forward.</span>
             </h1>
 
             <p className="hero__description">
-              From strategy to execution, we help organisations modernise,
-              automate and grow with intelligent digital solutions that create
-              measurable impact.
+              Kloud Innovisionz helps organisations make informed technology
+              decisions, modernise operations and grow with intelligent digital
+              solutions that create measurable impact.
             </p>
 
             <div className="hero__actions">
               <Link to="/contact-us" className="hero__btn hero__btn--primary">
-                <span>Let’s Transform Your Business</span>
+                <span>Let’s Discuss Your Business</span>
                 <ArrowRight size={15} className="hero__btn-icon" aria-hidden="true" />
               </Link>
 
@@ -263,7 +272,13 @@ export default function Hero() {
           {/* Right column: orbit visual (decorative) */}
           <div className="hero__visual" aria-hidden="true">
             <div className="hero__orbit">
-              <div className="hero__orbit-ring" />
+              {/* Outer ring with four small "node" dots sitting on it, as in the design */}
+              <div className="hero__orbit-ring">
+                <span className="hero__orbit-dot hero__orbit-dot--tl" />
+                <span className="hero__orbit-dot hero__orbit-dot--tr" />
+                <span className="hero__orbit-dot hero__orbit-dot--bl" />
+                <span className="hero__orbit-dot hero__orbit-dot--br" />
+              </div>
 
               <div className="hero__orbit-arc">
                 <svg viewBox="0 0 340 340" className="hero__orbit-svg" focusable="false">
@@ -287,13 +302,42 @@ export default function Hero() {
                     r="168"
                     fill="none"
                     stroke="url(#heroOrbitGradient)"
-                    strokeWidth="2.5"
+                    strokeWidth="2"
                     strokeDasharray="85 30 140 40 70 35"
                     strokeLinecap="round"
                     filter="url(#heroArcGlow)"
                   />
-                  <circle cx="170" cy="2" r="3.5" fill="#FFFFFF" filter="url(#heroArcGlow)" />
-                  <circle cx="338" cy="170" r="3.5" fill="#1F6FEB" filter="url(#heroArcGlow)" />
+                </svg>
+              </div>
+
+              {/* Inner ring: thin white line around the logo circle, with a slowly revolving arc */}
+              <div className="hero__orbit-inner">
+                <svg viewBox="0 0 200 200" className="hero__orbit-inner-svg" focusable="false">
+                  <defs>
+                    <linearGradient id="heroInnerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
+                      <stop offset="60%" stopColor="#FFFFFF" stopOpacity="0.85" />
+                      <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.15" />
+                    </linearGradient>
+                    <filter id="heroInnerGlow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur stdDeviation="1.6" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                  </defs>
+                  <circle
+                    cx="100"
+                    cy="100"
+                    r="98.5"
+                    fill="none"
+                    stroke="url(#heroInnerGradient)"
+                    strokeWidth="2"
+                    strokeDasharray="150 50 90 40 60 30"
+                    strokeLinecap="round"
+                    filter="url(#heroInnerGlow)"
+                  />
                 </svg>
               </div>
 
@@ -324,7 +368,11 @@ export default function Hero() {
                         </div>
                         <div className="hero__orbit-card-text">
                           <span className="hero__orbit-card-title">{card.title}</span>
-                          <span className="hero__orbit-card-subtitle">{card.subtitle}</span>
+                          {card.lines.map((line) => (
+                            <span key={line} className="hero__orbit-card-subtitle">
+                              {line}
+                            </span>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -336,14 +384,7 @@ export default function Hero() {
         </div>
 
         {/* Bottom stats bar */}
-        <section className="hero__stats-card" aria-labelledby="hero-stats-title">
-          <div className="hero__stats-lead">
-            <h2 className="hero__stats-title" id="hero-stats-title">
-              25+ Years of<br />Technology Excellence
-            </h2>
-            <p className="hero__stats-subtitle">Built on trust. Driven by innovation.</p>
-          </div>
-
+        <section className="hero__stats-card" aria-label="Key figures">
           <ul className="hero__stats-list">
             {STATS.map((stat) => (
               <StatItem key={stat.id} item={stat} isVisible={isIntersecting} />

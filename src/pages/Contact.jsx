@@ -1,344 +1,385 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import './Contact.css'
+import React, { useState } from 'react';
+import './Contact.css';
 
-/* Set VITE_CONTACT_API_URL in your .env to POST the form to your backend.
-   If it is not set, the form falls back to opening the visitor's email app. */
-const API_URL = import.meta.env.VITE_CONTACT_API_URL || ''
-const FALLBACK_EMAIL = 'kontact@kloudinnovisionz.com'
+// Adjust these two paths if your Contact.jsx lives somewhere other than src/pages/
+import contactHeroImage from '../assets/ContactHeroImage.png';
+import aboutUsSunImage from '../assets/AboutUsSun.png';
 
-const SERVICES = [
-  'Web Design & Development',
-  'Graphic Designing',
-  'Mobile App Development',
-  'Software Development',
-  'Digital Marketing',
-  'Domain & Hosting',
-  'ERP & CRM',
-]
+// Enquiries from the form go to this number (country code + number, no + or spaces)
+const WHATSAPP_NUMBER = '919594865555';
 
-const OFFICES = [
+const MAP_LINK =
+  'https://www.bing.com/maps/directions?ty=0&v=2&sV=1&rtp=%7Epos.19.085493087768555_72.88911437988281__KlouD%2520InnoVisionZ%2520Private%2520Limited_&cp=19.085499%7E72.889114&lvl=16&style=r';
+
+const EMPTY_FORM = {
+  name: '',
+  email: '',
+  company: '',
+  phone: '',
+  service: '',
+  requirements: ''
+};
+
+const SERVICE_LABELS = {
+  consulting: 'Technology Consulting & Strategy',
+  development: 'Custom Software Development',
+  digital: 'Digital Transformation',
+  cloud: 'Cloud & Infrastructure'
+};
+
+// Each FAQ now has its own answer (previously every item showed the same text).
+// These are draft answers - edit them so they match what Kloud InnoVisionZ actually offers.
+const FAQS = [
   {
-    id: 'india',
-    country: 'India',
-    tag: 'Home Office',
-    address: ['UGB 88, Phoenix Paragon Plaza', 'L.B.S. Marg, Kurla (West)', 'Mumbai - 400070'],
-    email: 'kontact@kloudinnovisionz.com',
-    phone: '+91 959486 5555',
-    tel: '+919594865555',
-    mapSrc:
-      'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.47205814509!2d72.88764361485158!3d19.08693605658878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7d1c2d9496781%3A0x21fa39f59f2571d6!2sKlouD%20InnoVisionZ!5e0!3m2!1sen!2sin!4v1569570535096!5m2!1sen!2sin',
-    mapLink: 'https://www.google.com/maps/search/?api=1&query=KlouD+InnoVisionZ+Kurla+Mumbai',
+    q: 'What kinds of businesses do you work with?',
+    a: 'We work with businesses of all sizes, from ambitious startups to established enterprises, across industries such as manufacturing, real estate, education, healthcare, retail, hospitality and logistics.'
   },
   {
-    id: 'france',
-    country: 'France',
-    tag: 'Paris Office',
-    address: ['2 Rue Emile Zola', 'La Courneuve, Paris', 'France - 93120'],
-    email: 'HR@kloudinnovisionz.com',
-    phone: '+33 605 620 573',
-    tel: '+33605620573',
-    mapQuery: '2 Rue Emile Zola, La Courneuve, 93120, France',
+    q: 'How do we get started?',
+    a: 'Share your goals through the form above or give us a call. We begin with a short conversation to understand your needs, then suggest practical next steps.'
   },
   {
-    id: 'hungary',
-    country: 'Hungary',
-    tag: 'Budapest Office',
-    address: ['Taksony U.S', 'Budapest', 'Hungary'],
-    email: 'info@kloudinnovisionz.com',
-    phone: '+36 20 619 8338',
-    tel: '+36206198338',
-    mapQuery: 'Taksony, Budapest, Hungary',
+    q: 'Do you provide consulting as well as implementation?',
+    a: 'Yes. We can advise on strategy and architecture, and our team can also build, launch and support the solution.'
   },
-]
-
-const SOCIALS = [
-  { label: 'Facebook', href: 'https://www.facebook.com/KloudinnovisionzOfficial/' },
-  { label: 'X (Twitter)', href: 'https://twitter.com/KlouDinoVisionZ' },
-  { label: 'YouTube', href: 'https://www.youtube.com/channel/UCAtKcZFDA-6aNuXzIbWGvFw?view_as=subscriber' },
-  { label: 'Instagram', href: 'https://www.instagram.com/kloudinnovisionzofficial/' },
-  { label: 'Pinterest', href: 'https://in.pinterest.com/Kloudinnovisionz/' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/kloud-innovisionz-0a8a2112b/' },
-]
-
-const getMapSrc = (office) =>
-  office.mapSrc ||
-  `https://maps.google.com/maps?q=${encodeURIComponent(office.mapQuery)}&t=m&z=15&output=embed`
-
-const getMapLink = (office) =>
-  office.mapLink ||
-  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(office.mapQuery)}`
-
-/* ---------- Icons ---------- */
-const iconProps = {
-  width: 44,
-  height: 44,
-  viewBox: '0 0 24 24',
-  fill: 'none',
-  stroke: 'currentColor',
-  strokeWidth: 1.4,
-  strokeLinecap: 'round',
-  strokeLinejoin: 'round',
-  'aria-hidden': true,
-}
-
-const MailIcon = () => (
-  <svg {...iconProps}>
-    <rect x="3" y="5" width="18" height="14" rx="2" />
-    <path d="m3.5 6.5 8.5 6.5 8.5-6.5" />
-  </svg>
-)
-
-const PhoneIcon = () => (
-  <svg {...iconProps}>
-    <path d="M5 4h3.5l1.8 4.5-2.2 1.4a11 11 0 0 0 5.9 5.9l1.4-2.2L20 15.5V19a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2Z" />
-  </svg>
-)
-
-const ChatIcon = () => (
-  <svg {...iconProps}>
-    <path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 20.5l1.6-4.9A8.5 8.5 0 1 1 21 11.5Z" />
-  </svg>
-)
-
-const HeadsetIcon = () => (
-  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M4 14v-2a8 8 0 0 1 16 0v2" />
-    <rect x="3" y="13" width="4" height="6" rx="1.5" />
-    <rect x="17" y="13" width="4" height="6" rx="1.5" />
-    <path d="M19 19v.5a2.5 2.5 0 0 1-2.5 2.5H13" />
-  </svg>
-)
-
-const ArrowIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M5 12h14" />
-    <path d="m13 6 6 6-6 6" />
-  </svg>
-)
-
-const PinIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z" />
-    <circle cx="12" cy="9.5" r="2.5" />
-  </svg>
-)
-
-const INITIAL_FORM = { name: '', email: '', phone: '', business: '', services: [], website: '' }
-
-export default function Contact() {
-  const [form, setForm] = useState(INITIAL_FORM)
-  const [status, setStatus] = useState({ state: 'idle', message: '' })
-
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setForm((prev) => ({ ...prev, [name]: value }))
+  {
+    q: 'Can you help us with digital marketing and SEO?',
+    a: 'Yes. Digital growth is part of what we do, alongside the technology that supports it.'
+  },
+  {
+    q: 'Do you work with clients outside India?',
+    a: 'Yes. We can run discovery calls and project delivery remotely, so location is not a barrier.'
+  },
+  {
+    q: 'What happens after we submit the form?',
+    a: 'WhatsApp opens with your enquiry pre-filled. Once you tap Send, our team reviews it and gets back to you.'
   }
+];
 
-  const toggleService = (service) => {
-    setForm((prev) => ({
-      ...prev,
-      services: prev.services.includes(service)
-        ? prev.services.filter((s) => s !== service)
-        : [...prev.services, service],
-    }))
-  }
+const Contact = () => {
+  const [formData, setFormData] = useState(EMPTY_FORM);
+  const [formStatus, setFormStatus] = useState('');
+  const [openFaq, setOpenFaq] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (form.website) return // honeypot: bots fill this hidden field
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-    setStatus({ state: 'sending', message: '' })
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    const payload = {
-      name: form.name.trim(),
-      email: form.email.trim(),
-      phone: form.phone.trim(),
-      business: form.business.trim(),
-      services: form.services,
-    }
+    const message =
+      `*New Website Enquiry*\n\n` +
+      `*Name:* ${formData.name}\n` +
+      `*Email:* ${formData.email}\n` +
+      `*Company:* ${formData.company || '-'}\n` +
+      `*Phone:* ${formData.phone || '-'}\n` +
+      `*Service:* ${SERVICE_LABELS[formData.service] || '-'}\n` +
+      `*Requirements:* ${formData.requirements}`;
 
-    try {
-      if (API_URL) {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        })
-        if (!res.ok) throw new Error('Request failed')
-        setStatus({ state: 'success', message: 'Thank you! We have received your message and will get back to you shortly.' })
-      } else {
-        const body = [
-          `Name: ${payload.name}`,
-          `Email: ${payload.email}`,
-          `Mobile: ${payload.phone}`,
-          `Business: ${payload.business}`,
-          `Services: ${payload.services.join(', ') || 'Not specified'}`,
-        ].join('\n')
-        window.location.href = `mailto:${FALLBACK_EMAIL}?subject=${encodeURIComponent(
-          'Website enquiry from ' + payload.name,
-        )}&body=${encodeURIComponent(body)}`
-        setStatus({ state: 'success', message: 'Your email app should open with the details filled in. Just press send.' })
-      }
-      setForm(INITIAL_FORM)
-    } catch {
-      setStatus({
-        state: 'error',
-        message: `Something went wrong. Please try again or email us at ${FALLBACK_EMAIL}.`,
-      })
-    }
-  }
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+
+    setFormStatus('WhatsApp is opening with your enquiry. Tap Send there to deliver it to our team.');
+    setFormData(EMPTY_FORM);
+  };
+
+  const toggleFaq = (index) => {
+    setOpenFaq((current) => (current === index ? null : index));
+  };
+
+  const scrollToForm = () => {
+    const el = document.getElementById('contact-form-card');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   return (
-    <main className="ct">
-      {/* ---------- Hero + form ---------- */}
-      <section className="ct-hero">
-        <div className="ct-hero__inner">
-          <span className="ct-hero__icon">
-            <HeadsetIcon />
-          </span>
-          <h1 className="ct-hero__title">Contact Us</h1>
-          <p className="ct-hero__subtitle">Take one chance to transform your business</p>
-
-          <form className="ct-form" onSubmit={handleSubmit} noValidate={false}>
-            <div className="ct-field">
-              <label htmlFor="ct-name" className="ct-sr">Name</label>
-              <input id="ct-name" name="name" type="text" placeholder="Name" value={form.name} onChange={handleChange} required autoComplete="name" />
-            </div>
-            <div className="ct-field">
-              <label htmlFor="ct-email" className="ct-sr">Email</label>
-              <input id="ct-email" name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required autoComplete="email" />
-            </div>
-            <div className="ct-field">
-              <label htmlFor="ct-phone" className="ct-sr">Mobile number</label>
-              <input id="ct-phone" name="phone" type="tel" inputMode="tel" placeholder="Mobile No." value={form.phone} onChange={handleChange} required pattern="[0-9 +]{7,16}" title="Enter a valid mobile number (digits, spaces and + only)" autoComplete="tel" />
-            </div>
-            <div className="ct-field">
-              <label htmlFor="ct-business" className="ct-sr">Your business name</label>
-              <input id="ct-business" name="business" type="text" placeholder="Your Business Name" value={form.business} onChange={handleChange} required autoComplete="organization" />
-            </div>
-
-            {/* Honeypot field, hidden from real visitors */}
-            <div className="ct-hp" aria-hidden="true">
-              <label htmlFor="ct-website">Website</label>
-              <input id="ct-website" name="website" type="text" tabIndex={-1} autoComplete="off" value={form.website} onChange={handleChange} />
-            </div>
-
-            <fieldset className="ct-services">
-              <legend className="ct-sr">Which service do you want?</legend>
-              {SERVICES.map((service) => (
-                <label className="ct-check" key={service}>
-                  <input type="checkbox" checked={form.services.includes(service)} onChange={() => toggleService(service)} />
-                  <span className="ct-check__box" aria-hidden="true" />
-                  <span className="ct-check__label">{service}</span>
-                </label>
-              ))}
-            </fieldset>
-
-            <button className="ct-submit" type="submit" disabled={status.state === 'sending'}>
-              {status.state === 'sending' ? 'Sending...' : 'Send'}
-            </button>
-
-            <p className={`ct-status ct-status--${status.state}`} role="status" aria-live="polite">
-              {status.message}
+    <div className="contact-page">
+      {/* ============ Hero & Form ============ */}
+      <section
+        className="contact-hero-section"
+        style={{ backgroundImage: `url(${contactHeroImage})` }}
+      >
+        <div className="contact-hero-container">
+          <div className="contact-left-content">
+            <span className="section-tag">Contact Kloud</span>
+            <h1 className="hero-title">
+              Let’s Talk About <br />
+              <span className="highlight-text">What’s Next.</span>
+            </h1>
+            <p className="hero-description">
+              Tell us about your business goals, challenges or ideas. We’ll start with a
+              conversation and explore how Kloud InnoVisionZ can support your next step.
             </p>
-          </form>
-        </div>
-      </section>
 
-      {/* ---------- Get in touch strip ---------- */}
-      <section className="ct-cta">
-        <div className="ct-cta__inner">
-          <h2 className="ct-cta__title">Let&rsquo;s talk and start your success</h2>
-          <div className="ct-cta__side">
-            <p>You can connect with us anytime. Schedule a consultation call with us for more details&hellip;</p>
-            <Link to="/services" className="ct-link">
-              Our Services
-              <ArrowIcon />
-            </Link>
+            <ul className="features-grid">
+              <li className="feature-item">
+                <span className="feature-icon-wrap" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><line x1="8" y1="9" x2="16" y2="9"></line><line x1="8" y1="13" x2="13" y2="13"></line></svg>
+                </span>
+                <span>Understand<br />your needs</span>
+              </li>
+              <li className="feature-item">
+                <span className="feature-icon-wrap" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                </span>
+                <span>Explore<br />practical options</span>
+              </li>
+              <li className="feature-item">
+                <span className="feature-icon-wrap" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </span>
+                <span>Involve the<br />right experts</span>
+              </li>
+              <li className="feature-item">
+                <span className="feature-icon-wrap" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"></path></svg>
+                </span>
+                <span>Focus on<br />real outcomes</span>
+              </li>
+            </ul>
           </div>
-        </div>
-      </section>
 
-      {/* ---------- Contact cards ---------- */}
-      <section className="ct-cards">
-        <div className="ct-cards__inner">
-          <article className="ct-card">
-            <span className="ct-card__icon"><MailIcon /></span>
-            <h3 className="ct-card__title">Send a Message</h3>
-            <ul className="ct-card__list">
-              {OFFICES.map((o) => (
-                <li key={o.id}>
-                  <a href={`mailto:${o.email}`}>{o.email}</a>
-                </li>
-              ))}
-            </ul>
-          </article>
+          <div className="contact-right-form-card" id="contact-form-card">
+            <h2>Send Us a Message</h2>
+            <p className="form-subtitle">Share a few details and our team will get back to you.</p>
 
-          <article className="ct-card ct-card--featured">
-            <span className="ct-card__icon"><PhoneIcon /></span>
-            <h3 className="ct-card__title">Talk to Us</h3>
-            <ul className="ct-card__list">
-              {OFFICES.map((o) => (
-                <li key={o.id}>
-                  <a href={`tel:${o.tel}`}>
-                    {o.phone} <small>({o.country})</small>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </article>
-
-          <article className="ct-card">
-            <span className="ct-card__icon"><ChatIcon /></span>
-            <h3 className="ct-card__title">Chat with Us</h3>
-            <ul className="ct-card__list ct-card__list--socials">
-              {SOCIALS.map((s) => (
-                <li key={s.label}>
-                  <a href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
-                </li>
-              ))}
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      {/* ---------- Offices + maps ---------- */}
-      <section className="ct-offices">
-        <div className="ct-offices__inner">
-          <h2 className="ct-offices__title">Our Offices</h2>
-          <div className="ct-offices__grid">
-            {OFFICES.map((office) => (
-              <article className="ct-office" key={office.id}>
-                <div className="ct-office__map">
-                  <iframe
-                    title={`${office.country} office map`}
-                    src={getMapSrc(office)}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    allowFullScreen
+            <form onSubmit={handleSubmit}>
+              <div className="form-row">
+                <div className="form-group">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Your Name *"
+                    aria-label="Your name"
+                    autoComplete="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
                   />
                 </div>
-                <div className="ct-office__body">
-                  <div className="ct-office__head">
-                    <h3>{office.country}</h3>
-                    <span className="ct-office__tag">{office.tag}</span>
-                  </div>
-                  <address>
-                    {office.address.map((line) => (
-                      <span key={line}>{line}</span>
-                    ))}
-                  </address>
-                  <a className="ct-office__dir" href={getMapLink(office)} target="_blank" rel="noopener noreferrer">
-                    <PinIcon />
-                    Open in Maps
-                  </a>
+                <div className="form-group">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Business Email *"
+                    aria-label="Business email"
+                    autoComplete="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                  />
                 </div>
-              </article>
-            ))}
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <input
+                    type="text"
+                    name="company"
+                    placeholder="Company Name"
+                    aria-label="Company name"
+                    autoComplete="organization"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone Number"
+                    aria-label="Phone number"
+                    autoComplete="tel"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group full-width">
+                <select
+                  name="service"
+                  aria-label="How can we help you?"
+                  value={formData.service}
+                  onChange={handleInputChange}
+                  required
+                  className={formData.service ? 'has-value' : ''}
+                >
+                  <option value="" disabled>How can we help you? *</option>
+                  <option value="consulting">Technology Consulting &amp; Strategy</option>
+                  <option value="development">Custom Software Development</option>
+                  <option value="digital">Digital Transformation</option>
+                  <option value="cloud">Cloud &amp; Infrastructure</option>
+                </select>
+              </div>
+
+              <div className="form-group full-width">
+                <textarea
+                  name="requirements"
+                  rows="4"
+                  placeholder="Tell us about your requirements *"
+                  aria-label="Your requirements"
+                  value={formData.requirements}
+                  onChange={handleInputChange}
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" className="submit-btn">
+                Send Message <span aria-hidden="true">→</span>
+              </button>
+
+              {formStatus && (
+                <p className="form-status" role="status">{formStatus}</p>
+              )}
+
+              <p className="form-disclaimer">
+                We respect your privacy. Your information will be used only to respond to your enquiry.
+              </p>
+            </form>
           </div>
         </div>
       </section>
-    </main>
-  )
-}
+
+      {/* ============ Info Cards ============ */}
+      <section className="info-cards-section">
+        <div className="info-cards-container">
+          {/* Office */}
+          <div className="info-card">
+            <div className="info-icon-box" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            </div>
+            <div className="info-content">
+              <h3>Our Office</h3>
+              <a
+                href={MAP_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="info-link-block"
+                title="Get directions"
+              >
+                <p className="info-office-name">Kloud InnoVisionZ Private Limited</p>
+                {/* Replace with the full street address */}
+                <p>Mumbai, India</p>
+                <span className="info-sub">(Work from studio/office by appointment)</span>
+                <span className="info-directions">Get directions →</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Email */}
+          <div className="info-card">
+            <div className="info-icon-box" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </div>
+            <div className="info-content">
+              <h3>Email Us</h3>
+              <a href="mailto:info@kloudinnovisionz.com" className="info-email-link">
+                info@kloudinnovisionz.com
+              </a>
+              <p className="info-sub">For business enquiries and project discussions.</p>
+            </div>
+          </div>
+
+          {/* Phone */}
+          <div className="info-card">
+            <div className="info-icon-box" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            </div>
+            <div className="info-content">
+              <h3>Call Us</h3>
+              <a href="tel:+919594865555" className="info-phone-link">+91 95948 65555</a>
+              <p>Monday – Sunday</p>
+              <span className="info-sub">10:00 AM – 6:00 PM (IST)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ FAQ ============ */}
+      <section className="faq-section">
+        <div className="faq-container">
+          <div className="faq-left">
+            <span className="section-tag">Frequent Questions</span>
+            <h2>
+              Before You <span className="highlight-text">Reach Out</span>
+            </h2>
+            <p>
+              Here are some common questions. If you can’t find what you’re looking for, feel
+              free to contact us.
+            </p>
+            <button className="view-faqs-btn" type="button" onClick={scrollToForm}>
+              View All FAQs <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <div className="faq-right">
+            {FAQS.map(({ q, a }, index) => {
+              const isOpen = openFaq === index;
+              return (
+                <div key={q} className={`faq-item ${isOpen ? 'active' : ''}`}>
+                  <button
+                    type="button"
+                    className="faq-question"
+                    id={`faq-q-${index}`}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-a-${index}`}
+                    onClick={() => toggleFaq(index)}
+                  >
+                    <span>{q}</span>
+                    <svg className="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </button>
+                  <div
+                    className="faq-answer"
+                    id={`faq-a-${index}`}
+                    role="region"
+                    aria-labelledby={`faq-q-${index}`}
+                  >
+                    <div className="faq-answer-inner">
+                      <p>{a}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ============ CTA Banner ============ */}
+      <section
+        className="cta-banner-section"
+        style={{ backgroundImage: `url(${aboutUsSunImage})` }}
+      >
+        <div className="cta-overlay" />
+        <div className="cta-banner-content">
+          <div className="cta-text">
+            <span className="section-tag light">Your next step starts here</span>
+            <h2>
+              Every Business Has a Vision.
+              <br />
+              <span className="cta-highlight">Let’s Work Out What’s Next.</span>
+            </h2>
+            <p>
+              Whether you have a specific project in mind or simply want to explore
+              possibilities, we’d be glad to hear from you.
+            </p>
+          </div>
+          <div className="cta-buttons">
+            <button className="primary-cta-btn" type="button" onClick={scrollToForm}>
+              Let’s Talk <span aria-hidden="true">→</span>
+            </button>
+            <a className="secondary-cta-btn" href="tel:+919594865555">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              Schedule a Call
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Contact;
