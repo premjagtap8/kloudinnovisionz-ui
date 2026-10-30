@@ -3,7 +3,7 @@
    Table of Contents:
    1. Tokens & Bar
    2. Message text
-   3. Link (pill CTA)
+   3. Links (pill CTAs) + actions wrapper + partner variant
    4. Responsive: tablet
    5. Responsive: mobile
    6. Accessibility (Reduced Motion)
@@ -71,8 +71,19 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. Link (pill CTA)
+   3. Links (pill CTAs)
+   --------------------------------------------------------------------------
+   .topbar__actions keeps "Learn More" and "Become a Partner" together as one
+   group, so they sit side by side and only wrap as a pair when space is tight.
    -------------------------------------------------------------------------- */
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
 .topbar__link {
   display: inline-flex;
   align-items: center;
@@ -86,9 +97,16 @@
   font-weight: 600;
   color: #ffffff;
   text-decoration: none;
-  white-space: nowrap; /* "Learn More" never splits across two lines */
+  white-space: nowrap; /* labels never split across two lines */
   -webkit-tap-highlight-color: transparent;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease,
+              border-color 0.2s ease;
+}
+
+/* Partner variant: outline style so the two pills don't compete equally */
+.topbar__link--partner {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 /* Animate the arrow with transform (GPU, no layout shift) instead of `gap` */
@@ -102,6 +120,10 @@
   .topbar__link:hover {
     background: rgba(255, 255, 255, 0.28);
     color: var(--tb-hover);
+  }
+
+  .topbar__link--partner:hover {
+    border-color: #ffffff;
   }
 
   .topbar__link:hover .topbar__icon {
@@ -129,7 +151,8 @@
 
 /* --------------------------------------------------------------------------
    5. Responsive: mobile (<= 600px)
-   Text on its own centered line, CTA pill centered beneath it.
+   Text on its own centered line, both pills centered beneath it.
+   On very narrow phones the pills wrap onto two lines instead of overflowing.
    -------------------------------------------------------------------------- */
 @media (max-width: 600px) {
   .topbar {
@@ -142,7 +165,7 @@
     max-width: 34ch;
   }
 
-  /* Bigger touch target on touch devices */
+  /* Bigger touch target on touch devices (>= 36px, 8px apart) */
   .topbar__link {
     min-height: 36px;
   }
