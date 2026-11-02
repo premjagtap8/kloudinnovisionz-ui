@@ -21,6 +21,10 @@ import urbanacres from '../assets/urbanacres.png'
 import communicure from '../assets/communicure.png'
 import dockair from '../assets/dockair.png'
 import zaidinfotech from '../assets/zaidinfotech.png'
+import paiwalainteriors from '../assets/images/paiwalaiinteriors.png'
+import sahanashelters from '../assets/images/sahanashelters.png'
+import webrandustry from '../assets/images/webrandustry.png'
+import lifecare from '../assets/images/lifecaree.png'
 
 const FILTERS = [
   { key: 'all', label: 'All' },
@@ -61,6 +65,10 @@ const PROJECTS = [
   { id: 19, title: 'Communicure', url: 'https://www.communicure.com/', categories: ['static'], image: communicure },
   { id: 20, title: 'Dockair Exiim', url: 'https://dockairexiim.com/', categories: ['static'], image: dockair },
   { id: 21, title: 'Zaid Infotech', url: 'https://zaidinfotech.in/', categories: ['ecommerce'], image: zaidinfotech },
+  { id: 22, title: 'Paiwala Interiors', url: 'https://paiwalainteriors.com/', categories: ['static'], image: paiwalainteriors },
+  { id: 23, title: 'Sahana Shelters', url: 'https://staging.sahanashelters.com/home/', categories: ['static'], image: sahanashelters },
+  { id: 24, title: 'Webrandustry', url: 'https://www.webrandustry.com/', categories: ['static'], image: webrandustry },
+  { id: 25, title: 'Life Care', url: 'https://www.lifecarecharitable.org/', categories: ['static'], image: lifecare },
 ]
 
 function ArrowIcon() {

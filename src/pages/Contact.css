@@ -19,6 +19,7 @@
   --gutter: clamp(20px, 5vw, 80px);
   --radius-card: 12px;
   --radius-field: 8px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .contact-page,
@@ -31,7 +32,8 @@
   width: 100%;
   background-color: #ffffff;
   color: var(--c-navy);
-  overflow-x: hidden;
+  overflow-x: clip; /* clip (not hidden) so position: sticky / focus rings are not trapped */
+  -webkit-text-size-adjust: 100%;
 }
 
 .contact-page h1,
@@ -47,7 +49,7 @@
   list-style: none;
 }
 
-/* Shared centred container + gutter (replaces 4 separate full-bleed paddings) */
+/* Shared centred container + gutter */
 .contact-hero-container,
 .info-cards-container,
 .faq-container,
@@ -69,16 +71,29 @@
    ========================================================= */
 .contact-hero-section {
   position: relative;
-  isolation: isolate;
+  isolation: isolate; /* keeps the negative z-index layers inside the hero */
   width: 100%;
   background-color: var(--c-sky);
-  background-repeat: no-repeat;
-  background-position: center right;
-  background-size: cover;
   padding-block: clamp(32px, 4.5vw, 64px);
 }
 
-/* White -> transparent wash so the left copy stays readable over the photo */
+/* The photo is a real <img> now.
+   Desktop: absolute, fills the whole hero, sits behind everything.
+   (.contact-hero-container is NOT positioned, so "absolute" resolves to the section.) */
+.contact-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center right;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* White -> transparent wash so the left copy stays readable over the photo (desktop only) */
 .contact-hero-section::before {
   content: '';
   position: absolute;
@@ -149,6 +164,7 @@
   font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
   line-height: 1.6;
   color: var(--c-ink);
+  text-wrap: pretty;
 }
 
 /* ---- 4 feature icons ---- */
@@ -179,6 +195,15 @@
   border-radius: 50%;
   background: rgba(214, 230, 255, 0.85);
   color: var(--c-blue);
+  transition: transform 0.3s var(--ease), background-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .feature-item:hover .feature-icon-wrap {
+    transform: translateY(-3px);
+    background: var(--c-blue);
+    color: #ffffff;
+  }
 }
 
 /* =========================================================
@@ -194,6 +219,7 @@
   background: #ffffff;
   border-radius: var(--radius-card);
   box-shadow: 0 24px 48px -16px rgba(11, 27, 61, 0.32);
+  scroll-margin-block: 24px; /* breathing room when scrollIntoView lands on it */
 }
 
 .contact-right-form-card h2 {
@@ -229,6 +255,7 @@
 .contact-right-form-card select,
 .contact-right-form-card textarea {
   width: 100%;
+  min-height: 44px; /* comfortable touch target */
   padding: 12px 14px;
   border: 1px solid #d5dce8;
   border-radius: var(--radius-field);
@@ -283,6 +310,7 @@
   justify-content: center;
   gap: 10px;
   width: 100%;
+  min-height: 48px;
   margin-top: 4px;
   padding: 14px;
   border: none;
@@ -292,17 +320,29 @@
   font-weight: 600;
   color: #ffffff;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
-.submit-btn:hover {
-  background-color: var(--c-blue-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px -6px rgba(11, 102, 255, 0.55);
+.submit-btn span {
+  transition: transform 0.2s var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .submit-btn:hover {
+    background-color: var(--c-blue-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px -6px rgba(11, 102, 255, 0.55);
+  }
+
+  .submit-btn:hover span {
+    transform: translateX(4px);
+  }
 }
 
 .submit-btn:active {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 
 .form-status {
@@ -364,6 +404,15 @@
   border-radius: 50%;
   background-color: var(--c-blue-tint);
   color: var(--c-blue);
+  transition: transform 0.3s var(--ease), background-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .info-card:hover .info-icon-box {
+    transform: translateY(-3px);
+    background: var(--c-blue);
+    color: #ffffff;
+  }
 }
 
 .info-content {
@@ -464,6 +513,7 @@
   font-weight: 700;
   line-height: 1.2;
   color: var(--c-navy);
+  text-wrap: balance;
 }
 
 .faq-left p {
@@ -478,6 +528,7 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
+  min-height: 48px;
   padding: 13px 22px;
   background: #ffffff;
   border: 1px solid var(--c-blue);
@@ -486,12 +537,16 @@
   font-weight: 600;
   color: var(--c-blue);
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: background-color 0.2s, color 0.2s;
 }
 
-.view-faqs-btn:hover {
-  background-color: var(--c-blue);
-  color: #ffffff;
+@media (hover: hover) and (pointer: fine) {
+  .view-faqs-btn:hover {
+    background-color: var(--c-blue);
+    color: #ffffff;
+  }
 }
 
 .faq-right {
@@ -511,13 +566,14 @@
   border-bottom: none;
 }
 
-/* The question is now a real <button> (keyboard + screen-reader friendly) */
+/* The question is a real <button> (keyboard + screen-reader friendly) */
 .faq-question {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   width: 100%;
+  min-height: 52px;
   padding: 16px 24px;
   background: transparent;
   border: 0;
@@ -526,11 +582,15 @@
   text-align: left;
   color: var(--c-navy);
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: background-color 0.2s;
 }
 
-.faq-question:hover {
-  background-color: #fafcff;
+@media (hover: hover) and (pointer: fine) {
+  .faq-question:hover {
+    background-color: #fafcff;
+  }
 }
 
 .faq-arrow {
@@ -584,8 +644,7 @@
 }
 
 /* Desktop: enlarge the photo and anchor it to the right so the sun moves
-   left into the gap between the text and the buttons (it used to sit
-   directly behind the buttons). */
+   left into the gap between the text and the buttons. */
 @media (min-width: 1101px) {
   .cta-banner-section {
     background-size: 120% auto;
@@ -631,9 +690,10 @@
   line-height: 1.25;
   letter-spacing: -0.01em;
   color: #ffffff;
+  text-wrap: balance;
 }
 
-/* second line is light blue in the mockup (was white) */
+/* second line is light blue in the mockup */
 .cta-highlight {
   color: #5aa9ff;
 }
@@ -658,56 +718,112 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  min-height: 48px;
   padding: 14px 32px;
+  border: none;
   border-radius: var(--radius-field);
+  background: #ffffff;
+  color: #0869e8;
   font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.2;
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.14), 0 8px 20px rgba(0, 0, 0, 0.22);
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-.cta-banner-section .primary-cta-btn {
-  border: none;
-  background: #ffffff;
-  color: #0869e8;
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.14), 0 8px 20px rgba(0, 0, 0, 0.22);
+@media (hover: hover) and (pointer: fine) {
+  .cta-banner-section .primary-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.2), 0 12px 26px rgba(0, 0, 0, 0.28);
+  }
 }
 
-.cta-banner-section .primary-cta-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.2), 0 12px 26px rgba(0, 0, 0, 0.28);
+.cta-banner-section .primary-cta-btn:active {
+  transform: scale(0.98);
+}
+
+/* =========================================================
+   Entrance animation (opt-in: only when the user allows motion)
+   ========================================================= */
+@keyframes contactRise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .contact-left-content {
+    animation: contactRise 0.7s var(--ease) backwards;
+  }
+
+  .contact-hero-media {
+    animation: contactRise 0.8s 0.1s var(--ease) backwards;
+  }
+
+  .contact-right-form-card {
+    animation: contactRise 0.7s 0.15s var(--ease) backwards;
+  }
 }
 
 /* =========================================================
    Responsive
+   Breakpoints: desktop > 1100 | tablet 641-1100 | mobile <= 640
    ========================================================= */
 
-/* ---------- Tablet & small laptop ---------- */
+/* ---------- Tablet & small laptop: single column ----------
+   FIX: the photo leaves the background and becomes its own block
+   between the intro copy and the form, so it is fully visible. */
 @media (max-width: 1100px) {
+  .contact-hero-section {
+    background: linear-gradient(180deg, #ffffff 0%, var(--c-sky) 100%);
+  }
+
+  /* wash is only needed when text sits on top of the photo */
   .contact-hero-section::before {
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.95) 0%,
-      rgba(234, 243, 255, 0.82) 55%,
-      rgba(234, 243, 255, 0.4) 100%
-    );
+    display: none;
   }
 
   .contact-hero-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 36px);
+  }
+
+  .contact-left-content {
+    order: 1;
+  }
+
+  .contact-hero-media {
+    order: 2;
+    position: static;
+    z-index: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    max-height: 420px;
+    object-position: center;
+    border-radius: 16px;
+    box-shadow: 0 18px 40px -18px rgba(11, 27, 61, 0.35);
   }
 
   .contact-right-form-card {
+    order: 3;
     max-width: 580px;
     justify-self: start;
     margin-right: 0;
   }
 
   .faq-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .faq-left p {
@@ -723,7 +839,7 @@
 /* ---------- Tablet portrait: stack info cards ---------- */
 @media (max-width: 900px) {
   .info-cards-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 22px;
   }
 
@@ -744,7 +860,7 @@
 /* ---------- Mobile ---------- */
 @media (max-width: 640px) {
   .contact-hero-section {
-    background-position: 70% center;
+    padding-block: 28px 36px;
   }
 
   .contact-left-content .section-tag::after {
@@ -756,17 +872,32 @@
     gap: 22px 16px;
   }
 
+  /* shorter, friendlier crop on phones */
+  .contact-hero-media {
+    aspect-ratio: 4 / 3;
+    max-height: 320px;
+    border-radius: 14px;
+  }
+
   .contact-right-form-card {
     max-width: none;
+    padding: 20px 16px;
   }
 
   .form-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     margin-bottom: 0;
   }
 
   .form-row .form-group {
     margin-bottom: 12px;
+  }
+
+  /* 16px stops iOS Safari zooming the page when a field is focused */
+  .contact-right-form-card input,
+  .contact-right-form-card select,
+  .contact-right-form-card textarea {
+    font-size: 1rem;
   }
 
   .faq-question {
@@ -775,6 +906,11 @@
 
   .faq-answer-inner p {
     padding: 0 18px 16px;
+  }
+
+  .view-faqs-btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .cta-buttons {
@@ -788,6 +924,13 @@
   }
 }
 
+/* ---------- Very small phones ---------- */
+@media (max-width: 360px) {
+  .features-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 /* ---------- Respect users who turn animations off ---------- */
 @media (prefers-reduced-motion: reduce) {
   .contact-page *,
@@ -796,5 +939,15 @@
     transition: none !important;
     animation: none !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- High-contrast / forced-colors mode ---------- */
+@media (forced-colors: active) {
+  .contact-right-form-card,
+  .submit-btn,
+  .view-faqs-btn,
+  .primary-cta-btn {
+    border: 1px solid CanvasText;
   }
 }

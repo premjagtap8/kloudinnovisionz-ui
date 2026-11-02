@@ -1,0 +1,53 @@
+.reviews-section {
+  width: 100%;
+  box-sizing: border-box;
+  background: #f5f8ff;
+  padding: 72px 46px;          /* match your FAQ section's left spacing */
+}
+
+/* heading block, left aligned */
+.reviews-head {
+  text-align: left;
+  margin-bottom: 32px;
+}
+
+.reviews-eyebrow {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #15803d;
+  margin-bottom: 12px;
+}
+
+.reviews-title {
+  font-family: inherit;
+  font-size: clamp(1.8rem, 3.2vw, 2.4rem);   /* close to your FAQ heading size */
+  font-weight: 800;
+  line-height: 1.2;
+  color: #0b1220;
+  margin: 0;
+}
+
+.reviews-blue { color: #2563eb; }
+.reviews-green { color: #16a34a; }
+
+/* widget uses the full available width */
+.reviews-widget {
+  width: 100%;
+  max-width: none;
+}
+.reviews-widget .ti-widget,
+.reviews-widget .ti-widget-container,
+.reviews-widget .ti-widget[data-layout-id] {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .reviews-section {
+    padding: 48px 16px;
+  }
+}

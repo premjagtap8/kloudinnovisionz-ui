@@ -8,6 +8,7 @@ import WhatsAppWidget from './components/WhatsAppWidget'
 function App() {
   return (
     <div className="flex min-h-screen flex-col">
+     
       <TopBar />
       <Navbar />
       <main className="flex-1">

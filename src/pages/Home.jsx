@@ -8,20 +8,22 @@ import Insights from '../components/Insights'
 import Testimonials from '../components/Testimonials'
 import FAQ from '../components/FAQ'
 import LetsBuild from '../components/LetsBuild'
+import GoogleReviews from '../components/GoogleReviews'
 
 function Home() {
   return (
     <>
       <Hero />
-       <KloudWay />
+      <KloudWay />
       <Organizations />
       <Challenges />
       {/* <WhatWeDo /> */}
-     
+
       <PracticeAreas />
       <Industries />
       <Insights />
-      <Testimonials />
+      <GoogleReviews />
+
       <FAQ />
       <LetsBuild />
     </>

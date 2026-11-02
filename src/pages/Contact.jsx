@@ -27,7 +27,7 @@ const SERVICE_LABELS = {
   cloud: 'Cloud & Infrastructure'
 };
 
-// Each FAQ now has its own answer (previously every item showed the same text).
+// Each FAQ has its own answer.
 // These are draft answers - edit them so they match what Kloud InnoVisionZ actually offers.
 const FAQS = [
   {
@@ -97,10 +97,7 @@ const Contact = () => {
   return (
     <div className="contact-page">
       {/* ============ Hero & Form ============ */}
-      <section
-        className="contact-hero-section"
-        style={{ backgroundImage: `url(${contactHeroImage})` }}
-      >
+      <section className="contact-hero-section">
         <div className="contact-hero-container">
           <div className="contact-left-content">
             <span className="section-tag">Contact Kloud</span>
@@ -140,6 +137,19 @@ const Contact = () => {
               </li>
             </ul>
           </div>
+
+          {/*
+            Hero photo is now a real <img> instead of a CSS background.
+            Desktop: it fills the section behind the content (absolute).
+            Tablet/mobile: it becomes its own rounded block between the copy and the form,
+            so it is never cropped to a thin sliver or hidden behind the form card.
+          */}
+          <img
+            className="contact-hero-media"
+            src={contactHeroImage}
+            alt=""
+            decoding="async"
+          />
 
           <div className="contact-right-form-card" id="contact-form-card">
             <h2>Send Us a Message</h2>
