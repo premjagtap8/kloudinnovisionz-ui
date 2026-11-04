@@ -6,7 +6,7 @@
    3. Header
    4. Carousel (viewport + track)
    5. Testimonial Card
-   6. Controls (arrows, dots with autoplay progress)
+   6. Controls (arrows, pause, dots with autoplay progress)
    7. Entrance Animation
    8. Responsive (container queries)
    9. Accessibility (reduced motion, forced colors)
@@ -15,7 +15,8 @@
    (--font-main), so no @import is needed here.
    Palette matches Hero.css / Navbar.css: navy #0f172a, blue #1f6feb, green #16a34a.
    Cards per view (3 / 2 / 1) are chosen in Testimonials.jsx from the carousel width
-   and passed in as the --pv variable.
+   and passed in as --pv. The current position is passed in as --i and the slide
+   duration as --tm-slide.
 
    Every declaration that uses container units (cqi) has a plain vw/px fallback
    line above it, so browsers without container-query support still get a sane size.
@@ -40,13 +41,14 @@
 
   --tm-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --tm-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --tm-ease-slide: cubic-bezier(0.22, 0.61, 0.36, 1);
 
   font-family: var(--font-main); /* Poppins, set globally in index.css */
   -webkit-font-smoothing: antialiased;
   color: var(--tm-navy);
   background: linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
   padding-block: var(--tm-pad-y);
-  /* The section is a size container: the header layout follows the section width */
+  /* The section is a size container: the layout follows the section width */
   container: tm / inline-size;
 }
 
@@ -79,12 +81,9 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. Header (mobile-first: stacked; two columns from 760px, see section 8)
+   3. Header (eyebrow + title, one column at every width)
    -------------------------------------------------------------------------- */
 .tm__head {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 20px;
   margin-bottom: clamp(24px, 3.5vw, 44px); /* fallback */
   margin-bottom: clamp(24px, 3.5cqi, 44px);
 }
@@ -116,52 +115,14 @@
   color: var(--tm-green);
 }
 
-.tm__intro p {
-  margin: 0 0 8px;
-  max-width: 62ch;
-  font-size: clamp(0.875rem, 0.82rem + 0.3vw, 1rem); /* fallback */
-  font-size: clamp(0.875rem, 0.8rem + 0.25cqi, 1rem);
-  line-height: 1.8;
-  color: var(--tm-text);
-  text-wrap: pretty;
-}
-
-.tm__more {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-block-size: 44px; /* comfortable touch target (WCAG 2.5.8) */
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--tm-blue);
-  text-decoration: none;
-  -webkit-tap-highlight-color: transparent;
-  transition: color 0.2s ease;
-}
-
-/* The arrow moves with `translate` (compositor-friendly) instead of animating `gap` (layout) */
-.tm__more svg {
-  transition: translate 0.2s var(--tm-ease);
-}
-
-.tm__more:focus-visible {
-  outline: 2px solid var(--tm-blue);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .tm__more:hover {
-    color: var(--tm-blue-dark);
-  }
-
-  .tm__more:hover svg {
-    translate: 4px 0;
-  }
-}
-
 /* --------------------------------------------------------------------------
    4. Carousel (viewport + track)
+
+   How the movement works (see Testimonials.jsx):
+   - The track is as wide as the viewport; the slides are wider than it and overflow.
+   - One step = one card width + one gap = (100% + gap) / cards per view.
+     (100% inside translateX is the track's own width, which equals the viewport width.)
+   - --i counts steps from the first slide, including the copies at the front.
    -------------------------------------------------------------------------- */
 .tm__carousel {
   position: relative; /* anchor for the visually hidden status text */
@@ -169,7 +130,7 @@
 
 .tm__viewport {
   overflow: hidden;
-  padding-block: 8px 16px; /* room for the card shadow */
+  padding-block: 8px 16px; /* room for the card shadow and the hover lift */
   touch-action: pan-y; /* vertical scroll stays native; a horizontal swipe changes the slide */
   overscroll-behavior-x: contain; /* a swipe never triggers browser back/forward */
 }
@@ -179,9 +140,15 @@
 
   display: flex;
   gap: var(--tm-gap);
-  /* One step = one card width + one gap = (100% + gap) / cards per view */
   transform: translateX(calc(var(--i) * -1 * (100% + var(--tm-gap)) / var(--pv)));
-  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: transform var(--tm-slide, 550ms) var(--tm-ease-slide);
+  will-change: transform;
+}
+
+/* Used for the invisible jump from a copy back to the real card, and when the
+   number of cards per view changes: no animation at all */
+.tm__track--instant {
+  transition: none;
 }
 
 .tm__slide {
@@ -204,6 +171,15 @@
   background: var(--tm-blue-soft);
   border-radius: 24px;
   border: 1px solid rgba(31, 111, 235, 0.14);
+  transition: translate 0.3s var(--tm-ease), box-shadow 0.3s var(--tm-ease);
+}
+
+/* Hover lift only on devices that really hover (never sticks on touch screens) */
+@media (hover: hover) and (pointer: fine) {
+  .tm__card:hover {
+    translate: 0 -4px;
+    box-shadow: 0 14px 30px rgba(31, 111, 235, 0.14);
+  }
 }
 
 .tm__stars {
@@ -293,7 +269,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   6. Controls: arrows and dots under the cards
+   6. Controls: arrows, pause and dots under the cards
    The row wraps, so on a very narrow phone the dots drop to their own line
    instead of overflowing (see section 8).
    -------------------------------------------------------------------------- */
@@ -310,7 +286,7 @@
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  width: 44px;
+  width: 44px; /* comfortable touch target (WCAG 2.5.8) */
   height: 44px;
   padding: 0;
   color: var(--tm-blue);
@@ -451,18 +427,11 @@
 
 /* --------------------------------------------------------------------------
    8. Responsive (container queries on the section width)
-   >= 760px: header in two columns (title left, intro right)
+   Cards per view follow the carousel width (set in Testimonials.jsx):
+     >= 900px: 3 cards   |   580-899px: 2 cards   |   < 580px: 1 card
    <= 520px: smaller gap between cards, tighter card padding
    <= 460px: the dots move to their own row under the arrows
    -------------------------------------------------------------------------- */
-@container tm (min-width: 760px) {
-  .tm__head {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(24px, 5cqi, 80px);
-    align-items: end;
-  }
-}
-
 @container tm (max-width: 520px) {
   .tm__track {
     --tm-gap: 16px;
@@ -479,26 +448,39 @@
 
 @container tm (max-width: 460px) {
   .tm__dots {
-    order: 3; /* after the arrows */
+    order: 3; /* after the arrows and the pause button */
     flex: 1 0 100%;
   }
 }
 
 /* --------------------------------------------------------------------------
    9. Accessibility: Reduced Motion + Forced Colors
-   Autoplay is also switched off in Testimonials.jsx.
+   With reduced motion the page does not scroll by itself (also switched off in
+   Testimonials.jsx) and the entrance and hover effects are removed. Moving the
+   cards with the arrows, dots or a swipe stays, with a shorter slide
+   (--tm-slide is set to 300ms from JS).
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .tm *,
-  .tm *::before,
-  .tm *::after {
-    animation: none !important;
-    transition-duration: 0.001ms !important;
-  }
-
   .tm__head,
   .tm__carousel {
     opacity: 1;
+    translate: none;
+  }
+
+  .tm--visible .tm__head,
+  .tm--visible .tm__carousel,
+  .tm__dots[data-autoplay="on"] .tm__dot--active::after {
+    animation: none;
+  }
+
+  .tm__card,
+  .tm__arrow,
+  .tm__dot::before,
+  .tm__dot::after {
+    transition: none;
+  }
+
+  .tm__card:hover {
     translate: none;
   }
 }

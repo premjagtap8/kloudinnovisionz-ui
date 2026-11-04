@@ -3,11 +3,14 @@ import React, {
   useEffect,
   useLayoutEffect,
   useCallback,
+  useMemo,
   useRef,
 } from "react";
 import {
   ChevronLeft,
   ChevronRight,
+  Pause,
+  Play,
   Quote,
   Star,
 } from "lucide-react";
@@ -56,7 +59,17 @@ const TESTIMONIALS = [
 ];
 
 const AUTOPLAY_MS = 5000;
+// Direction of the automatic scrolling.
+//  1 = the row slides to the left, so the next testimonial in the list comes in
+//      from the right (you read the list left to right).
+// -1 = the row slides to the right, so the previous testimonial comes in from the left.
+const AUTOPLAY_STEP = 1;
+const SLIDE_MS = 550; // slide duration (kept in sync with the CSS through --tm-slide)
+const SLIDE_MS_REDUCED = 300; // calmer slide for people who prefer reduced motion
 const SWIPE_MIN_PX = 40; // horizontal distance that counts as a swipe
+
+// Always returns 0..m-1, even for negative numbers
+const mod = (n, m) => ((n % m) + m) % m;
 
 // Initials for the avatar (ignores Mr. / Ms / Mrs. prefixes)
 const getInitials = (name) =>
@@ -92,31 +105,55 @@ const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : use
 
 // -----------------------------------------------------------------------------
 // Component (Default Export)
+//
+// Endless loop without ever rewinding: the track holds the real cards plus a copy
+// of the last `perView` cards in front and the first `perView` cards behind.
+// Moving past either end slides onto a copy, then (after the slide finishes) the
+// track jumps, with no animation, to the identical real card. The jump is invisible.
+//
+// `pos` is the logical index of the first visible card. It is normally 0..total-1
+// and is only -1 or `total` for a moment while the slide lands on a copy.
 // -----------------------------------------------------------------------------
 
 export default function Testimonials() {
   const [perView, setPerView] = useState(3);
-  const [index, setIndex] = useState(0);
+  // One state object so "new position" and "skip the animation" always change together
+  const [view, setView] = useState({ pos: 0, instant: false });
   const [hovered, setHovered] = useState(false); // mouse over the carousel
   const [focused, setFocused] = useState(false); // keyboard focus inside it
+  const [userPaused, setUserPaused] = useState(false); // pause button
   const [reduceMotion, setReduceMotion] = useState(false);
   const [inView, setInView] = useState(false);
   const [hasEntered, setHasEntered] = useState(false);
 
   const sectionRef = useRef(null);
   const viewportRef = useRef(null);
+  const trackRef = useRef(null);
   const touchStart = useRef(null);
 
+  const { pos, instant } = view;
   const total = TESTIMONIALS.length;
-  const maxIndex = Math.max(0, total - perView);
+  const loops = total > perView; // with fewer cards than slots there is nothing to scroll
+  const clones = loops ? perView : 0;
+  const active = mod(pos, total); // which dot is lit
   const paused = hovered || focused;
+  const slideMs = reduceMotion ? SLIDE_MS_REDUCED : SLIDE_MS;
+
+  // Jump to the matching real card without an animation
+  const snap = useCallback(
+    () => setView((v) => ({ pos: mod(v.pos, total), instant: true })),
+    [total]
+  );
 
   // Cards per view: measure the carousel and re-measure when it resizes
   useIsoLayoutEffect(() => {
     const node = viewportRef.current;
     if (!node) return;
 
-    const update = () => setPerView(perViewFor(node.clientWidth));
+    const update = () => {
+      const next = perViewFor(node.clientWidth);
+      setPerView((prev) => (prev === next ? prev : next));
+    };
     update();
 
     if (typeof ResizeObserver === "undefined") {
@@ -129,10 +166,25 @@ export default function Testimonials() {
     return () => observer.disconnect();
   }, []);
 
-  // Keep the index valid when perView changes
+  // When the number of cards per view changes, re-seat the track with no animation
+  useIsoLayoutEffect(() => {
+    snap();
+  }, [perView, snap]);
+
+  // Turn the transition back on after an instant jump. Reading offsetWidth forces
+  // the browser to apply the "no transition" state first, so the jump is not animated.
+  useIsoLayoutEffect(() => {
+    if (!instant) return;
+    void trackRef.current?.offsetWidth;
+    setView((v) => ({ ...v, instant: false }));
+  }, [instant]);
+
+  // Landed on a copy (pos = -1 or total)? Once the slide has finished, jump to the real card.
   useEffect(() => {
-    setIndex((i) => Math.min(i, maxIndex));
-  }, [maxIndex]);
+    if (pos >= 0 && pos < total) return;
+    const id = setTimeout(snap, slideMs + 60);
+    return () => clearTimeout(id);
+  }, [pos, total, slideMs, snap]);
 
   // Respect "reduce motion" (also if the setting changes while the page is open)
   useEffect(() => {
@@ -167,25 +219,40 @@ export default function Testimonials() {
     return () => observer.disconnect();
   }, []);
 
-  const next = useCallback(
-    () => setIndex((i) => (i >= maxIndex ? 0 : i + 1)),
-    [maxIndex]
+  // Move one card. While the track is still settling on a copy (about half a second
+  // at an end of the list) extra requests are ignored, so it can never run past the copies.
+  const step = useCallback(
+    (dir) => {
+      if (total <= perView) return;
+      setView((v) =>
+        v.pos < 0 || v.pos >= total ? v : { pos: v.pos + dir, instant: false }
+      );
+    },
+    [total, perView]
   );
-  const prev = useCallback(
-    () => setIndex((i) => (i <= 0 ? maxIndex : i - 1)),
-    [maxIndex]
+
+  const next = useCallback(() => step(1), [step]);
+  const prev = useCallback(() => step(-1), [step]);
+
+  const goTo = useCallback(
+    (i) =>
+      setView((v) =>
+        v.pos < 0 || v.pos >= total ? v : { pos: i, instant: false }
+      ),
+    [total]
   );
 
   // Autoplay: only while the section is on screen, never with reduced motion,
-  // and not while hovered / keyboard-focused.
+  // and not while hovered / keyboard-focused / paused with the button.
   // A timeout per slide restarts the 5 seconds after every manual change.
-  const canAutoplay = !reduceMotion && inView && !paused && maxIndex > 0;
+  // It watches `active` (not `pos`), so the silent jump back from a copy does not restart it.
+  const canAutoplay = !reduceMotion && inView && !paused && !userPaused && loops;
 
   useEffect(() => {
     if (!canAutoplay) return;
-    const id = setTimeout(next, AUTOPLAY_MS);
+    const id = setTimeout(() => step(AUTOPLAY_STEP), AUTOPLAY_MS);
     return () => clearTimeout(id);
-  }, [canAutoplay, index, next]);
+  }, [canAutoplay, active, step]);
 
   // Touch swipe: left = next, right = previous. Mostly-vertical gestures are
   // page scrolls and are ignored.
@@ -222,7 +289,21 @@ export default function Testimonials() {
     }
   };
 
-  const lastVisible = Math.min(index + perView, total);
+  // Real cards plus the copies at both ends
+  const slides = useMemo(
+    () =>
+      Array.from({ length: total + clones * 2 }, (_, e) => ({
+        t: TESTIMONIALS[mod(e - clones, total)],
+        e,
+      })),
+    [total, clones]
+  );
+
+  const lastVisible = mod(active + perView - 1, total) + 1;
+  const statusText =
+    perView === 1
+      ? `Showing testimonial ${active + 1} of ${total}`
+      : `Showing testimonials ${active + 1} to ${lastVisible} of ${total}`;
 
   return (
     <section
@@ -258,9 +339,7 @@ export default function Testimonials() {
         >
           {/* Screen-reader status: only spoken when the person (not autoplay) moves the slides */}
           <p className="tm__sr" aria-live="polite" aria-atomic="true">
-            {canAutoplay
-              ? ""
-              : `Showing testimonials ${index + 1} to ${lastVisible} of ${total}`}
+            {canAutoplay ? "" : statusText}
           </p>
 
           <div
@@ -271,18 +350,25 @@ export default function Testimonials() {
             onTouchCancel={handleTouchCancel}
           >
             <div
-              className="tm__track"
-              style={{ "--pv": perView, "--i": index }}
+              ref={trackRef}
+              className={`tm__track${instant ? " tm__track--instant" : ""}`}
+              style={{
+                "--pv": perView,
+                "--i": pos + clones, // clones in front shift every real card by `clones` places
+                "--tm-slide": `${slideMs}ms`,
+              }}
             >
-              {TESTIMONIALS.map((t, slideIndex) => {
-                const isVisible = slideIndex >= index && slideIndex < index + perView;
+              {slides.map(({ t, e }) => {
+                const logical = mod(e - clones, total);
+                const first = pos + clones;
+                const isVisible = e >= first && e < first + perView;
                 return (
                   <div
                     className="tm__slide"
-                    key={t.name}
+                    key={`${t.name}-${e}`}
                     role="group"
                     aria-roledescription="slide"
-                    aria-label={`${slideIndex + 1} of ${total}`}
+                    aria-label={`${logical + 1} of ${total}`}
                     aria-hidden={isVisible ? undefined : "true"}
                   >
                     <article className="tm__card">
@@ -310,12 +396,12 @@ export default function Testimonials() {
             </div>
           </div>
 
-          {/* Controls: arrows and dots. Dots drop to their own row on narrow screens */}
+          {/* Controls: arrows, dots and pause. Dots drop to their own row on narrow screens */}
           <div className="tm__controls">
             <button
               type="button"
               className="tm__arrow"
-              aria-label="Previous testimonials"
+              aria-label="Previous testimonial"
               onClick={prev}
             >
               <ChevronLeft size={22} aria-hidden="true" />
@@ -324,18 +410,18 @@ export default function Testimonials() {
             <div
               className="tm__dots"
               role="group"
-              aria-label="Choose testimonial position"
+              aria-label="Choose testimonial"
               data-autoplay={canAutoplay ? "on" : "off"}
               style={{ "--tm-autoplay": `${AUTOPLAY_MS}ms` }}
             >
-              {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+              {Array.from({ length: total }).map((_, i) => (
                 <button
                   key={i}
                   type="button"
-                  aria-current={i === index ? "true" : undefined}
-                  aria-label={`Show testimonials ${i + 1} to ${Math.min(i + perView, total)}`}
-                  className={`tm__dot ${i === index ? "tm__dot--active" : ""}`}
-                  onClick={() => setIndex(i)}
+                  aria-current={i === active ? "true" : undefined}
+                  aria-label={`Show testimonial ${i + 1} of ${total}`}
+                  className={`tm__dot ${i === active ? "tm__dot--active" : ""}`}
+                  onClick={() => goTo(i)}
                 />
               ))}
             </div>
@@ -343,12 +429,27 @@ export default function Testimonials() {
             <button
               type="button"
               className="tm__arrow"
-              aria-label="Next testimonials"
+              aria-label="Next testimonial"
               onClick={next}
             >
               <ChevronRight size={22} aria-hidden="true" />
             </button>
 
+            {/* Pause / play: lets people stop moving content (WCAG 2.2.2) */}
+            {loops && !reduceMotion && (
+              <button
+                type="button"
+                className="tm__arrow tm__pause"
+                aria-label={userPaused ? "Start automatic scrolling" : "Pause automatic scrolling"}
+                onClick={() => setUserPaused((p) => !p)}
+              >
+                {userPaused ? (
+                  <Play size={18} fill="currentColor" aria-hidden="true" />
+                ) : (
+                  <Pause size={18} fill="currentColor" aria-hidden="true" />
+                )}
+              </button>
+            )}
           </div>
         </div>
       </div>
