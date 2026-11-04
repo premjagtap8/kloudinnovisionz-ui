@@ -1,6 +1,6 @@
 /* ==========================================================================
    Organizations - Client Logo Marquee
-   1. Design Tokens
+   1. Design Tokens (fluid)
    2. Section & Layout
    3. Label & Divider
    4. Transparent Logos & Auto-Scrolling Marquee
@@ -10,20 +10,24 @@
 
 /* --------------------------------------------------------------------------
    1. Design Tokens
+   Sizes are fluid (clamp) so they scale smoothly between phone, tablet and
+   desktop instead of jumping at breakpoints.
    -------------------------------------------------------------------------- */
 
 .organizations {
   --org-navy: #0f172a;
   --org-blue: #1f6feb;
   --org-border: #e5e7eb;
-  --org-card-border: #eef2f7;
 
-  --org-card-w: 200px;
-  --org-card-h: 100px;
-  --org-space: 20px;
-  --org-pad-y: 12px;
-  --org-pad-x: 16px;
-  --org-radius: 14px;
+  /* 152px on phones -> 200px from ~1200px wide */
+  --org-card-w: clamp(152px, 10vw + 80px, 200px);
+  /* 84px on phones -> 100px on desktop */
+  --org-card-h: clamp(84px, 4vw + 52px, 100px);
+  /* space on each side of a logo */
+  --org-space: clamp(10px, 1.5vw + 2px, 20px);
+  --org-pad-y: clamp(10px, 0.5vw + 7px, 12px);
+  --org-pad-x: clamp(12px, 0.6vw + 9px, 16px);
+  --org-radius: 12px;
 
   --org-gutter: clamp(16px, 2.5vw, 48px);
 
@@ -93,6 +97,7 @@
   min-width: 0;
   overflow: hidden;
 
+  /* room for the hover lift + shadow, which would otherwise be clipped */
   padding-block: 24px;
   margin-block: -14px;
 
@@ -115,6 +120,8 @@
 
 /* Scrolling track
    Requires two identical sets of logos in the JSX.
+   --org-duration is set from JS (real track width / speed in px per
+   second); the 60s below is only a fallback until JS runs.
 */
 
 .organizations__track {
@@ -129,25 +136,39 @@
   width: max-content;
   max-width: none;
 
-  animation: organizations-scroll var(--org-duration, 35s) linear infinite;
+  animation: organizations-scroll var(--org-duration, 60s) linear infinite;
 
   will-change: transform;
-  transform: translate3d(0, 0, 0);
 }
 
-/* Pause on hover or keyboard focus */
+/* Pause on hover - mouse devices only.
+   On touch screens :hover "sticks" after a tap and would freeze the
+   marquee until the person taps somewhere else. */
 
-.organizations__viewport:hover .organizations__track,
-.organizations__viewport:focus-within .organizations__track {
+@media (hover: hover) and (pointer: fine) {
+  .organizations__viewport:hover .organizations__track {
+    animation-play-state: paused;
+  }
+}
+
+/* Pause while a logo link has KEYBOARD focus (not after a tap). Kept as its
+   own rule so a browser without :has() ignores only this one. */
+
+.organizations__viewport:has(.organizations__link:focus-visible) .organizations__track {
   animation-play-state: paused;
 }
 
-/* Individual logo item */
+/* Individual logo slot.
+   --zoom (set per logo from the JSX) makes the slot as wide as the bigger
+   logo, so a zoomed logo can never overlap its neighbour. The gap between
+   two logos is always 2 x --org-space. */
 
 .organizations__item {
+  --zoom: 1;
+
   flex: 0 0 auto;
 
-  width: calc(var(--org-card-w) + var(--org-space) * 2);
+  width: calc(var(--org-card-w) * var(--zoom) + var(--org-space) * 2);
   padding-inline: var(--org-space);
 
   display: flex;
@@ -155,13 +176,44 @@
   justify-content: center;
 }
 
-/* Logo image - transparent background */
+/* Clickable logo link (wraps the image).
+   Uses flex so the image is laid out exactly as it was when it was a
+   direct child of the item. */
+
+.organizations__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: var(--org-radius);
+  text-decoration: none;
+  cursor: pointer;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Visible keyboard focus ring */
+
+.organizations__link:focus-visible {
+  outline: 3px solid var(--org-blue);
+  outline-offset: 3px;
+}
+
+/* Logo image - transparent background.
+   Width/height (not `scale`) are used for zoom, because the marquee track is
+   a GPU layer and scaling inside it is rendered small first, then stretched,
+   which makes the logo blurry. */
 
 .organizations__item img {
   display: block;
 
-  width: var(--org-card-w);
-  height: var(--org-card-h);
+  width: calc(var(--org-card-w) * var(--zoom));
+  height: calc(var(--org-card-h) * var(--zoom));
+  max-width: none;
+  flex-shrink: 0;
+
+  /* keep the row height the same as the other logos when zoomed */
+  margin-block: calc(var(--org-card-h) * (1 - var(--zoom)) / 2);
 
   object-fit: contain;
   object-position: center;
@@ -171,61 +223,47 @@
   /* Remove the white logo-card background */
   background: transparent !important;
 
+  /* Per-logo filter goes through this variable so hover can add a shadow
+     on top of it instead of replacing it. */
+  filter: var(--logo-filter, none);
+
   transition:
     transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
+    filter 0.25s ease;
+}
+
+/* Zoomed logos (tiny/thin text or lots of empty space in the image):
+   they use the full zoomed box, no inner padding. */
+
+.organizations__item img.is-zoomed {
+  padding: 0;
 }
 
 /* Logos with white text on a transparent background (Caudate, Ace WFM).
    A tight dark outline makes the text readable on the light section. */
+
 .organizations__item img.logo-light-text {
-  filter:
+  --logo-filter:
     drop-shadow(0 0 1px #0f172a)
     drop-shadow(0 0 1px #0f172a)
     drop-shadow(0 0 2px #0f172a);
 }
 
-/* Logos with tiny or thin text (DH, Dolce Vita, Nav Health).
-   The image is made bigger with width/height instead of `scale`, because
-   the marquee track is a GPU layer and scaling inside it is rendered
-   at the small size first, which makes the logo blurry. */
-.organizations__item img.logo-zoom {
-  --zoom: 1.35;
-  width: calc(var(--org-card-w) * var(--zoom));
-  height: calc(var(--org-card-h) * var(--zoom));
-  max-width: none;
-  flex-shrink: 0;
-  /* keep the row height the same as the other logos */
-  margin-block: calc(var(--org-card-h) * (1 - var(--zoom)) / 2);
-  padding: 0;
-}
-
-/* Extra contrast for logos with pale text (not used on Dolce Vita,
-   so its gold is not shifted). */
-.organizations__item img.logo-sharpen {
-  filter: contrast(1.25);
-}
-
-/* Hover effect */
+/* Hover: lift + soft shadow that follows the SHAPE of the logo
+   (drop-shadow), not a rectangle - a rectangular box-shadow around a
+   transparent logo brings the "sticker" look back. Only logos that are
+   links react, so nothing looks clickable when it is not. */
 
 @media (hover: hover) and (pointer: fine) {
-  .organizations__item img:hover {
+  .organizations__link:hover img {
     transform: translateY(-3px);
-    border: 1px solid var(--org-card-border);
-    border-radius: var(--org-radius);
-    border-color: #d6e4fb;
-    border-color: color-mix(
-      in srgb,
-      var(--org-blue) 25%,
-      #ffffff
-    );
-
-    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+    filter:
+      var(--logo-filter, none)
+      drop-shadow(0 8px 12px rgba(15, 23, 42, 0.16));
   }
 }
 
-/* Seamless infinite scrolling */
+/* Seamless infinite scrolling: moves the track by exactly one logo set. */
 
 @keyframes organizations-scroll {
   from {
@@ -239,34 +277,21 @@
 
 /* --------------------------------------------------------------------------
    5. Responsive Design
+   Sizes are fluid (see tokens). Breakpoints only change the layout.
    -------------------------------------------------------------------------- */
 
 /* Tablet */
 
 @media (max-width: 1023px) {
-  .organizations {
-    --org-card-w: 192px;
-    --org-card-h: 104px;
-    --org-space: 14px;
-  }
-
   .organizations__inner {
     gap: 20px;
   }
 }
 
-/* Mobile */
+/* Mobile: label on top, logos below */
 
 @media (max-width: 768px) {
   .organizations {
-    --org-card-w: 152px;
-    --org-card-h: 84px;
-    --org-space: 10px;
-
-    --org-pad-y: 10px;
-    --org-pad-x: 12px;
-    --org-radius: 12px;
-
     padding-block: 22px;
   }
 
