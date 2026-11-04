@@ -78,9 +78,9 @@ const CLIENTS = [
   { src: paiwalaGroup, name: "paiwalaGroup", url: "https://www.paiwalagroup.com/" },
   { src: bollywoodfest, name: "bollywoodfest", url: "https://www.bollywoodfest.com/" },
   { src: organicharvest, name: "organicharvest", url: null }, // add link when available
-  { src: lifecareTrust, name: "lifecareTrust", url: null }, // add link when available
-  { src: msvMaring, name: "msvMaring", url: null }, // add link when available
-  { src: webrand, name: "webrand", url: null }, // add link when available
+  { src: lifecareTrust, name: "lifecareTrust", url: "https://www.lifecarecharitable.org/" },
+  { src: msvMaring, name: "msvMaring", url: "https://msv-marine.com/" },
+  { src: webrand, name: "webrand", url: "https://www.webrandustry.com/" },
   { src: manuxNano, name: "manuxNanoBioCeuticals", url: "https://manuxnbc.com/" },
   { src: greenCloset, name: "theGreenCloset", url: "https://thegreencloset.in/" },
   { src: fab40, name: "fabulous40sPlus", url: "https://fabulous40splus.com/" },
@@ -105,8 +105,7 @@ const LIGHT_TEXT_LOGOS = ["caudate", "aceWFM"];
 // is drawn (1 = normal size). The logo's SLOT grows with it, so a bigger
 // logo can never overlap its neighbours.
 //   Try 1.2 - 1.6. Change a number here to make that one logo bigger/smaller.
-//   If one of the new logos (lifecareTrust, msvMaring, webrand) looks small,
-//   add it here, e.g.  webrand: 1.3,
+//   If a new logo looks small, add it here, e.g.  webrand: 1.3,
 const LOGO_ZOOM = {
   dhLogo: 1.35,
   dolocevita: 1.35,
@@ -114,6 +113,9 @@ const LOGO_ZOOM = {
   sahanaShelters: 1.45,
   paiwalaGroup: 1.4,
   manuxNanoBioCeuticals: 1.5,
+  lifecareTrust: 1.3,
+  msvMaring: 1.25,
+  webrand: 1.3,
 };
 
 // Scroll speed in pixels per second. The animation duration is calculated
